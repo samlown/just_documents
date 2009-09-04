@@ -15,9 +15,10 @@ class DocumentsController < ApplicationController
     end
     respond_to do |format|
       if @document.nil?
-        format.html { render :action => 'not_found' }
+        format.html { render :action => 'not_found', :status => 404 }
       else
         format.html
+        format.atom
       end
     end
   end
