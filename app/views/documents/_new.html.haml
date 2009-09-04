@@ -1,0 +1,9 @@
+
+- form_for document, :html => {:class => 'documentSaveForm'} do |f|
+  = f.hidden_field :slug
+  = f.hidden_field :layout
+  = f.hidden_field :parent_id
+
+  = render :partial => "documents/layouts/#{document.layout}/form", :locals => {:f => f}
+
+  %button{:type => 'submit'} Save

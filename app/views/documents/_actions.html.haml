@@ -1,0 +1,19 @@
+- if current_user_is_admin?
+  %p
+    = link_to 'edit', edit_document_url(document), :class => 'button positive documentFormAction', :title => 'Edit Document'
+
+    - form_for document, :html => {:class => "documentActions"} do |f|
+      = hidden_field_tag 'event', 'action'
+      - if document.published?
+        = f.hidden_field :published_at, :value => ''
+        %button.negative{:type => 'submit'}= 'unpublish'
+      - else
+        = f.hidden_field :published_at, :value => Time.now.iso8601
+        %button.positive{:type => 'submit'}= 'publish'
+
+    - if document.children.empty?
+      - form_for document, :html => {:class => "documentActionsConfirm"} do |f|
+        = hidden_field_tag '_method', 'delete'
+        %button.negative{:type => 'submit'}= 'destroy'
+        %span.confirm{:style => "display: none;"}= "Are you sure you want to send this document to the depths of nothingness, never to be seen again?"
+

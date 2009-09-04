@@ -1,0 +1,11 @@
+
+.span-14.pageForm
+  %p
+    = f.label :title, 'Title'
+    %br
+    = f.text_field :title, :class => 'span-14 title'
+
+  %p
+    = f.label :content
+    %br
+    = f.text_area :content, :class => 'markItUp'

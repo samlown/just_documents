@@ -1,0 +1,34 @@
+
+.blog.span-24
+
+  .main.span-18
+    .details.span-18
+      %h2= document.title
+
+      - unless document.summary.blank?
+        %p.summary
+          = text_filter(document.summary)
+          
+      = render :partial => 'actions', :locals => {:document => @document}
+
+    - @entries = paginate_documents(@document.children.published.not_hidden.layout_is('blog_entry'))
+    .entries.span-18
+      - if current_user_is_admin?
+        = link_to 'new blog entry', new_document_url(:layout => 'blog_entry', :parent_id => @document.id), :class => 'button documentFormAction', :title => "Create a new blog post"
+        - paginate_documents(@document.children.not_published.layout_is('blog_entry'), :limit => 100).each do |entry|
+          = render :partial => 'show', :locals => {:document => entry}
+
+      - @entries.each do |entry|
+        = render :partial => 'show', :locals => {:document => entry}
+
+      = will_paginate @entries
+
+  .sideBar.span-6.last
+    - if current_user_is_admin?
+      = link_to 'new side bar entry', new_document_url(:layout => 'side_bar_entry', :parent_id => @document.id), :class => 'button documentFormAction', :title => "Create a new side bar entry"
+
+      - paginate_documents(@document.children.not_published.layout_is('side_bar_entry')).each do |entry|
+        = render :partial => 'show', :locals => {:document => entry}
+    - paginate_documents(@document.children.published.not_hidden.layout_is('side_bar_entry')).each do |entry|
+      = render :partial => 'show', :locals => {:document => entry}
+

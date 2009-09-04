@@ -1,0 +1,38 @@
+!!! Strict
+%html
+  %head
+    %title
+      Just Documents 
+      - if @document
+        = @document.title
+    = stylesheet_link_tag 'blueprint/screen'
+    = stylesheet_link_tag 'blueprint/print', :media => :print
+    /[if IE]
+      = stylesheet_link_tag 'blueprint/ie'
+    = stylesheet_link_tag ['jquery/smoothness/jquery-ui']
+    = stylesheet_link_tag ['layout', 'content']
+    = javascript_include_tag ['jquery', 'jquery-ui', 'jrails', 'application'], :cache => true
+    - if logged_in?
+      = stylesheet_link_tag 'admin'
+      = javascript_include_tag 'admin'
+      = javascript_include_tag '/markitup/jquery.markitup.pack.js'
+      = javascript_include_tag '/markitup/sets/textile/set'
+      = stylesheet_link_tag '/markitup/skins/simple/style.css'
+      = stylesheet_link_tag '/markitup/sets/textile/style.css'
+  %body
+    .topBackground
+    .container
+      #header.span-24
+        = render :partial => 'users/user_bar'
+
+        %h1
+          = link_to 'Just Documents', documents_url
+
+
+      #content.content
+        = yield
+
+      #footer{:class => 'span-24'}
+        &nbsp;
+
+    #dialog.content

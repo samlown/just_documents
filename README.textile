@@ -1,0 +1,7 @@
+h1. Just Documents
+
+Web site creation done just with documents (except for the users and comments...).
+
+Just Documents provides an empty Ruby on Rails document orientated project designed to be a base for your own project.
+
+

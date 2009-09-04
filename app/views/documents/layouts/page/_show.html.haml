@@ -1,0 +1,14 @@
+
+.page
+
+  %h2= @document.title
+
+  - unless @document.summary.blank?
+    %p.summary
+      = text_filter(@document.summary)
+
+  - unless @document.content.blank?
+    %p.content
+      = text_filter(@document.content)
+
+  = render :partial => 'actions', :locals => {:document => @document}

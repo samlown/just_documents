@@ -1,0 +1,24 @@
+
+.blogEntry.span-18{:class => document.published? ? 'published' : 'notPublished'}
+
+  %h3= document.title
+
+  - unless document.summary.blank?
+    .summary
+      = text_filter(document.summary)
+
+  - unless document.content.blank?
+    .content
+      = text_filter(document.content)
+
+  %p.published
+    - if document.published?
+      Published 
+      = time_ago_in_words(document.published_at)
+      ago
+    - else
+      Not Published!
+      
+  = render :partial => 'actions', :locals => {:document => document}
+
+

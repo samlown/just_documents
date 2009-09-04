@@ -1,0 +1,10 @@
+
+.sideBarEntry.span-6
+
+  %h4= document.title
+
+  - unless document.content.blank?
+    %p.content
+      = text_filter(document.content)
+
+  = render :partial => 'actions', :locals => {:document => document}

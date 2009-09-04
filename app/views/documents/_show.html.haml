@@ -1,0 +1,3 @@
+.document{:id => "document_#{document.id}"}
+  = render :partial => "documents/layouts/#{document.layout}/show", :locals => {:document => document}
+

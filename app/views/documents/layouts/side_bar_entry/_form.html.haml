@@ -1,0 +1,11 @@
+
+.span-14.sideBarEntryForm
+  %p
+    = f.label :title, 'Title'
+    %br
+    = f.text_field :title, :class => 'title span-14'
+
+  %p
+    = f.label :content
+    %br
+    = f.text_area :content, :class => 'markItUp'

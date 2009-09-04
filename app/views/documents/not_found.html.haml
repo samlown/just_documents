@@ -1,0 +1,10 @@
+
+%h2
+  Document Not Found
+
+- if logged_in?
+  %p
+    This page does not exist, choose an action if you'd like to create it.
+  %ul
+    %li= link_to 'Create a page', new_document_url(:slug => params[:id], :layout => 'page'), :class => 'documentFormAction', :title => "Create a new basic page"
+    %li= link_to 'Create a blog', new_document_url(:slug => params[:id], :layout => 'blog'), :class => 'documentFormAction', :title => "Create a new blog"

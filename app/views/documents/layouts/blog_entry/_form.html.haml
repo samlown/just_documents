@@ -1,0 +1,33 @@
+
+.span-14.blogEntryForm
+  %p.title
+    = f.label :title, 'Title'
+    %br
+    = f.text_field :title, :class => 'span-14 title'
+
+  %p.content
+    = f.label :content, "Post"
+    %br
+    = f.text_area :content, :class => 'span-14 markItUp'
+
+  %p.tags
+    = f.label :tag_list, "Tags"
+    %br
+    = f.text_field :tag_list
+
+
+  %h3 Advanced Options
+
+  %p.summary
+    = f.label :summary, "Summary", :class => 'hideable'
+    %span{:style => "display: none;"}
+      %br
+      Include a short extract of the article.
+      %br
+      = f.text_area :summary
+
+  %p.published
+    = f.label :published_at, "Published", :class => 'hideable'
+    %span{:style => "display: none;"}
+      %br
+      = f.text_field :published_at
