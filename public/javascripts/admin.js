@@ -53,7 +53,6 @@ var documentFormBindings = function() {
     return false;
   });
 
-
   $('form .markItUp').markItUp(mySettings);
 
   $('form label.hideable').click(function() {
@@ -62,9 +61,39 @@ var documentFormBindings = function() {
 };
 
 
+var commentFormBindings = function() {
+
+  $('form.commentActions').unbind('submit').submit(function() {
+    postAndParse(this, function(result) {
+      if (result.status == 'WIN') {
+        window.location.reload();
+      } else {
+        alert(result.msg);
+      }
+    });
+    return false;
+  });
+
+  $('form.commentActionsConfirm').unbind('submit').submit(function() {
+    if (confirm($(this).find('.confirm').html())) {
+      postAndParse(this, function(result) {
+        if (result.status == 'WIN') {
+          window.location.reload();
+        } else {
+          alert(result.msg);
+        }
+      });
+    }
+    return false;
+  });
+
+};
+
+
 $(document).ready( function(){
 
   documentFormBindings();
+  commentFormBindings();
 
   $('.sideBar .items.sortable').sortable({
     handle: 'h4', items: '.sideBarEntry',

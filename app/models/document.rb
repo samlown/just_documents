@@ -52,6 +52,10 @@ class Document < ActiveRecord::Base
     slug
   end
 
+  def allow_any_comments
+    allow_comments or allow_pingback
+  end
+
   protected
 
     def prepare_slug

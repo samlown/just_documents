@@ -1,13 +1,20 @@
 
-.span-14.blogForm
+.span-14.blog.form
   %p
     = f.label :title, 'Title'
     %br
-    = f.text_field :title
+    = f.text_field :title, :class => 'text'
 
   %p
     = f.label :summary
     %br
     = f.text_area :summary, :class => 'markItUp'
 
+  %h3 Advanced Options
+
+  %p.user
+    = f.label :user_id, "Created by", :class => 'hideable'
+    %span{:style => "display: none;"}
+      %br
+      = f.select :user_id, User.all.map{|u| [u.name, u.id]}
 

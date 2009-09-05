@@ -1,5 +1,5 @@
 
-.span-14.blogEntryForm
+.span-14.blogEntry.form
   %p.title
     = f.label :title, 'Title'
     %br
@@ -13,7 +13,7 @@
   %p.tags
     = f.label :tag_list, "Tags"
     %br
-    = f.text_field :tag_list
+    = f.text_field :tag_list, :class => 'text'
 
   %h3 Advanced Options
 

@@ -21,19 +21,14 @@
     - else
       Not Published!
     - if document.allow_comments or document.allow_pingbacks
-      = document.comments.count 
-      comments
+      = link_to "#{document.comments.published.count} comments", document_url(document)+'#comments'
       
   = render :partial => 'actions', :locals => {:document => document}
 
-  - if @document == document # Viewing a single blog entry!
-    .comments
-      %h4 Comments
-      - if document.comments.count > 0
-        - document.comments.each do |comment|
-          .comment
 
-      .commentForm
+  - if @document == document && document.allow_any_comments 
+    = render :partial => '/comments/comments'
+    = render :partial => '/comments/form'
 
 
 

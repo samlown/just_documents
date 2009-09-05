@@ -5,7 +5,9 @@ class CreateComments < ActiveRecord::Migration
       t.references :user
       t.string :title
       t.string :email
-      t.string :name
+      t.string :author
+      t.string :web
+      t.string :ip_address, :length => 128
       t.text :content
       t.datetime :published_at
       t.datetime :hidden_at
