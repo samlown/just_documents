@@ -2,14 +2,16 @@ class Document < ActiveRecord::Base
 
   has_many :comments
 
+  belongs_to :user
+
   acts_as_tree
   acts_as_list :scope => :parent_id
   acts_as_taggable_on :tags
 
   serialize :metadata, Hash
 
-  named_scope :published, :conditions => ['documents.published_at IS NOT NULL']
-  named_scope :not_published, :conditions => ['documents.published_at IS NULL']
+  named_scope :published, :conditions => ['documents.published_at IS NOT NULL AND documents.published_at <= ?', Time.now]
+  named_scope :not_published, :conditions => ['documents.published_at IS NULL OR documents.published_at > ?', Time.now]
 
   named_scope :hidden, :conditions => ['documents.hidden_at IS NOT NULL']
   named_scope :not_hidden, :conditions => ['documents.hidden_at IS NULL']
@@ -30,7 +32,7 @@ class Document < ActiveRecord::Base
   end
 
   def published?
-    !published_at.nil?
+    !published_at.nil? && published_at <= Time.now 
   end
   def publish!
     update_attribute(:published_at, Time.now)

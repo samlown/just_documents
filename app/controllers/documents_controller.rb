@@ -27,6 +27,7 @@ class DocumentsController < ApplicationController
   def new
     @document = Document.new(:slug => params[:slug], :layout => params[:layout])
     @document.parent = @parent_document unless @parent_document.nil?
+    @document.user = current_user
     respond_to do |format|
       format.js do
         render :partial => 'new', :locals => {:document => @document}
@@ -105,8 +106,7 @@ class DocumentsController < ApplicationController
   protected
 
     def load_parent_document
-      slug = params[:document_id] || params[:parent_id]
-      @parent_document = Document.find_by_slug(slug) unless slug.blank?
+      @parent_document = Document.find(params[:parent_id]) unless params[:parent_id].blank?
     end
 
 end

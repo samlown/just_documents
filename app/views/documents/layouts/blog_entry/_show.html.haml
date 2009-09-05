@@ -1,5 +1,5 @@
 
-.blogEntry.span-18{:class => document.published? ? 'published' : 'notPublished'}
+.blogEntry.span-18{:class => document.published? ? 'published' : 'notPublished', :id => "document_#{document.id}"}
 
   %h3
     = link_to document.title, document_url(document)
@@ -17,21 +17,31 @@
     - if document.published?
       Published 
       = time_ago_in_words(document.published_at)
-      ago
+      ago.
     - else
       Not Published!
+    - if document.allow_comments or document.allow_pingbacks
+      = document.comments.count 
+      comments
       
   = render :partial => 'actions', :locals => {:document => document}
 
   - if @document == document # Viewing a single blog entry!
     .comments
-      .commentForm
-
+      %h4 Comments
       - if document.comments.count > 0
         - document.comments.each do |comment|
           .comment
 
+      .commentForm
 
+
+
+- if @document == document # Viewing a single blog entry!
+  .sideBar.span-6.last
+    .items
+      - paginate_documents(@document.parent.children.published.not_hidden.layout_is('side_bar_entry')).each do |entry|
+        = render :partial => 'show', :locals => {:document => entry}
 
 
 

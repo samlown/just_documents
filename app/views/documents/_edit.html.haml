@@ -1,7 +1,7 @@
 
 - form_for document, :html => {:class => 'documentSaveForm'} do |f|
 
-  = render :partial => "documents/layouts/#{document.layout}/form", :locals => {:f => f}
+  = render :partial => "documents/layouts/#{document.layout}/form", :locals => {:f => f, :document => document}
 
   .span-4.last.formOptions
     %button{:type => 'submit'} Save

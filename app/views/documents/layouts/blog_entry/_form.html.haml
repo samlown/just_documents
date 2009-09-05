@@ -15,7 +15,6 @@
     %br
     = f.text_field :tag_list
 
-
   %h3 Advanced Options
 
   %p.summary
@@ -24,10 +23,26 @@
       %br
       Include a short extract of the article.
       %br
-      = f.text_area :summary
+      = f.text_area :summary, :class => 'span-14' 
+  
+  %p.metadata
+    %label.hideable= "Comment Options"
+    %span{:style => "display: none;"}
+      %br
+      = f.check_box 'allow_comments', :value => document.new_record? ? true : document.allow_comments
+      = f.label :allow_comments, "Allow comments"
+      %br
+      = f.check_box 'allow_pingbacks', :value => document.new_record? ? true : document.allow_pingbacks
+      = f.label :allow_pingbacks, "Allow pingbacks"
 
   %p.published
     = f.label :published_at, "Published", :class => 'hideable'
     %span{:style => "display: none;"}
       %br
       = f.text_field :published_at
+
+  %p.user
+    = f.label :user_id, "Created by", :class => 'hideable'
+    %span{:style => "display: none;"}
+      %br
+      = f.select :user_id, User.all.map{|u| [u.name, u.id]}

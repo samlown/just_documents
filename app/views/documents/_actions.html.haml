@@ -1,4 +1,5 @@
-- if current_user_is_admin?
+-# Only show actions if admin and document is or belongs to the master document on the page
+- if current_user_is_admin? && (@document == document || document.parent_id == @document.id)
   %p
     = link_to 'edit', edit_document_url(document), :class => 'button positive documentFormAction', :title => 'Edit Document'
 

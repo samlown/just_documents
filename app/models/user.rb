@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
 
   validates_format_of       :name,     :with => Authentication.name_regex,  :message => Authentication.bad_name_message, :allow_nil => true
   validates_length_of       :name,     :maximum => 100
+  validates_presence_of     :name
   
   attr_accessible :email, :name, :password, :password_confirmation
 
