@@ -18,7 +18,7 @@ class DocumentsController < ApplicationController
         format.html { render :action => 'not_found', :status => 404 }
       else
         format.html
-        format.atom
+        format.atom { render :action => 'show', :content_type => 'application/atom+xml' }
       end
     end
   end
@@ -85,10 +85,20 @@ class DocumentsController < ApplicationController
     @document = Document.find_by_slug(params[:id])
     respond_to do |format|
       if @document.destroy
-        render :json => { :status => 'WIN' }
+        format.js { render :json => {:status => 'WIN'} }
       else
-        render :json => { :status => 'FAIL', :msg => "Unable to delete the document" }
+        format.js { render :json => {:status => 'FAIL', :msg => "Unable to delete the document"} }
       end
+    end
+  end
+
+  def sort
+    params[:document].each_with_index do |d_id, i|
+      document = Document.find(d_id)
+      document.update_attribute(:position, i + 1)
+    end
+    respond_to do |format|
+      format.js { render :json => {:status => 'WIN'} }
     end
   end
 

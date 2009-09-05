@@ -66,6 +66,20 @@ $(document).ready( function(){
 
   documentFormBindings();
 
+  $('.sideBar .items.sortable').sortable({
+    handle: 'h4', items: '.sideBarEntry',
+    cursor: 'pointer',
+    update: function(event, ui) {
+      var list = $('.sideBar .items.sortable');
+      var form = list.prev();
+      $.post(form.attr('action'), form.serialize() + '&' + list.sortable('serialize'), function(data) {
+        var result = parseJSON(data);
+        if (result.status != 'WIN') {
+          alert(result.msg);
+        }
+      });
+    }
+  });
 
 
 });

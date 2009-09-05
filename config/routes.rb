@@ -7,7 +7,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resource :session
 
-  map.resources :documents, :as => '' do |documents|
+  map.resources :documents, :as => '', :collection => {:sort => :post} do |documents|
     documents.resources :comments
   end
 
