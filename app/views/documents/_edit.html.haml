@@ -1,7 +1,7 @@
+.document.edit
+  - form_for document, :html => {:class => 'documentSaveForm'} do |f|
 
-- form_for document, :html => {:class => 'documentSaveForm'} do |f|
+    = render :partial => "themes/#{@current_theme}/documents/#{document.layout}/form", :locals => {:f => f, :document => document}
 
-  = render :partial => "themes/default/#{document.layout}/form", :locals => {:f => f, :document => document}
-
-  .span-4.last.formOptions
-    %button{:type => 'submit'} Save
+    .span-4.last.formOptions
+      %button{:type => 'submit'} Save

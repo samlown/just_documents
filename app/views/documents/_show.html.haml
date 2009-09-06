@@ -1,2 +1,2 @@
-.document
-  = render :partial => "themes/default/#{document.layout}/show", :locals => {:document => document}
+.document.show
+  = render :partial => "themes/#{@current_theme}/documents/#{document.layout}/show", :locals => {:document => document}

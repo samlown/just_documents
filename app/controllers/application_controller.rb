@@ -11,6 +11,11 @@ class ApplicationController < ActionController::Base
   # Scrub sensitive parameters from your log
   filter_parameter_logging :password, :password_confirmation
 
+  before_filter :prepare_theme
+
+  def prepare_theme
+    @current_theme = "default"
+  end
 
   def text_filter(text)
     RedCloth.new(text).to_html

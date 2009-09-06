@@ -1,9 +1,9 @@
+.document.new
+  - form_for document, :html => {:class => 'documentSaveForm'} do |f|
+    = f.hidden_field :slug
+    = f.hidden_field :layout
+    = f.hidden_field :parent_id
 
-- form_for document, :html => {:class => 'documentSaveForm'} do |f|
-  = f.hidden_field :slug
-  = f.hidden_field :layout
-  = f.hidden_field :parent_id
+    = render :partial => "themes/#{@current_theme}/documents/#{document.layout}/form", :locals => {:f => f, :document => document}
 
-  = render :partial => "themes/default/#{document.layout}/form", :locals => {:f => f, :document => document}
-
-  %button{:type => 'submit'} Save
+    %button{:type => 'submit'} Save
