@@ -2,7 +2,7 @@
 .blogEntry.span-18{:class => document.published? ? 'published' : 'notPublished', :id => "document_#{document.id}"}
   .documentBody
     %h3
-      = link_to document.title, document_url(document)
+      = link_to_if @document != document, document.title, document_url(document)
 
     -# unless document.summary.blank?
       .summary

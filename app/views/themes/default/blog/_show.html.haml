@@ -27,18 +27,18 @@
       = will_paginate @entries
 
   .sideBar.span-6.last
-    - if current_user_is_admin?
-      .documentBody
+    .documentBody
+      - if current_user_is_admin?
         %ul.sideActions.forNewItems
           %li
-            = link_to 'new side bar entry', new_document_url(:layout => 'side_bar_entry', :parent_id => @document.id), :class => 'button documentFormAction', :title => "Create a new side bar entry"
+            = link_to 'new side bar', new_document_url(:layout => 'side_bar_entry', :parent_id => @document.id), :class => 'button documentFormAction', :title => "Create a new side bar entry"
   
-    - form_tag sort_documents_url() do
-      = hidden_field_tag 'event', 'sort'
-    .items.sortable
-      - if current_user_is_admin?
-        - paginate_documents(@document.children.not_published.layout_is('side_bar_entry')).each do |entry|
+      - form_tag sort_documents_url() do
+        = hidden_field_tag 'event', 'sort'
+      .items.sortable
+        - if current_user_is_admin?
+          - paginate_documents(@document.children.not_published.layout_is('side_bar_entry')).each do |entry|
+            = render :partial => 'show', :locals => {:document => entry}
+        - paginate_documents(@document.children.published.not_hidden.layout_is('side_bar_entry')).each do |entry|
           = render :partial => 'show', :locals => {:document => entry}
-      - paginate_documents(@document.children.published.not_hidden.layout_is('side_bar_entry')).each do |entry|
-        = render :partial => 'show', :locals => {:document => entry}
 

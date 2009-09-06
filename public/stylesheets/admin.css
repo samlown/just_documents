@@ -6,11 +6,12 @@ ul.sideActions {
   display: block;
   float: right;
   top: 0px;
-  left: -120px;
-  width: 120px;
+  left: -110px;
+  width: 110px;
   padding-bottom: 10px;
   list-style: none;
-  margin: 0px; }
+  margin: 0px;
+  border-top: 1px dotted #cccccc; }
   ul.sideActions li {
     display: block;
     float: right;
@@ -27,3 +28,9 @@ ul.sideActions {
 
 ul.sideActions.forNewItems {
   top: -30px; }
+
+.documents.notFound ul {
+  list-style: none;
+  margin: 0px; }
+  .documents.notFound ul li {
+    float: left; }
