@@ -1,5 +1,6 @@
 
-.leftSpace.span-2 &nbsp;
+- if @document == document
+  .leftSpace.span-2 &nbsp;
 
 .blogEntry.span-14{:class => document.published? ? 'published' : 'notPublished', :id => "document_#{document.id}"}
   .documentBody
