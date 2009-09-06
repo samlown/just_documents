@@ -5,8 +5,4 @@ module ApplicationHelper
     logged_in? and current_user.is_admin?
   end
 
-  def text_filter(text)
-    @controller.text_filter(text)
-  end
-
 end

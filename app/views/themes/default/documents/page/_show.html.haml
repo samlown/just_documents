@@ -1,5 +1,7 @@
 
-.page.span-24{:id => "document_#{document.id}"}
+.leftSpace.span-2 &nbsp;
+
+.page.span-20{:id => "document_#{document.id}"}
 
   .documentBody
 
@@ -7,10 +9,12 @@
 
     - unless @document.summary.blank?
       %p.summary
-        = text_filter(@document.summary)
+        :textile
+          #{@document.summary}
 
     - unless @document.content.blank?
       %p.content
-        = text_filter(@document.content)
+        :textile
+          #{@document.content}
 
     = render :partial => 'actions', :locals => {:document => @document}

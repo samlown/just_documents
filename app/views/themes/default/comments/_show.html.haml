@@ -9,7 +9,8 @@
       = link_to_if !comment.web.blank?, h(comment.author), h(comment.web), :rel => 'external nofollow'
       says:
     %blockquote
-      = text_filter(h(comment.content))
+      :textile
+        #{h(comment.content)}
 
     - if current_user_is_admin?
       %ul.sideActions

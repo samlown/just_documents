@@ -1,7 +1,7 @@
 children = @document.children.published.not_hidden.layout_is('blog_entry')
 xml.feed(:xmlns => "http://www.w3.org/2005/Atom") do |feed|
   xml.title @document.title
-  xml.summary text_filter(@document.summary), :type => 'html'
+  xml.summary RedCloth.new(@document.summary).to_html, :type => 'html'
   xml.link document_url(@document), :rel => 'alternate'
   xml.updated children.find(:first, :order => 'published_at DESC').updated_at.iso8601
 

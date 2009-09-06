@@ -17,7 +17,4 @@ class ApplicationController < ActionController::Base
     @current_theme = "default"
   end
 
-  def text_filter(text)
-    RedCloth.new(text).to_html
-  end
 end

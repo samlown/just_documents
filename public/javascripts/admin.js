@@ -110,6 +110,11 @@ $(document).ready( function(){
     }
   });
 
+  $('.adminToggle').click(function() {
+    $('.sideActions').toggle();
+    $('.dragHandle').toggle();
+    return false;
+  });
   /* Not convinced, I think its easier to show them all the time
   $('.documentBody, .commentBody').hover(
     function() {

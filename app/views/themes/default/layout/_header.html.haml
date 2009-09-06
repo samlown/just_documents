@@ -1,4 +1,7 @@
 #header.span-24
+  - if current_user_is_admin?
+    .adminToggle
+      %a{:href => '#'} toggle admin
   .userBar.span-24
     - if logged_in?
       %span.greeting

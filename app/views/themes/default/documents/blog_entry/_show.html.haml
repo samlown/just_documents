@@ -9,11 +9,13 @@
 
     -# unless document.summary.blank?
       .summary
-        = text_filter(document.summary)
+        :textile
+          #{document.summary}
 
     - unless document.content.blank?
       .content
-        = text_filter(document.content)
+        :textile
+          #{document.content}
 
 
     %p.published

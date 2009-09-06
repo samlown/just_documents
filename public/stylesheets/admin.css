@@ -1,3 +1,10 @@
+#header {
+  position: relative; }
+  #header .adminToggle {
+    position: absolute;
+    top: 0px;
+    left: 0px; }
+
 li.comment {
   clear: left; }
 
@@ -36,5 +43,7 @@ ul.sideActions.forNewItems {
     float: left; }
 
 .documentBody .dragHandle {
-  padding-left: 20px;
+  padding: 0px 8px;
   background: url('/images/icons/arrow-move.png') 2px 2px no-repeat; }
+.documentBody .dragHandle:hover {
+  cursor: move; }

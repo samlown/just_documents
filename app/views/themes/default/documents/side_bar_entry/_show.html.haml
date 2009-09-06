@@ -1,10 +1,14 @@
 .sideBarEntry.span-6{:id => "document_#{document.id}"}
 
   .documentBody
-    %h4{:class => (current_user_is_admin? && (@document == document || document.parent_id == @document.id)) ? 'dragHandle' : ''}= document.title
+    %h4
+      - if current_user_is_admin? && (@document == document || document.parent_id == @document.id)
+        %span.dragHandle &nbsp;
+      = document.title
 
     - unless document.content.blank?
       %p.content
-        = text_filter(document.content)
+        :textile
+          #{document.content}
 
     = render :partial => 'actions', :locals => {:document => document}

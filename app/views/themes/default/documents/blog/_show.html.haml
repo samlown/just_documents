@@ -1,15 +1,16 @@
 
 .blog.span-24{:id => "document_#{document.id}"}
 
-  .leftSpace.span-2 &nbsp;
+  .leftSpace.span-1 &nbsp;
 
-  .main.span-14
-    .documentBody.span-18
+  .main.span-16
+    .documentBody.span-14
       %h2= document.title
 
       - unless document.summary.blank?
         %p.summary
-          = text_filter(document.summary)
+          :textile
+            #{document.summary}
           
       = render :partial => 'actions', :locals => {:document => @document}
 
