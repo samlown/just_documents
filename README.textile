@@ -26,3 +26,19 @@ Root-layouts are used with documents that have no parents, and usually have a se
 * @side_bar_entry@ - small boxes usually show at the side of the site.
 
 
+
+
+h2. Resources
+
+A few of the resources used in this application
+
+* Fugue Icons - Copyright (C) 2009 Yusuke Kamiyamane.
+  Creative Commons Attribution 3.0 License
+  http://www.pinvoke.com/
+
+* Silk icon set 1.3, Mark James
+  Creative Commons Attribution 2.5 License
+  http://www.famfamfam.com/lab/icons/silk/
+
+
+

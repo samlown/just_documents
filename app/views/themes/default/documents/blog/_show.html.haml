@@ -1,7 +1,9 @@
 
 .blog.span-24{:id => "document_#{document.id}"}
-  
-  .main.span-18
+
+  .leftSpace.span-2 &nbsp;
+
+  .main.span-14
     .documentBody.span-18
       %h2= document.title
 
@@ -42,3 +44,4 @@
         - paginate_documents(@document.children.published.not_hidden.layout_is('side_bar_entry')).each do |entry|
           = render :partial => 'show', :locals => {:document => entry}
 
+  .rightSpace.span-2 &nbsp;

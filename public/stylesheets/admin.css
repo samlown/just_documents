@@ -20,7 +20,7 @@ ul.sideActions {
   ul.sideActions form {
     position: static;
     float: none; }
-  ul.sideActions button, ul.sideActions a.button {
+  ul.sideActions button, ul.sideActions a.button, ul.sideActions img {
     float: right;
     margin: 0px;
     font-size: 10px;
@@ -34,3 +34,7 @@ ul.sideActions.forNewItems {
   margin: 0px; }
   .documents.notFound ul li {
     float: left; }
+
+.documentBody .dragHandle {
+  padding-left: 20px;
+  background: url('/images/icons/arrow-move.png') 2px 2px no-repeat; }

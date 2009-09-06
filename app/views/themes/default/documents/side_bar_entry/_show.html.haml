@@ -1,7 +1,7 @@
 .sideBarEntry.span-6{:id => "document_#{document.id}"}
 
   .documentBody
-    %h4.handle= document.title
+    %h4{:class => (current_user_is_admin? && (@document == document || document.parent_id == @document.id)) ? 'dragHandle' : ''}= document.title
 
     - unless document.content.blank?
       %p.content

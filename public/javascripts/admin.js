@@ -96,8 +96,8 @@ $(document).ready( function(){
   commentFormBindings();
 
   $('.sideBar .items.sortable').sortable({
-    handle: '.handle', items: '.sideBarEntry',
-    cursor: 'pointer',
+    handle: '.dragHandle', items: '.sideBarEntry',
+    cursor: 'move',
     update: function(event, ui) {
       var list = $('.sideBar .items.sortable');
       var form = list.prev();

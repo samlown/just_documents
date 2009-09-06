@@ -1,0 +1,25 @@
+
+.commentForm.span-14
+
+  %h4 Write your comment
+
+  - @comment ||= Comment.new
+  - form_for [@document, @comment] do |f|
+    %p.author
+      = f.text_field :author, :class => 'text span-8'
+      = f.label :author, "Name (needed)"
+    %p.email
+      = f.text_field :email, :class => 'text span-8'
+      = f.label :email, "Email (needed but not published)"
+    %p.website
+      = f.text_field :web, :class => 'text span-8'
+      = f.label :web, "Website (if you have one)"
+
+    %p.content
+      = f.text_area :content, :class => 'span-14'
+
+    %p.actions
+      %button{:type => "submit"}= "Post Comment"
+
+  
+
