@@ -1,9 +1,10 @@
 .sideBarEntry.span-6{:id => "document_#{document.id}"}
 
-  %h4= document.title
+  .documentBody
+    %h4.handle= document.title
 
-  - unless document.content.blank?
-    %p.content
-      = text_filter(document.content)
+    - unless document.content.blank?
+      %p.content
+        = text_filter(document.content)
 
-  = render :partial => 'actions', :locals => {:document => document}
+    = render :partial => 'actions', :locals => {:document => document}

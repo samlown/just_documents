@@ -96,7 +96,7 @@ $(document).ready( function(){
   commentFormBindings();
 
   $('.sideBar .items.sortable').sortable({
-    handle: 'h4', items: '.sideBarEntry',
+    handle: '.handle', items: '.sideBarEntry',
     cursor: 'pointer',
     update: function(event, ui) {
       var list = $('.sideBar .items.sortable');
@@ -110,5 +110,16 @@ $(document).ready( function(){
     }
   });
 
+  /* Not convinced, I think its easier to show them all the time
+  $('.documentBody, .commentBody').hover(
+    function() {
+      $(this).find('.sideActions').show();
+    },
+    function() {
+      var doc = $(this);
+      setTimeout(function(){ doc.find('.sideActions').hide(250); }, 200);
+    }
+  );
+  */
 
 });

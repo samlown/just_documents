@@ -1,0 +1,5 @@
+.content .comments ul {
+  list-style: none;
+  margin: 0px; }
+.content .documentBody, .content .commentBody {
+  position: relative; }
