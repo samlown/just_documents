@@ -53,7 +53,7 @@ class Document < ActiveRecord::Base
   end
 
   def allow_any_comments
-    allow_comments or allow_pingback
+    allow_comments or allow_pingbacks
   end
 
   protected
