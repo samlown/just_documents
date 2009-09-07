@@ -1,9 +1,9 @@
 
 .blog.span-24{:id => "document_#{document.id}"}
 
-  .leftSpace.span-1 &nbsp;
+  .leftSpace.span-2 &nbsp;
 
-  .main.span-16
+  .main.span-14
     - if current_user_is_admin?
       .documentBody.adminArea.span-14
         %h2= document.title
@@ -16,7 +16,7 @@
         = render :partial => 'actions', :locals => {:document => @document}
 
     - @entries = paginate_documents(@document.children.published.not_hidden.layout_is('blog_entry'), :order => 'published_at DESC')
-    .documentBody.entries.span-18
+    .documentBody.entries.span-14
       - if current_user_is_admin?
         %ul.sideActions.forNewItems
           %li

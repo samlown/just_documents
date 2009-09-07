@@ -12,9 +12,11 @@
 
   %h3 Advanced Options
 
-  %p.user
-    = f.label :user_id, "Created by", :class => 'hideable'
-    %span{:style => "display: none;"}
-      %br
-      = f.select :user_id, User.all.map{|u| [u.name, u.id]}
-
+  .advancedOptions
+    %p.user
+      %label.hideable
+        Created by
+        %a.toggle{:href => '#'} toggle
+      %span{:style => "display: none;"}
+        = f.select :user_id, User.all.map{|u| [u.name, u.id]}
+    %br
