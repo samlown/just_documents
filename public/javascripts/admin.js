@@ -96,11 +96,11 @@ $(document).ready( function(){
   documentFormBindings();
   commentFormBindings();
 
-  $('.sideBar .items.sortable').sortable({
-    handle: '.dragHandle', items: '.sideBarEntry',
+  $('.items.sortable').sortable({
+    handle: '.dragHandle', items: '.draggableItem',
     cursor: 'move',
     update: function(event, ui) {
-      var list = $('.sideBar .items.sortable');
+      var list = $(this);
       var form = list.prev();
       $.post(form.attr('action'), form.serialize() + '&' + list.sortable('serialize'), function(data) {
         var result = parseJSON(data);

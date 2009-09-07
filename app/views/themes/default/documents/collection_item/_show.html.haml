@@ -1,7 +1,6 @@
-.sideBarEntry.draggableItem.span-6{:id => "document_#{document.id}"}
-
+.collectionItem.draggableItem.span-14{:class => document.published? ? 'published' : 'notPublished', :id => "document_#{document.id}"}
   .documentBody
-    %p.content
+    .content
       :textile
         #{document.content}
 

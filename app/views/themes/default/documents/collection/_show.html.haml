@@ -1,0 +1,34 @@
+.collection.span-24{:id => "document_#{document.id}"}
+
+  .main.span-14
+    .documentBody.span-14
+      %h2= document.title
+
+      - unless document.summary.blank?
+        %p.summary
+          :textile
+            #{document.summary}
+            
+      = render :partial => 'actions', :locals => {:document => @document}
+
+    .documentBody.span-14
+      - if current_user_is_editor?
+        %ul.sideActions.forNewItems
+          %li
+            = link_to 'new item', new_document_url(:layout => 'collection_item', :parent_id => @document.id), :class => 'button documentFormAction', :title => "Create a new item"
+
+        - paginate_documents(@document.children.not_published.layout_is('collection_item'), :order => 'position ASC', :limit => 100).each do |entry|
+          = render :partial => 'show', :locals => {:document => entry}
+
+      - form_tag sort_documents_url() do
+        = hidden_field_tag 'event', 'sort'
+      .items.sortable
+        - @entries = paginate_documents(@document.children.published.not_hidden.layout_is('collection_item'), :order => 'position ASC')
+        - @entries.each do |entry|
+          = render :partial => 'show', :locals => {:document => entry}
+
+      = will_paginate @entries
+
+  .sideBar.span-6.last
+
+  .rightSpace.span-2 &nbsp;

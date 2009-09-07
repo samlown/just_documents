@@ -26,3 +26,5 @@ body {
   height: 150px; }
 .content .documentBody, .content .commentBody {
   position: relative; }
+.content .collectionItem .documentBody h3 {
+  margin-bottom: 0px; }

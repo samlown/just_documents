@@ -5,16 +5,8 @@
 
   .documentBody
 
-    %h2= @document.title
-
-    - unless @document.summary.blank?
-      %p.summary
-        :textile
-          #{@document.summary}
-
-    - unless @document.content.blank?
-      %p.content
-        :textile
-          #{@document.content}
+    %p.content
+      :textile
+        #{@document.content}
 
     = render :partial => 'actions', :locals => {:document => @document}

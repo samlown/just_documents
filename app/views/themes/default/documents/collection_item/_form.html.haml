@@ -1,0 +1,55 @@
+
+.span-14.blogEntry.form
+  %p.title
+    = f.label :title, 'Title'
+    %br
+    = f.text_field :title, :class => 'span-14 text'
+
+  %p.content
+    = f.label :content, "Post"
+    %br
+    = f.text_area :content, :class => 'span-14 markItUp'
+
+  %p.tags
+    = f.label :tag_list, "Tags"
+    %br
+    = f.text_field :tag_list, :class => 'text'
+
+  %h3 Advanced Options
+
+  .advancedOptions
+
+    %p.summary
+      %label.hideable
+        Summary 
+        %a.toggle{:href => '#'} toggle
+      %span{:style => "display: none;"}
+        Include a short extract of the article.
+        %br
+        = f.text_area :summary, :class => 'span-14' 
+        %br
+    
+    %p.published
+      %label.hideable
+        Published
+        %a.toggle{:href => '#'} toggle
+      %span{:style => "display: none;"}
+        = f.text_field :published_at
+        %br
+
+    %p.user
+      %label.hideable
+        Created by 
+        %a.toggle{:href => '#'} toggle
+      %span{:style => "display: none;"}
+        = f.select :user_id, User.all.map{|u| [u.name, u.id]}
+        %br
+
+    %div.revisions
+      %label.hideable
+        Revisions
+        %a.toggle{:href => '#'} toggle
+      %div{:style => "display: none;"}
+        = render :partial => 'document_revisions/document_form', :locals => {:f => f, :document => document}
+        = render :partial => 'document_revisions/revisions', :locals => {:document => document}
+

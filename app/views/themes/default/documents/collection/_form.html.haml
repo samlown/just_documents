@@ -1,0 +1,31 @@
+
+.span-14.collection.form
+  %p
+    = f.label :title, 'Title'
+    %br
+    = f.text_field :title, :class => 'text'
+
+  %p
+    = f.label :summary
+    %br
+    = f.text_area :summary, :class => 'markItUp'
+
+  %h3 Advanced Options
+
+  .advancedOptions
+    %p.user
+      %label.hideable
+        Created by 
+        %a.toggle{:href => '#'} toggle
+      %span{:style => "display: none;"}
+        = f.select :user_id, User.all.map{|u| [u.name, u.id]}
+    %br
+
+    %div.revisions
+      %label.hideable
+        Revisions
+        %a.toggle{:href => '#'} toggle
+      %div{:style => "display: none;"}
+        = render :partial => 'document_revisions/document_form', :locals => {:f => f, :document => document}
+        = render :partial => 'document_revisions/revisions', :locals => {:document => document}
+
