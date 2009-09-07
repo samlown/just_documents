@@ -1,5 +1,5 @@
 -# Only show actions if admin and document is or belongs to the master document on the page
-- if current_user_is_admin? && (@document == document || document.parent_id == @document.id)
+- if current_user_is_editor? && (@document == document || document.parent_id == @document.id)
   %ul.sideActions
     %li
       = link_to 'edit', edit_document_url(document), :class => 'button positive documentFormAction', :title => 'Edit Document'
@@ -12,7 +12,7 @@
         - else
           = f.hidden_field :published_at, :value => Time.now.iso8601
           %button.positive{:type => 'submit', :title => 'Publish'}= 'publish'
-    - if document.children.empty?
+    - if document.children.empty? && current_user_is_admin?
       %li
         - form_for document, :html => {:class => "documentActionsConfirm"} do |f|
           = hidden_field_tag '_method', 'delete'

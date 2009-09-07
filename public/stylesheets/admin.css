@@ -7,10 +7,14 @@
 
 .form p {
   margin: 0; }
-.form .advancedOptions p {
-  margin: 0.5em 0; }
-.form .advancedOptions label a {
-  color: blue;
+.form .advancedOptions {
+  font-size: 13px; }
+  .form .advancedOptions p {
+    margin: 0.5em 0; }
+  .form .advancedOptions label a {
+    color: blue;
+    font-size: 12px; }
+.form .revisions div label {
   font-size: 12px; }
 
 li.comment {

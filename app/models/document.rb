@@ -1,6 +1,7 @@
 class Document < ActiveRecord::Base
 
   has_many :comments
+  has_many :revisions, :class_name => 'DocumentRevision'
 
   belongs_to :user
 
@@ -25,6 +26,9 @@ class Document < ActiveRecord::Base
   validates_format_of :slug, :with => /^[\w\d_]+$/
 
   before_validation :prepare_slug
+
+  after_save :save_revision
+  attr_accessor :revision_comment, :minor_revision
 
   def initialize(attribs = {})
     attribs[:metadata] ||= { }
@@ -56,12 +60,21 @@ class Document < ActiveRecord::Base
     allow_comments or allow_pingbacks
   end
 
+  def minor_revision
+    @minor_revision == "1" && @minor_revision == true
+  end
+
   protected
 
     def prepare_slug
       if slug.blank?
         self.slug = title.to_s.gsub(/[^\w\d_]/, '_').downcase
       end
+    end
+
+    def save_revision
+      debugger
+      self.revisions.create(:comment => self.revision_comment) unless minor_revision
     end
 
 end

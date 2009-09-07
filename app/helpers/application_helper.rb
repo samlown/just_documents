@@ -2,7 +2,10 @@
 module ApplicationHelper
 
   def current_user_is_admin?
-    logged_in? and current_user.is_admin?
+    @controller.current_user_is_admin?
   end
 
+  def current_user_is_editor?
+    @controller.current_user_is_editor?
+  end
 end

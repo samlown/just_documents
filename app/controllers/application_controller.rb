@@ -17,4 +17,12 @@ class ApplicationController < ActionController::Base
     @current_theme = "default"
   end
 
+  def current_user_is_admin?
+    logged_in? and current_user.is_admin?
+  end
+
+  def current_user_is_editor?
+    logged_in? and current_user.is_editor?
+  end
+
 end

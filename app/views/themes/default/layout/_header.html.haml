@@ -10,12 +10,10 @@
       %span.action
         = '(' + link_to("Log out", logout_path, { :title => "Log out" }) + ')' 
     - else
-      %span.greeting
-        = link_to_login_with_IP 'Not logged in', :style => 'border: none;'
       %span.action
         = link_to "Log in",  login_path,  { :title => "Log in" }
-        \/
-        = link_to "Sign up", signup_path, { :title => "Create an account" }
+        -# 
+          = link_to "Sign up", signup_path, { :title => "Create an account" }
 
   %h1
     = link_to 'Just Documents', documents_url

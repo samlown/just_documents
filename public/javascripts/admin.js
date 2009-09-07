@@ -4,6 +4,7 @@ var documentFormBindings = function() {
     var title = $(this).attr('title');
     $.get($(this).attr('href'), '', function(data) {
       $('#dialog').html(data).dialog({
+          closeOnEscape: false,
           title: title,
           modal: true, draggable: true,
           position: ['center', 40],

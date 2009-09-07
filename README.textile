@@ -26,6 +26,11 @@ Root-layouts are used with documents that have no parents, and usually have a se
 * @side_bar_entry@ - small boxes usually show at the side of the site.
 
 
+h2. Roles
+
+Currently, the system supports three roles, normal user, 'editor', and 'admin'. A normal user can't really do anything other than the fact that their comments
+will be published instantly (this might become an option in the future). An editor is allowed to create, edit, and manage documents, but they cannot delete anything.
+An admin can do anything.
 
 
 h2. Resources

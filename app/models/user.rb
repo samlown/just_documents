@@ -35,6 +35,9 @@ class User < ActiveRecord::Base
   def is_admin?
     role == 'admin'
   end
+  def is_editor?
+    ['admin', 'editor'].include?(role)
+  end
 
   protected
     

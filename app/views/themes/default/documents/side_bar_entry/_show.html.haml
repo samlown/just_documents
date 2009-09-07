@@ -2,7 +2,7 @@
 
   .documentBody
     %h4
-      - if current_user_is_admin? && (@document == document || document.parent_id == @document.id)
+      - if current_user_is_editor? && (@document == document || document.parent_id == @document.id)
         %span.dragHandle &nbsp;
       = document.title
 
