@@ -17,32 +17,42 @@
 
   %h3 Advanced Options
 
-  %p.summary
-    = f.label :summary, "Summary", :class => 'hideable'
-    %span{:style => "display: none;"}
-      %br
-      Include a short extract of the article.
-      %br
-      = f.text_area :summary, :class => 'span-14' 
-  
-  %p.metadata
-    %label.hideable= "Comment Options"
-    %span{:style => "display: none;"}
-      %br
-      = f.check_box 'allow_comments', :value => document.new_record? ? true : document.allow_comments
-      = f.label :allow_comments, "Allow comments"
-      %br
-      = f.check_box 'allow_pingbacks', :value => document.new_record? ? true : document.allow_pingbacks
-      = f.label :allow_pingbacks, "Allow pingbacks"
+  .advancedOptions
 
-  %p.published
-    = f.label :published_at, "Published", :class => 'hideable'
-    %span{:style => "display: none;"}
-      %br
-      = f.text_field :published_at
+    %p.summary
+      %label.hideable
+        Summary 
+        %a.toggle{:href => '#'} toggle
+      %span{:style => "display: none;"}
+        Include a short extract of the article.
+        %br
+        = f.text_area :summary, :class => 'span-14' 
+        %br
+    
+    %p.metadata
+      %label.hideable
+        = "Comment Options"
+        %a.toggle{:href => '#'} toggle
+      %span{:style => "display: none;"}
+        = f.check_box 'allow_comments', :checked => document.new_record? ? true : document.allow_comments
+        = f.label :allow_comments, "Allow comments"
+        %br
+        = f.check_box 'allow_pingbacks', :checked => document.new_record? ? true : document.allow_pingbacks
+        = f.label :allow_pingbacks, "Allow pingbacks"
+        %br
 
-  %p.user
-    = f.label :user_id, "Created by", :class => 'hideable'
-    %span{:style => "display: none;"}
-      %br
-      = f.select :user_id, User.all.map{|u| [u.name, u.id]}
+    %p.published
+      %label.hideable
+        Published
+        %a.toggle{:href => '#'} toggle
+      %span{:style => "display: none;"}
+        = f.text_field :published_at
+        %br
+
+    %p.user
+      %label.hideable
+        Created by 
+        %a.toggle{:href => '#'} toggle
+      %span{:style => "display: none;"}
+        = f.select :user_id, User.all.map{|u| [u.name, u.id]}
+        %br

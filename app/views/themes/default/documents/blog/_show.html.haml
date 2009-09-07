@@ -4,15 +4,16 @@
   .leftSpace.span-1 &nbsp;
 
   .main.span-16
-    .documentBody.span-14
-      %h2= document.title
+    - if current_user_is_admin?
+      .documentBody.adminArea.span-14
+        %h2= document.title
 
-      - unless document.summary.blank?
-        %p.summary
-          :textile
-            #{document.summary}
-          
-      = render :partial => 'actions', :locals => {:document => @document}
+        - unless document.summary.blank?
+          %p.summary
+            :textile
+              #{document.summary}
+            
+        = render :partial => 'actions', :locals => {:document => @document}
 
     - @entries = paginate_documents(@document.children.published.not_hidden.layout_is('blog_entry'), :order => 'published_at DESC')
     .documentBody.entries.span-18

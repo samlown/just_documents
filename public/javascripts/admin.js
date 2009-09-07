@@ -55,8 +55,8 @@ var documentFormBindings = function() {
 
   $('form .markItUp').markItUp(mySettings);
 
-  $('form label.hideable').click(function() {
-    $(this).next().toggle(100);
+  $('form label.hideable .toggle').click(function() {
+    $(this).parent().next().toggle(100);
   });
 };
 
@@ -113,6 +113,7 @@ $(document).ready( function(){
   $('.adminToggle').click(function() {
     $('.sideActions').toggle();
     $('.dragHandle').toggle();
+    $('.adminArea').toggle();
     return false;
   });
   /* Not convinced, I think its easier to show them all the time

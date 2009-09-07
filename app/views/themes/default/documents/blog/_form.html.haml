@@ -1,6 +1,10 @@
 
 .span-14.blog.form
   %p
+    %strong IMPORTANT:
+    The following fields will only be shown while editing the blog
+    and in the Feed.
+  %p
     = f.label :title, 'Title'
     %br
     = f.text_field :title, :class => 'text'
