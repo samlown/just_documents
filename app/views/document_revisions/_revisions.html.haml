@@ -6,7 +6,7 @@
           %td.date= revision.created_at
           %td.comments= revision.comment
           %td.link
-            = link_to "rev. #{revision.version}", edit_document_url(document, :document_revision_id => revision.id), :class => 'documentUseRevision'
+            = link_to_if !revision.minor, "rev. #{revision.version}", edit_document_url(document, :document_revision_id => revision.id), :class => 'documentUseRevision'
             %span.confirm{:style => "display: none;"} Are you sure you want to load document from this revision? It will not be saved until you do so, but you will loose all current changes.
           - if current_user_is_admin?
             %td.removeLink

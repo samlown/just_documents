@@ -20,3 +20,11 @@
       %span{:style => "display: none;"}
         = f.select :user_id, User.all.map{|u| [u.name, u.id]}
     %br
+
+  %div.revisions
+    %label.hideable
+      Revisions
+      %a.toggle{:href => '#'} toggle
+    %div{:style => "display: none;"}
+      = render :partial => 'document_revisions/document_form', :locals => {:f => f, :document => document}
+      = render :partial => 'document_revisions/revisions', :locals => {:document => document}

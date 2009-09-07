@@ -12,6 +12,8 @@ class DocumentRevision < ActiveRecord::Base
 
   named_scope :newest_first, :order => 'document_revisions.version DESC'
 
+  attr_accessor :skip_attribs
+
   protected
 
     def prepare_from_document
@@ -19,8 +21,10 @@ class DocumentRevision < ActiveRecord::Base
       if version.nil?
         self.version = self.class.count(:conditions => ['document_id = ?', document_id]) + 1
       end
-      if attribs.nil? or attribs.empty?
-        self.attribs = document.attributes
+      unless minor 
+        if attribs.nil? or attribs.empty?
+          self.attribs = document.attributes
+        end
       end
     end
 

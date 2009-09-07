@@ -62,6 +62,10 @@ class DocumentsController < ApplicationController
 
   def update
     @document = Document.find_by_slug(params[:id])
+    if params[:event] == 'action'
+      @document.minor_revision = true
+      @document.revision_comment = params[:document][:published_at].blank? ? "Un-published" : "Published"
+    end
     respond_to do |format|
       if @document.update_attributes(params[:document])
         format.js do

@@ -4,6 +4,7 @@ class CreateDocumentRevisions < ActiveRecord::Migration
       t.references :document
       t.string :comment 
       t.integer :version
+      t.boolean :minor, :default => false
       t.text :attribs
       t.timestamps
     end

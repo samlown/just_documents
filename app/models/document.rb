@@ -61,7 +61,7 @@ class Document < ActiveRecord::Base
   end
 
   def minor_revision
-    @minor_revision == "1" && @minor_revision == true
+    @minor_revision == "1" || @minor_revision == true
   end
 
   protected
@@ -73,8 +73,7 @@ class Document < ActiveRecord::Base
     end
 
     def save_revision
-      debugger
-      self.revisions.create(:comment => self.revision_comment) unless minor_revision
+      self.revisions.create(:comment => revision_comment, :minor => minor_revision)
     end
 
 end
