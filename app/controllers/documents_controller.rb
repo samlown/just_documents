@@ -99,6 +99,7 @@ class DocumentsController < ApplicationController
   def sort
     params[:document].each_with_index do |d_id, i|
       document = Document.find(d_id)
+      document.no_revision = true
       document.update_attribute(:position, i + 1)
     end
     respond_to do |format|

@@ -29,7 +29,7 @@ class Document < ActiveRecord::Base
 
   before_save :prepare_revision
   after_save :save_revision
-  attr_accessor :revision_comment, :minor_revision
+  attr_accessor :revision_comment, :minor_revision, :no_revision
 
   def initialize(attribs = {})
     attribs[:metadata] ||= { }
@@ -82,8 +82,10 @@ class Document < ActiveRecord::Base
       @parent_revision = self.parent.revisions.build(:comment => "Added new child \"#{self.title}\"", :minor => true) unless self.parent.nil?
     end
     def save_revision
-      self.revisions.create(:comment => revision_comment, :minor => minor_revision)
-      @parent_revision.save unless @parent_revision.nil? 
+      unless no_revision
+        self.revisions.create(:comment => revision_comment, :minor => minor_revision)
+        @parent_revision.save unless @parent_revision.nil? 
+      end
     end
 
 end
