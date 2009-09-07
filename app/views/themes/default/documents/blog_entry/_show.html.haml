@@ -20,9 +20,7 @@
 
     %p.published
       - if document.published?
-        Published 
-        = time_ago_in_words(document.published_at)
-        ago.
+        = "written by #{document.user.name}, #{document.published_at.to_date}."
       - else
         Not Published!
       - if document.allow_comments or document.allow_pingbacks

@@ -4,6 +4,6 @@
     = f.hidden_field :layout
     = f.hidden_field :parent_id
 
-    = render :partial => "themes/#{@current_theme}/documents/#{document.layout}/form", :locals => {:f => f, :document => document}
+    = render_partial_from_theme "documents/#{document.layout}/form", :locals => {:f => f, :document => document}
 
     %button{:type => 'submit'} Save

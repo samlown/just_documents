@@ -1,7 +1,7 @@
 class Document < ActiveRecord::Base
 
-  has_many :comments
-  has_many :revisions, :class_name => 'DocumentRevision'
+  has_many :comments, :dependent => :delete_all
+  has_many :revisions, :class_name => 'DocumentRevision', :dependent => :delete_all
 
   belongs_to :user
 
@@ -27,6 +27,7 @@ class Document < ActiveRecord::Base
 
   before_validation :prepare_slug
 
+  before_save :prepare_revision
   after_save :save_revision
   attr_accessor :revision_comment, :minor_revision
 
@@ -64,6 +65,11 @@ class Document < ActiveRecord::Base
     @minor_revision == "1" || @minor_revision == true
   end
 
+  def destroy
+    super
+    self.parent.revisions.create(:comment => "Destroyed child \"#{self.title}\"", :minor => true) unless self.parent.nil?
+  end
+
   protected
 
     def prepare_slug
@@ -72,8 +78,12 @@ class Document < ActiveRecord::Base
       end
     end
 
+    def prepare_revision
+      @parent_revision = self.parent.revisions.build(:comment => "Added new child \"#{self.title}\"", :minor => true) unless self.parent.nil?
+    end
     def save_revision
       self.revisions.create(:comment => revision_comment, :minor => minor_revision)
+      @parent_revision.save unless @parent_revision.nil? 
     end
 
 end
