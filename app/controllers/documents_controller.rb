@@ -44,7 +44,7 @@ class DocumentsController < ApplicationController
         end
       else
         format.js do
-          render :json => { :status => 'FAIL', :view => render_to_string(:partial => 'new', :locals => {:document => @document}) }
+          render :json => { :status => 'FAIL', :msg => "Error: "+@document.errors.map{|a,msg| msg}.first, :view => render_to_string(:partial => 'new', :locals => {:document => @document}) }
         end
       end
     end
@@ -74,7 +74,7 @@ class DocumentsController < ApplicationController
         end
       else
         format.js do
-          result = { :status => 'FAIL', :msg => "Unable to update the document", :id => "document_#{@document.id}" }
+          result = { :status => 'FAIL', :msg => "Error: "+@document.errors.map{|a,msg| msg}.first, :id => "document_#{@document.id}" }
           if params[:event] != 'action'
             result[:view] = render_to_string(:partial => 'edit', :locals => {:document => @document})
           end

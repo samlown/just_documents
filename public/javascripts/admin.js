@@ -25,6 +25,8 @@ var documentFormBindings = function() {
         window.location.reload();
       } else {
         $('#dialog').html(result.view);
+        documentFormBindings();
+        alert(result.msg);
       }
     });
     return false;

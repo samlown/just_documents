@@ -21,9 +21,9 @@ class Document < ActiveRecord::Base
 
   validates_uniqueness_of :title, :message => "A document with this title already exists"
 
-  validates_presence_of :slug
-  validates_uniqueness_of :slug
-  validates_format_of :slug, :with => /^[\w\d_]+$/
+  validates_presence_of :slug, :message => "Missing the slug"
+  validates_uniqueness_of :slug, :message => "Document title is not unique"
+  validates_format_of :slug, :with => /^[\w\d_]+$/, :message => "Document slug appears to contain invalid characters"
 
   before_validation :prepare_slug
 
