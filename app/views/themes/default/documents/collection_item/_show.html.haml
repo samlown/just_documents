@@ -4,4 +4,4 @@
       :textile
         #{document.content}
 
-    = render :partial => 'actions', :locals => {:document => document, :draggable => true}
+    = render :partial => 'actions', :locals => {:document => document, :draggable => document.published?}
