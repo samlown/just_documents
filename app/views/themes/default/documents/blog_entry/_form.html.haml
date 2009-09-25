@@ -17,7 +17,7 @@
     %p
       = f.text_field :tag_list, :class => 'text'
 
-  = render :partial => 'document_revisions/document_form', :locals => {:f => f, :document => document}
+  = render_partial_from_theme "documents/shared/revision_fields", :locals => {:f => f, :document => document}
 
   %h3 Advanced Options
 

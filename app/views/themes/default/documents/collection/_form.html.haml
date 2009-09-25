@@ -1,31 +1,35 @@
 
 .span-14.collection.form
-  %p
-    = f.label :title, 'Title'
-    %br
-    = f.text_field :title, :class => 'text'
+  .title
+    %h4= 'Name'
+    %p
+      = f.text_field :title, :class => 'text'
 
-  %p
-    = f.label :summary
-    %br
-    = f.text_area :summary, :class => 'markItUp'
+  = render_partial_from_theme "documents/shared/slug_field", :locals => {:f => f, :document => document}
+
+  .summary 
+    %h4= 'Summary'
+    %p
+      = f.text_area :summary, :class => 'markItUp'
+
+  = render_partial_from_theme "documents/shared/revision_fields", :locals => {:f => f, :document => document}
 
   %h3 Advanced Options
 
   .advancedOptions
-    %p.user
-      %label.hideable
+
+    .user
+      %h4.hideable
         Created by 
         %a.toggle{:href => '#'} toggle
-      %span{:style => "display: none;"}
-        = f.select :user_id, User.all.map{|u| [u.name, u.id]}
-    %br
+      %div{:style => "display: none;"}
+        %p
+          = f.select :user_id, User.all.map{|u| [u.name, u.id]}
 
-    %div.revisions
-      %label.hideable
+    .revisions
+      %h4.hideable
         Revisions
         %a.toggle{:href => '#'} toggle
       %div{:style => "display: none;"}
-        = render :partial => 'document_revisions/document_form', :locals => {:f => f, :document => document}
         = render :partial => 'document_revisions/revisions', :locals => {:document => document}
 

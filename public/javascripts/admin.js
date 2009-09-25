@@ -1,4 +1,6 @@
 
+// Used to prevent the main window from scrolling
+var scrollTop = 0, scrollInterval = null, scrollSemaphore = false;
 
 $(document).ready( function(){
 
@@ -125,6 +127,8 @@ $.documentForm = {
   edit: function(link, options) {
     var title = link.attr('title');
     $.get(link.attr('href'), '', function(data) {
+      // Lock the window scrolling
+      $('html,body').smoothScrollBack();
       $('#dialog').html(data).dialog({
           closeOnEscape: false,
           title: title,
@@ -137,6 +141,7 @@ $.documentForm = {
             if ($('#dialog form').hasClass('dirty')) {
               window.location.reload();
             } else {
+              $('html').smoothScrollBack('stop');
               $('#dialog').dialog('destroy');
             }
           }
@@ -216,3 +221,41 @@ $.commentActions = {
 };
 
 
+$.fn.smoothScrollBack = function(command) {
+  switch(command) {
+    case "stop":
+      $.smoothScrollBack.stop(this);
+      break;
+    default:
+      $.smoothScrollBack.start(this);
+  }
+  return this;
+};
+$.smoothScrollBack = {
+  target: null,
+  top: 0,
+  interval: null,
+  semaphore: false,
+
+  start: function(target) {
+    var obj = this;
+    obj.target = target;
+    obj.top = $(window).scrollTop();
+    obj.interval = setInterval(function() {
+      var obj = $.smoothScrollBack;
+      if (!obj.semaphore && (obj.top != $(window).scrollTop())) {
+        obj.semaphore = true;
+        setTimeout(function() {
+          var obj = $.smoothScrollBack;
+          obj.target.animate({scrollTop: obj.top}, 250, '', function() {
+              setTimeout("$.smoothScrollBack.semaphore = false", 250);});
+            }, 150);
+          }
+        }, 100);
+   
+  },
+  stop: function(target) {
+    clearInterval(this.interval);
+    this.target = null;
+  }
+};

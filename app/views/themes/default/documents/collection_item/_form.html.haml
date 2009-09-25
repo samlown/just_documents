@@ -1,55 +1,58 @@
 
 .span-14.blogEntry.form
-  %p.title
-    = f.label :title, 'Title'
-    %br
-    = f.text_field :title, :class => 'span-14 text'
+  .title
+    %h4= 'Name'
+    %p
+      = f.text_field :title, :class => 'span-14 text'
 
-  %p.content
-    = f.label :content, "Post"
-    %br
-    = f.text_area :content, :class => 'span-14 markItUp'
+  = render_partial_from_theme "documents/shared/slug_field", :locals => {:f => f, :document => document}
 
-  %p.tags
-    = f.label :tag_list, "Tags"
-    %br
-    = f.text_field :tag_list, :class => 'text'
+  .content
+    %h4= "Post"
+    %p
+      = f.text_area :content, :class => 'span-14 markItUp'
+
+  .tags
+    %h4= "Tags"
+    %p
+      = f.text_field :tag_list, :class => 'text'
+
+  = render_partial_from_theme "documents/shared/revision_fields", :locals => {:f => f, :document => document}
 
   %h3 Advanced Options
 
   .advancedOptions
 
-    %p.summary
-      %label.hideable
+    .summary
+      %h4.hideable
         Summary 
         %a.toggle{:href => '#'} toggle
-      %span{:style => "display: none;"}
-        Include a short extract of the article.
-        %br
-        = f.text_area :summary, :class => 'span-14' 
-        %br
+      %div{:style => "display: none;"}
+        %p
+          Include a short extract of the article.
+          %br
+          = f.text_area :summary, :class => 'span-14' 
     
-    %p.published
-      %label.hideable
+    .published
+      %h4.hideable
         Published
         %a.toggle{:href => '#'} toggle
-      %span{:style => "display: none;"}
-        = f.text_field :published_at
-        %br
-
-    %p.user
-      %label.hideable
+      %div{:style => "display: none;"}
+        %p
+          = f.text_field :published_at
+          
+    .user
+      %h4.hideable
         Created by 
         %a.toggle{:href => '#'} toggle
-      %span{:style => "display: none;"}
-        = f.select :user_id, User.all.map{|u| [u.name, u.id]}
-        %br
+      %div{:style => "display: none;"}
+        %p
+          = f.select :user_id, User.all.map{|u| [u.name, u.id]}
 
-    %div.revisions
-      %label.hideable
+    .revisions
+      %h4.hideable
         Revisions
         %a.toggle{:href => '#'} toggle
       %div{:style => "display: none;"}
-        = render :partial => 'document_revisions/document_form', :locals => {:f => f, :document => document}
         = render :partial => 'document_revisions/revisions', :locals => {:document => document}
 
