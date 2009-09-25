@@ -12,6 +12,8 @@ class DocumentRevision < ActiveRecord::Base
 
   named_scope :newest_first, :order => 'document_revisions.version DESC'
 
+  named_scope :for_current_locale, :conditions => ['document_revisions.locale IS NULL OR document_revisions.locale = ?', I18n.locale.to_s]
+
   attr_accessor :skip_attribs
 
   protected
@@ -23,8 +25,9 @@ class DocumentRevision < ActiveRecord::Base
       end
       unless minor 
         if attribs.nil? or attribs.empty?
-          self.attribs = document.attributes
+          self.attribs = document.attributes.dup.stringify_keys!
         end
+        self.locale = I18n.locale.to_s
       end
     end
 

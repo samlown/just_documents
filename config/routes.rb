@@ -12,4 +12,5 @@ ActionController::Routing::Routes.draw do |map|
     documents.resources :comments
   end
 
+  map.root :controller => 'documents', :action => 'index'
 end

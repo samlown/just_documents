@@ -1,0 +1,17 @@
+.slug
+  %p
+    - slug_errors =  document.errors.on(:slug)
+    %strong URL:
+    %span.url
+      %span.baseUrl= root_url
+      %span.slugUrl{:class => slug_errors ? 'hidden' : ''}
+        %span.slug= document.slug
+        %a{:href => '#'}= 'edit'
+      %span.slugUrlField{:class => !slug_errors ? 'hidden' : ''}
+        = f.text_field :slug, :class => 'span-8'
+        %a{:href => '#'}= 'cancel'
+      - if slug_errors
+        %br
+        %span.errors
+          = slug_errors.to_a.join(', ')
+

@@ -1,7 +1,21 @@
 .document.edit
-  - form_for document, :html => {:class => 'documentSaveForm'} do |f|
+  - form_for document, :url => document_url(:id => document.id), :html => {:class => 'documentSaveForm'} do |f|
+    = f.hidden_field :slug, :class => 'originalSlug'
+    = f.hidden_field :layout
+    = f.hidden_field :parent_id
 
     = render_partial_from_theme "documents/#{document.layout}/form", :locals => {:f => f, :document => document}
 
     .span-4.last.formOptions
-      %button{:type => 'submit'} Save
+      %p.padding
+        - if document.published?
+          %button{:type => 'submit'} Save 
+        - else
+          %button{:type => 'submit', :name => 'event', :value => "publish"} Save and publish
+          %button{:type => 'submit', :name => 'event', :value => 'draft'} Save Draft
+
+        - unless document.new_record?
+          %br
+          Last saved:
+          = distance_of_time_in_words_to_now(document.updated_at)
+          ago

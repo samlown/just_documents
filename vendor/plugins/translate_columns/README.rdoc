@@ -1,0 +1,257 @@
+= Translate Columns Plugin
+
+Copyright (c) 2007-2009 Samuel Lown <me (AT) samlown.com>
+
+This Plugin is released under the MIT license, as Rails itself. Please see the 
+attached LICENSE file for further details.
+
+This document and plugin should be considered a work in progress until further
+notice!
+
+== Introduction
+
+The aim of the Translate Columns plugin is to aid the normally difficult task 
+of supporting multiple languages in the models. It provides a near transparent 
+interface to the data contained in the models and their translations such that
+your current controllers, views and models only need to be modified slightly 
+to support multiple languages in a scalable fashion.
+
+If you already have your rails app set up and functioning, using translate 
+columns will not require any major refactoring of your code (unless you're 
+really unlucky), and can be simply added. Indeed, the plugin was written to be 
+added to an existing application.
+
+== Updates
+
+=== 24th September 2009
+
+- Added support for setting the locale variable on the parent, which disables translations. See below.
+
+=== 23rd September 2009
+
+- Testing finally added (hope to add more tests soon)
+- Validations now only performed by the parent model
+- Changed namespace to TranslateColumns (as opposed to Translate::Columns)
+- Parent model's +locale+ variable changed to +translation_locale+ so that it can be added as a column/attribute if needed.
+
+=== 20th May 2009
+
+- Finally got round to moving to github
+- Added support for the rails 2.2 I18n stuff (WIN!)
+
+*WARNING* If you're using and older version of Rails (< 2.2) or upgrading,
+translate columns has been updated to use the new I18n code *ONLY* and will not
+work with old code! See Upgrade section for a few hints.
+
+
+== Architecture
+
+Translate columns while simple, does require a specific architecture. The basic
+idea is that each of your models has an associated model that defines the 
+translations. An ASCII ERM that uses an example primary class called document 
+follows:
+
+  ____________                 _______________________
+ |            | 1           * |                       |
+ |  Document  |---------------|  DocumentTranslation  | 
+ |____________|               |_______________________|
+ 
+
+The data contained by these entities may be similar to the following:
+
+ Document:
+
+ |  Column    |   Type   |
+ -------------------------
+ | id         | integer  |
+ | name       | string   |
+ | title      | string   |
+ | sub_title  | string   |
+ | body       | text     |
+ | created_on | datetime |
+ | updated_on | datetime |
+ 
+ DocumentTranslation:
+ 
+ |  Column     |   Type   |
+ --------------------------
+ | id          | integer  |
+ | document_id | integer  |
+ | locale      | string   |  
+ | title       | string   |
+ | sub_title   | string   |
+ | body        | text     |
+
+In Rails, thsee models would be defined as follows:
+
+ class Document < ActiveRecord::Base
+   has_many :translations, :class_name => 'DocumentTranslation'
+ end
+
+ class DocumentTranslation < ActiveRecord::Base
+   belongs_to :document
+ end
+
+Each DocumentTranslation belongs to a Document and defines the locale of the
+translation and only those fields that require a translation. If you really 
+wanted to, a composite key could be used on the document_id and the locale,
+as these should always uniquely identify the translation.
+
+In previous versions of translate_columns a Locale model and associations was
+used to determine the language of a translation, this is no longer required
+with the new Rails 2.2 I18n code and simple string for the locale code 
+of your choice can be used instead.
+
+IMPORTANT: Default locale. In order for this setup to work, there must be a 
+single, pre-defined locale for the default data, this is the data contained
+in the 'Document' entity and will be used whenever we're operating in default
+mode, or if there is no translation available. It is essential that this 
+default locale *never* change during the lifetime of your application, 
+otherwise you'll end up with a mess.
+
+The Document's translations association uses the :class_name option to name the
+correct class. Aside from saving on typing, this is an essential requirement 
+of the translate_columns plugin. (At least until I get chance to add an option 
+to allow for different names.)
+
+== Installation
+
+Assuming you've read the above and understand the basic requirements, the
+plugin can now be installed and setup.
+
+The latest details and updates are available on the github repository:
+
+http://github.com/samlown/translate_columns
+
+To install plugin, use the standard rails plugin install method:
+
+ ./script/plugin install git://github.com/samlown/translate_columns.git
+
+There are no more installation steps, and the plugin does not install any extra
+files or customise the setup. To uninstall, simply remove the directory.
+
+== Setup
+
+Now for the hard part :-) Re-using the example above for documents, to use the
+plugin modify the model so that it looks like the following:
+
+ class Document < ActiveRecord::Base
+   has_many :translations, :class_name => 'DocumentTranslation'
+   translate_columns :title, :sub_title, :body
+ end
+
+I'm working on getting it so that you don't need to specify the columns
+manually, but it is not yet ready.
+
+In earlier versions you'd need to mess around with a Locale class but thanks to
+the Rails I18n extension, this is no longer necessary.
+
+== Upgrading
+
+If you're using an older version of Translate Columns, then you'll need to perform an
+upgrade and migration to use the fabulous new I18n Rails code. Fortunately, this is
+very easy to do.
+
+To upgrade, remove and previous entries to your Locale class in you translation models
+and generate a migration to convert the local_id column into a string. Something like
+the following will surfice.
+
+ class UpgradeTranslationModels < ActiveRecord::Migration
+   def self.up
+     alter_column :product_translations, :locale_id, :string, :length => 10
+     rename_column :product_translations, :locale_id, :locale
+   end
+
+   def self.down
+     rename_column :product_translations, :locale, :locale_id
+     alter_column :product_translations, :locale_id, :integer
+   end
+ end
+
+After ensuring you're using the I18n.locale calls throughout your application, it
+should work fine.
+
+== Usage
+
+The idea here is that you forget about the fact your models can be translated
+and just use the app as normal. Indeed, if you don't set a locale, you
+won't even notice the plugin is there.
+
+Here's a really basic example of what we can do on the console.
+
+ >> I18n.locale = I18n.default_locale          # First try default language
+ => :en
+ >> doc = Document.find(:first)
+   -- output hidden --
+ >> doc.title
+ => "Sample Document"             # title in english
+ >> I18n.locale = 'es'            # set to other language
+ => "es"
+ >> doc = Document.find(:first)   # Reload to avoid caching problems!
+   -- output hidden --
+ >> doc.title
+ => "Titulo español"              # Title now in spanish
+ >> doc.title_default
+ => "Sample Document"             # original field data
+ >> doc.title = "Nuevo Título Español"
+ => "Nuevo Título Español" 
+ >> doc.save                      # set the title and save
+ => true
+ >> I18n.locale = 'en'
+ => "en"                          # return to english
+ >> doc = Document.find(:first)
+   -- output hidden --
+ >> doc.title
+ => "Sample Document"
+
+As can be seen, just by setting the locale we are able to edit the data
+without having to worry about the details.
+
+The current version also has support for disabling translations by giving the 
+parent object a +locale+ field and setting it to something. This is actually a
+very powerful feature as it allows new objects to be created under a specific locale
+and filtered as such. A typical example would be a blog where most of the posts 
+you'd like to be translated into several languages, but occaisionly some posts will only
+be relevant for a specific region:
+
+ >> I18n.locale = I18n.default_locale
+ >> post = Post.new(:title => "Example") # WIN
+ >>
+ >> I18n.locale = 'es'
+ >> post = Post.new(:title => "Ejemplo") # FAIL
+ TranslateColumns::MissingParent: Cannot create translations without a stored parent
+ >> 
+ >> post = Post.new(:locale => 'es', :title => "Ejemplo") # WIN
+ >>
+ >> # Provide posts, with either a translation of for the current locale
+ >> posts = Post.paginate(:conditions => ['posts.locale IS NULL OR posts.locale = ?', I18n.locale])
+ 
+A useful +named_scope+ could be as follows:
+
+ class Post < ActiveRecord::Base
+   # ... translate columns stuff ...
+   named_scope :for_current_locale, :conditions => ['posts.locale IS NULL OR posts.locale = ?', I18n.locale]
+ end
+
+ @posts = Post.for_current_locale.paginate
+
+Changing locale of an object after it has been created will cause its translations to be ignored, but 
+by emptying the locale value the translations should work as before.
+Of course, if you don't want this funcionality simply do not add a locale attribute or method to 
+the parent model.
+
+
+== How it works
+
+The plugin overrides the default attribute accessor functions and automatically
+uses the 'translations' association to find the request fields. It also 
+provides a new method that extends the original method name to access 
+the original values.
+
+== Todos / Bugs
+
+* Caching - Using a basic rails setup, everything should work fine, however
+  if you have a more complex caching setup strange things might happen.
+  Please mail me if you have any problems!
+  
+

@@ -3,6 +3,9 @@ class Document < ActiveRecord::Base
   has_many :comments, :dependent => :delete_all
   has_many :revisions, :class_name => 'DocumentRevision', :dependent => :delete_all
 
+  has_many :translations, :class_name => 'DocumentTranslation'
+  translate_columns :title, :summary, :content, :author 
+
   belongs_to :user
 
   acts_as_tree
@@ -18,6 +21,8 @@ class Document < ActiveRecord::Base
   named_scope :not_hidden, :conditions => ['documents.hidden_at IS NULL']
 
   named_scope :layout_is, lambda {|layout| {:conditions => ['documents.layout = ?', layout]}}
+
+  named_scope :for_current_locale, :conditions => ['documents.locale IS NULL OR documents.locale = ?', I18n.locale.to_s]
 
   validates_uniqueness_of :title, :message => "A document with this title already exists"
 
@@ -40,10 +45,18 @@ class Document < ActiveRecord::Base
     !published_at.nil? && published_at <= Time.now 
   end
   def publish!
-    update_attribute(:published_at, Time.now)
+    return false if published?
+    self.published_at ||= Time.now
+    self.minor_revision = false
+    self.revision_comment ||= "Published"
+    save
   end
   def unpublish!
-    update_attribute(:published_at, nil)
+    return false unless published?
+    self.published_at = nil
+    self.minor_revision = true
+    self.revision_comment ||= "Un-published"
+    save
   end
 
   def hide!
@@ -74,7 +87,8 @@ class Document < ActiveRecord::Base
 
     def prepare_slug
       if slug.blank?
-        self.slug = title.to_s.gsub(/[^\w\d_]/, '_').downcase
+        # Ensure this matches the version in JS!!
+        self.slug = title.to_s.strip.gsub(/\s+/, '_').gsub(/[^\w\d_]/, '').downcase
       end
     end
 
@@ -82,7 +96,7 @@ class Document < ActiveRecord::Base
       @parent_revision = self.parent.revisions.build(:comment => "Added new child \"#{self.title}\"", :minor => true) unless self.parent.nil?
     end
     def save_revision
-      unless no_revision
+      unless no_revision || !changed?
         self.revisions.create(:comment => revision_comment, :minor => minor_revision)
         @parent_revision.save unless @parent_revision.nil? 
       end

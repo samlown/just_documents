@@ -1,5 +1,6 @@
 .documentRevisions.form
-  = f.label :revision_comment, "Comments:"
-  = f.text_field :revision_comment, :class => 'text', :value => document.new_record? ? "Document created" : "Document updated"
-  = f.label :minor_revision, "Minor revision:"
-  = f.check_box :minor_revision
+  %h4 Comments
+  %p
+    = f.text_field :revision_comment, :class => 'text', :value => document.new_record? ? "Created" : "Updated"
+    = f.check_box :minor_revision, :checked => !document.published?
+    = f.label :minor_revision, "minor revision"

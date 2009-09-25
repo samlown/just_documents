@@ -1,8 +1,17 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
-function postAndParse(form, callback) {
-  $.post($(form).attr('action'), $(form).serializeArray(), function(data) {
+/*
+ * Post the provided form object using AJAX and parse the results provided as JSON.
+ *
+ * The following options are supported:
+ *   params: Array of aditional name, value objects to append to serializeArray.
+ *   
+ */
+function postAndParse(form, options, callback) {
+  options = $.extend({params: [ ]}, options);
+  options.params = options.params.concat($(form).serializeArray());
+  $.post($(form).attr('action'), options.params, function(data) {
     var result = parseJSON(data);
     callback(result);
   });

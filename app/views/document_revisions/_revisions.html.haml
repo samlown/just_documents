@@ -1,15 +1,25 @@
 .documentRevisions.list
   - unless document.new_record?
     %table
-      - document.revisions.newest_first.each do |revision|
+      %thead
         %tr
-          %td.date= revision.created_at
-          %td.comments= revision.comment
-          %td.link
-            = link_to_if !revision.minor, "rev. #{revision.version}", edit_document_url(document, :document_revision_id => revision.id), :class => 'documentUseRevision'
-            %span.confirm{:style => "display: none;"} Are you sure you want to load document from this revision? It will not be saved until you do so, but you will loose all current changes.
-          - if current_user_is_admin?
-            %td.removeLink
-              = link_to 'remove',  document_document_revision_url(document, revision)
-              %span.confirm{:style => 'display: none;'}
-                = "Are you sure you want to remove the revision #{revision.version}"
+          %th Date
+          %th Lang
+          %th Comment
+          %th Revision
+          %th &nbsp;
+
+      %tbody
+        - document.revisions.for_current_locale.newest_first.each do |revision|
+          %tr
+            %td.date= I18n.localize revision.created_at
+            %td.locale= revision.locale.to_s
+            %td.comments= revision.comment
+            %td.link
+              = link_to_if !revision.minor, "rev. #{revision.version}", edit_document_url(document, :document_revision_id => revision.id), :class => 'documentUseRevision'
+              %span.confirm{:style => "display: none;"} Are you sure you want to load document from this revision? It will not be saved until you do so, but you will loose all current changes.
+            - if current_user_is_admin?
+              %td.removeLink
+                = link_to 'remove',  document_document_revision_url(document, revision)
+                %span.confirm{:style => 'display: none;'}
+                  = "Are you sure you want to remove the revision #{revision.version}"

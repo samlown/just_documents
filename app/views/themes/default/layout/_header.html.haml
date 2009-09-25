@@ -3,6 +3,10 @@
     .adminToggle
       %a{:href => '#'} toggle preview 
   .userBar.span-24
+    - if I18n.available_locales.length > 1
+      %span.locales
+        - I18n.available_locales.each do |locale|
+          = link_to_if I18n.locale.to_s != locale.to_s, locale.to_s, :locale => locale.to_s
     - if logged_in?
       %span.greeting
         Logged in as 

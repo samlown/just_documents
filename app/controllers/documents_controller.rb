@@ -30,24 +30,14 @@ class DocumentsController < ApplicationController
     @document.user = current_user
     respond_to do |format|
       format.js do
-        render :partial => 'new', :locals => {:document => @document}
+        render :partial => 'edit', :locals => {:document => @document}
       end
     end
   end
 
   def create
     @document = Document.new(params[:document])
-    respond_to do |format|
-      if @document.save
-        format.js do
-          render :json => { :status => 'WIN', :url => [@document], :id => "document_#{@document.id}" }
-        end
-      else
-        format.js do
-          render :json => { :status => 'FAIL', :msg => "Error: "+@document.errors.map{|a,msg| msg}.first, :view => render_to_string(:partial => 'new', :locals => {:document => @document}) }
-        end
-      end
-    end
+    update
   end
   
 
@@ -60,16 +50,26 @@ class DocumentsController < ApplicationController
     end
   end
 
+  # This could get messy, but update always assumes ID is provided, not slug.
+  # Hence avoiding problems changing slug.
   def update
-    @document = Document.find_by_slug(params[:id])
-    if params[:event] == 'action'
-      @document.minor_revision = true
-      @document.revision_comment = params[:document][:published_at].blank? ? "Un-published" : "Published"
+    @document = Document.find(params[:id]) unless @document
+    result = nil
+    @document.attributes = params[:document]
+    if params[:event] == 'publish'
+      result = @document.publish!
+    elsif params[:event] == 'unpublish'
+      result = @document.unpublish!
+    else
+      result = @document.save
     end
     respond_to do |format|
-      if @document.update_attributes(params[:document])
+      if result
         format.js do
           result = { :status => 'WIN', :url => document_url(@document), :id => "document_#{@document.id}" }
+          if (params[:event] == 'draft')
+            result[:view] = render_to_string(:partial => 'edit', :locals => {:document => @document})
+          end
           render :json => result
         end
       else

@@ -9,12 +9,11 @@
       = link_to 'edit', edit_document_url(document), :class => 'button positive documentFormAction', :title => 'Edit Document'
     %li
       - form_for document, :html => {:class => "documentActions"} do |f|
-        = hidden_field_tag 'event', 'action'
         - if document.published?
-          = f.hidden_field :published_at, :value => ''
+          = hidden_field_tag 'event', 'unpublish'
           %button.negative{:type => 'submit', :title => 'Unpublish'}= 'un-publish'
         - else
-          = f.hidden_field :published_at, :value => Time.now.iso8601
+          = hidden_field_tag 'event', 'publish'
           %button.positive{:type => 'submit', :title => 'Publish'}= 'publish'
     - if document.children.empty? && current_user_is_admin?
       %li
