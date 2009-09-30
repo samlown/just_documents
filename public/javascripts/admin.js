@@ -78,6 +78,9 @@ $.documentActions = {
  */
 $.documentForm = {
 
+  // URL to redirect to, mainly when the slug has changed.
+  redirectToUrl: '',
+
   bindings: function() {
     $('.documentFormAction').live('click', function() { $.documentForm.edit($(this)); return false; });
 
@@ -139,7 +142,10 @@ $.documentForm = {
           dialogClass: 'simple',
           close: function() {
             if ($('#dialog form').hasClass('dirty')) {
-              window.location.reload();
+              if ($.documentForm.redirectToUrl == '')
+                window.location.reload();
+              else
+                window.location = $.documentForm.redirectToUrl;
             } else {
               $('html').smoothScrollBack('stop');
               $('#dialog').dialog('destroy');
@@ -160,11 +166,17 @@ $.documentForm = {
     postAndParse(form, options, function(result) {
       if (result.status == 'WIN') {
         if (! options.noRefresh) {
-          window.location.reload();
+          if (result.redirect)
+            window.location = result.url;
+          else
+            window.location.reload();
         } else {
           $('#dialog').html(result.view);
           $('form .markItUp').markItUp(mySettings);
           $('#dialog form').addClass('dirty');
+          if (result.redirect) {
+            $.documentForm.redirectToUrl = result.url;
+          }
         }
       } else {
         $('#dialog').html(result.view);

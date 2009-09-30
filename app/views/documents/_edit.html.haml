@@ -1,5 +1,6 @@
 .document.edit
-  - form_for document, :url => document_url(:id => document.id), :html => {:class => 'documentSaveForm'} do |f|
+  - form_for document, :url => document.new_record? ? nil : document_url(:id => document.id), :html => {:class => 'documentSaveForm'} do |f|
+    = hidden_field_tag :parent_id, params[:parent_id] unless params[:parent_id].blank?
     = f.hidden_field :slug, :class => 'originalSlug'
     = f.hidden_field :layout
     = f.hidden_field :parent_id

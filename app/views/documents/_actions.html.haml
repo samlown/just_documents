@@ -6,7 +6,7 @@
       %li
         %span.dragHandle &nbsp;
     %li
-      = link_to 'edit', edit_document_url(document), :class => 'button positive documentFormAction', :title => 'Edit Document'
+      = link_to 'edit', edit_document_url(document, :parent_id => @document == document ? nil : @document.id), :class => 'button positive documentFormAction', :title => 'Edit Document'
     %li
       - form_for document, :html => {:class => "documentActions"} do |f|
         - if document.published?

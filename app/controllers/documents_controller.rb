@@ -66,7 +66,12 @@ class DocumentsController < ApplicationController
     respond_to do |format|
       if result
         format.js do
-          result = { :status => 'WIN', :url => document_url(@document), :id => "document_#{@document.id}" }
+          result = {
+            :status => 'WIN', :url => document_url(@document), 
+            :redirect => params[:parent_id].blank?, # Redirect if no parent id, to cope with slug changes.
+            :id => "document_#{@document.id}"
+          }
+            
           if (params[:event] == 'draft')
             result[:view] = render_to_string(:partial => 'edit', :locals => {:document => @document})
           end
