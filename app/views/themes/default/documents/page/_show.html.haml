@@ -1,12 +1,36 @@
 
-.leftSpace.span-2 &nbsp;
+.page.span-24{:id => "document_#{document.id}"}
 
-.page.span-20{:id => "document_#{document.id}"}
-
-  .documentBody
-
-    %p.content
+  .content.span-14.prepend-1
+    .documentBody
       :textile
         #{@document.content}
 
-    = render :partial => 'actions', :locals => {:document => @document}
+      = render :partial => 'actions', :locals => {:document => @document}
+
+  .sideMenu.span-7.prepend-1
+    - parent_doc = @document.parent || @document
+    .documentBody
+      - if current_user_is_editor? && parent_doc == @document
+        %ul.sideActions.forNewItems
+          %li
+            = link_to image_tag('icons/plus.png'), new_document_url(:layout => 'page', :parent_id => @document.id), :class => 'button documentFormAction', :title => "Create a new sub page"
+  
+      - form_tag sort_documents_url() do
+        = hidden_field_tag 'event', 'sort'
+      .items.sortable
+        - if current_user_is_editor? && parent_doc == @document
+          - paginate_documents(@document.children.not_published.layout_is('page')).each do |entry|
+            .pageLink.documentBody
+              = link_to entry.title, document_url(entry)
+              %hr
+              = render :partial => 'actions', :locals => {:document => entry}
+
+        - paginate_documents(parent_doc.children.published.not_hidden.layout_is('page')).each do |entry|
+          .pageLink.documentBody
+            = link_to entry.title, document_url(entry), :class => (entry == @document ? 'selected' : '')
+            %hr
+            = render :partial => 'actions', :locals => {:document => entry} if entry != @document
+
+
+ 

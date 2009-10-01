@@ -54,8 +54,8 @@ $.documentActions = {
       return false;
     });
 
-    $('form.documentActionsConfirm button[type=submit]').live('submit', function() {
-      if (confirm($(this).find('.confirm').html())) {
+    $('form.documentActionsConfirm button[type=submit]').die('click').live('click', function() {
+      if (confirm($(this).siblings('.confirm').html())) {
         $.documentActions.save($(this).parents('form'));
       }
       return false;

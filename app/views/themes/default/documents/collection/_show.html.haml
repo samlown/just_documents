@@ -1,6 +1,6 @@
 .collection.span-24{:id => "document_#{document.id}"}
 
-  .main.span-14
+  .main.span-14.prepend-1
     .documentBody.span-14
       %h2= document.title
 
@@ -15,7 +15,7 @@
       - if current_user_is_editor?
         %ul.sideActions.forNewItems
           %li
-            = link_to 'new item', new_document_url(:layout => 'collection_item', :parent_id => @document.id), :class => 'button documentFormAction', :title => "Create a new item"
+            = link_to image_tag('icons/plus.png'), new_document_url(:layout => 'collection_item', :parent_id => @document.id), :class => 'button documentFormAction', :title => "Create a new item"
 
         - paginate_documents(@document.children.not_published.layout_is('collection_item'), :order => 'position ASC', :limit => 100).each do |entry|
           = render :partial => 'show', :locals => {:document => entry}
@@ -30,5 +30,3 @@
       = will_paginate @entries
 
   .sideBar.span-6.last
-
-  .rightSpace.span-2 &nbsp;

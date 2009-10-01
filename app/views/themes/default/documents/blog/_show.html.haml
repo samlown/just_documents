@@ -20,7 +20,7 @@
       - if current_user_is_editor?
         %ul.sideActions.forNewItems
           %li
-            = link_to 'new blog entry', new_document_url(:layout => 'blog_entry', :parent_id => @document.id), :class => 'button documentFormAction', :title => "Create a new blog post"
+            = link_to image_tag('icons/plus.png'), new_document_url(:layout => 'blog_entry', :parent_id => @document.id), :class => 'button documentFormAction', :title => "Create a new blog post"
 
         - paginate_documents(@document.children.not_published.layout_is('blog_entry'), :limit => 100).each do |entry|
           = render :partial => 'show', :locals => {:document => entry}
@@ -35,7 +35,7 @@
       - if current_user_is_editor?
         %ul.sideActions.forNewItems
           %li
-            = link_to 'new side bar', new_document_url(:layout => 'side_bar_entry', :parent_id => @document.id), :class => 'button documentFormAction', :title => "Create a new side bar entry"
+            = link_to image_tag('icons/plus.png'), new_document_url(:layout => 'side_bar_entry', :parent_id => @document.id), :class => 'button documentFormAction', :title => "Create a new side bar entry"
   
       - form_tag sort_documents_url() do
         = hidden_field_tag 'event', 'sort'
