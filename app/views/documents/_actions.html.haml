@@ -9,7 +9,7 @@
       %a{:href => edit_document_url(document, :parent_id => @document == document ? nil : @document.id), :class => 'button positive documentFormAction', :title => 'Edit Document'}
         = image_tag('icons/pencil.png')
     %li
-      - form_for document, :html => {:class => "documentActions"} do |f|
+      - form_for document, :url => document_url(:id => document.id), :html => {:class => "documentActions"} do |f|
         - if document.published?
           = hidden_field_tag 'event', 'unpublish'
           %button.negative{:type => 'submit', :title => 'un-publish'}= image_tag('icons/eye-slash.png')
@@ -18,7 +18,7 @@
           %button.positive{:type => 'submit', :title => 'Publish'}= image_tag('icons/eye.png')
     - if document.children.empty? && current_user_is_admin?
       %li
-        - form_for document, :html => {:class => "documentActionsConfirm"} do |f|
+        - form_for document, :url => document_url(:id => document.id), :html => {:class => "documentActionsConfirm"} do |f|
           = hidden_field_tag '_method', 'delete'
           %button.negative{:type => 'submit', :title => 'Destroy'}= image_tag('icons/cross-circle.png')
           %span.confirm{:style => "display: none;"}= "Are you sure you want to send this document to the depths of nothingness, never to be seen again?"
