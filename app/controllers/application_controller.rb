@@ -31,7 +31,6 @@ class ApplicationController < ActionController::Base
     cookies['locale'] = I18n.locale.to_s
   end
 
-
   private
 
   def extract_locale_from_accept_language_header

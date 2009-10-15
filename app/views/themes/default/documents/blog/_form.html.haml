@@ -16,22 +16,9 @@
     %p
       = f.text_area :summary, :class => 'markItUp'
 
-  = render_partial_from_theme "documents/shared/revision_fields", :locals => {:f => f, :document => document}
+  = form_revision_comment(f, document)
 
   %h3 Advanced Options
-
   .advancedOptions
-    .user
-      %h4.hideable
-        Created by 
-        %a.toggle{:href => '#'} toggle
-      %span{:style => "display: none;"}
-        = f.select :user_id, User.all.map{|u| [u.name, u.id]}
-
-    .revisions
-      %h4.hideable
-        Revisions
-        %a.toggle{:href => '#'} toggle
-      %div{:style => "display: none;"}
-        = render :partial => 'document_revisions/revisions', :locals => {:document => document}
-
+    = form_advanced_options(f, document, :locale, :user)
+    = form_revision_history(f, document)

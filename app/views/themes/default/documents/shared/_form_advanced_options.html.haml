@@ -1,0 +1,57 @@
+
+- if list.include? :summary
+  .summary
+    %h4.hideable
+      Summary 
+      %a.toggle{:href => '#'} toggle
+    %div{:style => "display: none;"}
+      %p
+        Include a short extract of the article.
+        %br
+        = f.text_area :summary, :class => 'span-14' 
+
+
+- if list.include? :locale
+  .locale
+    %h4.hideable
+      Locale
+      %a.toggle{:href => '#'} toggle
+    %div{:style => "display: none;"}
+      %p
+        = "Only show in the following locale:"
+        = f.select :locale, [['All', '']] + I18n.available_locales.map{|l| l.to_s}
+
+- if list.include? :metadata
+  .metadata
+    %h4.hideable
+      = "Comment Options"
+      %a.toggle{:href => '#'} toggle
+    %div{:style => "display: none;"}
+      = f.check_box 'allow_comments', :checked => document.new_record? ? true : document.allow_comments
+      = f.label :allow_comments, "Allow comments"
+      %br
+      = f.check_box 'allow_pingbacks', :checked => document.new_record? ? true : document.allow_pingbacks
+      = f.label :allow_pingbacks, "Allow pingbacks"
+
+- if list.include? :published
+  .published
+    %h4.hideable
+      Published
+      %a.toggle{:href => '#'} toggle
+    %div{:style => "display: none;"}
+      %p
+        = f.text_field :published_at
+
+
+- if list.include? :user
+  .user
+    %h4.hideable
+      Created by 
+      %a.toggle{:href => '#'} toggle
+    %div{:style => "display: none;"}
+      %p
+        = f.select :user_id, User.all.map{|u| [u.name, u.id]}
+
+
+
+
