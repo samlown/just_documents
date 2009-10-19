@@ -1,27 +1,4 @@
-.usersNew.span-24
-  %h1 Sign up as a new user
-  - @user.password = @user.password_confirmation = nil
-
-  = error_messages_for :user
+.users.new
   - form_for @user do |f|
-    %p
-      = f.label :name, 'Your name'
-      %br
-      = f.text_field :name
-    %p
-      = f.label :email, 'Email <small>(used for login)</small>'
-      %br
-      = f.text_field :email
 
-    %p
-      = label_tag 'password'
-      %br
-      = f.password_field :password
-
-    %p
-      = label_tag 'password_confirmation', 'Confirm Password'
-      %br
-      = f.password_field :password_confirmation
-
-    %p
-      = submit_tag 'Sign up'
+    = render_partial_from_theme 'users/new', :locals => {:f => f}

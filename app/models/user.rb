@@ -39,8 +39,8 @@ class User < ActiveRecord::Base
     ['admin', 'editor'].include?(role)
   end
 
-  protected
-    
-
+  def password_required?
+    identity_url.blank? && (crypted_password.blank? || !password.blank?)
+  end
 
 end

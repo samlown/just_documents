@@ -1,0 +1,48 @@
+.span-16.prepend-4
+
+  %h1= "Sign up as a new user"
+  
+  - @user.password = @user.password_confirmation = nil
+
+  = error_messages_for :user
+
+  - if session[:identity_url]
+    .span-16
+      %p
+        = f.label :identity_url, "Using OpenID Identity"
+        %br
+        = text_field_tag 'identity_url', session[:identity_url], :disabled => true, :class => "span-12 title"
+
+  .span-16
+    %p
+      = f.label :name, 'Your name'
+      %br
+      = f.text_field :name, :class => 'span-12 title'
+
+  .span-16
+    %p
+      = f.label :email, 'Email Address'
+      %br
+      = f.text_field :email, :class => 'span-12 title'
+
+  - if !session[:identity_url]
+    .span-16
+      %p
+        = link_to "Log in using OpenID first", new_session_url(:openid => true)
+
+    .span-8
+      %p
+        = label_tag 'password', "Password"
+        %br
+        = f.password_field :password, :class => 'span-8 title'
+
+    .span-8.last
+      %p
+        = label_tag 'password_confirmation', 'Confirm Password'
+        %br
+        = f.password_field :password_confirmation, :class => 'span-8 title'
+
+  .span-8
+    %p
+      %button{:type => 'submit'}= 'Sign up'
+

@@ -1,6 +1,0 @@
-.documentRevisions
-  %h4 Comments
-  %p
-    = f.text_field :revision_comment, :class => 'text', :value => document.new_record? ? "Created" : "Updated"
-    = f.check_box :minor_revision, :checked => !document.published?
-    = f.label :minor_revision, "minor revision"
