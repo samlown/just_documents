@@ -22,7 +22,7 @@ Rails::Initializer.run do |config|
   config.gem "haml"
   config.gem "RedCloth"
   config.gem 'will_paginate', :source => 'http://gemcutter.org/'
-  config.gem 'ruby-openid'
+  config.gem 'ruby-openid', :lib => false
 
 
   # Only load the plugins named here, in the order given (default is alphabetical).

@@ -16,7 +16,7 @@ $(document).ready( function(){
       var form = list.prev();
       $.post(form.attr('action'), form.serialize() + '&' + list.sortable('serialize'), function(data) {
         var result = parseJSON(data);
-        if (result.status != 'WIN') {
+        if (result.state != 'win') {
           alert(result.msg);
         }
       });
@@ -64,7 +64,7 @@ $.documentActions = {
 
   save: function(form, options) {
     postAndParse(form, options, function(result) {
-      if (result.status == 'WIN') {
+      if (result.state == 'win') {
         window.location.reload();
       } else {
         alert(result.msg);
@@ -129,31 +129,11 @@ $.documentForm = {
    */
   edit: function(link, options) {
     var title = link.attr('title');
+    $.stdDialog.show(title);
     $.get(link.attr('href'), '', function(data) {
+      var result = parseJSON(data);
       // Lock the window scrolling
-      $('html,body').smoothScrollBack();
-      $('#dialog').html(data).dialog({
-          closeOnEscape: false,
-          title: title,
-          modal: true, draggable: true,
-          resizable: false,
-          position: ['center', 20],
-          width: 750, height: (window.innerHeight - 50),
-          dialogClass: 'simple',
-          close: function() {
-            if ($('#dialog form').hasClass('dirty')) {
-              if ($.documentForm.redirectToUrl == '')
-                window.location.reload();
-              else
-                window.location = $.documentForm.redirectToUrl;
-            } else {
-              $('html').smoothScrollBack('stop');
-              $('#dialog').dialog('destroy');
-            }
-          }
-      }).dialog('open');
-      //$('#dialog').parents('.simple.ui-dialog').css({position: 'fixed'}); // Remove with jQuery UI 1.8...
-      $('form .markItUp').markItUp(mySettings);
+      $.stdDialog.html(result.view);
     });
   },
 
@@ -163,24 +143,24 @@ $.documentForm = {
   save: function(form, options) {
     // Disable all the buttons first
     form.find('button').attr('disabled', 'disabled');
+    // $.stdDialog.loading();
     postAndParse(form, options, function(result) {
-      if (result.status == 'WIN') {
+      if (result.state == 'win') {
         if (! options.noRefresh) {
           if (result.redirect)
             window.location = result.url;
           else
             window.location.reload();
         } else {
-          $('#dialog').html(result.view);
-          $('form .markItUp').markItUp(mySettings);
-          $('#dialog form').addClass('dirty');
           if (result.redirect) {
             $.documentForm.redirectToUrl = result.url;
+          } else {
+            $.stdDialog.html(result.view);
+            $('#dialog form').addClass('dirty');
           }
         }
       } else {
-        $('#dialog').html(result.view);
-        $('form .markItUp').markItUp(mySettings);
+        $.stdDialog.html(result.view);
         $('#dialog form').addClass('dirty');
         // alert(result.msg);
       }
@@ -222,7 +202,7 @@ $.commentActions = {
 
   save: function(form, options) {
     postAndParse(this, null, function(result) {
-      if (result.status == 'WIN') {
+      if (result.state == 'win') {
         window.location.reload();
       } else {
         alert(result.msg);
@@ -271,3 +251,56 @@ $.smoothScrollBack = {
     this.target = null;
   }
 };
+
+
+$.stdDialog = {
+
+  show: function(title, contents, options) {
+    options = $.extend({
+      closeOnEscape: false,
+      title: title,
+      modal: true, draggable: true,
+      resizable: false,
+      position: ['center', 20],
+      width: 750, height: (window.innerHeight - 50),
+      dialogClass: 'simple',
+      close: function() {
+        if ($('#dialog form').hasClass('dirty')) {
+          if ($.documentForm.redirectToUrl == '')
+            window.location.reload();
+          else
+            window.location = $.documentForm.redirectToUrl;
+        } else {
+          $('html,body').smoothScrollBack('stop');
+          $('#dialog').dialog('destroy');
+        }
+      }
+    }, options);
+    $('html,body').smoothScrollBack();
+    if (!content || contents == '')
+      this.loading();
+    else
+      $('#dialog').html(contents);
+    return $('#dialog').dialog(options).dialog('open');
+  },
+
+  loading: function() {
+    $('#dialog').html($('#dialogSpinner').html());
+  },
+
+  html: function(contents) {
+    if (contents) {
+      $('#dialog').html(contents);
+      $('#dialog form .markItUp').markItUp(mySettings);
+   } else {
+      return $('#dialog').html();
+    }
+  },
+
+  hide: function() {
+    $('html,body').smoothScrollBack('stop');
+    $('#dialog').dialog('close');
+  }
+
+}
+

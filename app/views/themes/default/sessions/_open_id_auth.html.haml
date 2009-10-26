@@ -11,7 +11,11 @@
       %br
       = text_field_tag 'openid_identifier', @identity_url, :class => 'span-10 title'
 
-  .span-4
+  .span-16
     %p
       %button{:type => "submit"}= "Log in"
 
+  .span-16.alternateLink
+    %p
+      = link_to "Login using email and password", new_session_url(:regular => 1)
+      

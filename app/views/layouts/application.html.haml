@@ -28,4 +28,7 @@
 
       = render :partial => "themes/#{@current_theme}/layout/footer"
 
-    #dialog.container
+    #dialog.container &nbsp;
+    #dialogSpinner{:style => 'display: none;'}
+      .spinner
+        = image_tag 'spinner-large.gif'

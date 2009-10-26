@@ -2,25 +2,31 @@
 // This file is automatically included by javascript_include_tag :defaults
 
 /*
- * Post the provided form object using AJAX and parse the results provided as JSON.
+ * Send the provided form object using AJAX and parse the results provided as JSON.
  *
  * The following options are supported:
  *   params: Array of aditional name, value objects to append to serializeArray.
  *   
  */
-function postAndParse(form, options, callback) {
-  options = $.extend({params: [ ]}, options);
+function ajaxAndParse(form, options, callback) {
+  options = $.extend({params: [], method: 'get'}, options);
   options.params = options.params.concat($(form).serializeArray());
-  $.post($(form).attr('action'), options.params, function(data) {
+  action = function(data) {
     var result = parseJSON(data);
     callback(result);
-  });
+  }
+  if (options.method == 'get') {
+    $.get($(form).attr('action'), options.params, action); 
+  } else if (options.method == 'post') {
+    $.post($(form).attr('action'), options.params, action); 
+  }
+}
+
+function postAndParse(form, options, callback) {
+  options = $.extend({method: 'post'}, options);
+  ajaxAndParse(form, options, callback);
 }
 
 function parseJSON(data) {
-  if (data.charAt(0) == '{') {
-    return JSON.parse(data);
-  } else {
-    return null;
-  }
+  return JSON.parse(data);
 }

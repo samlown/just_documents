@@ -64,8 +64,10 @@ protected
       flash[:notice] = "Logged in successfully"
     else
       note_failed_signin(params[:email])
+      flash[:warning] = "Invalid login details"
       @email       = params[:email]
       @remember_me = params[:remember_me]
+      params[:regular] = 1
       render :action => 'new'
     end
   end

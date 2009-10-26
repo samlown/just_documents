@@ -25,12 +25,13 @@ class DocumentsController < ApplicationController
 
 
   def new
-    @document = Document.new(:slug => params[:slug], :layout => params[:layout])
+    locale = I18n.locale.to_s != I18n.default_locale.to_s ? I18n.locale : nil
+    @document = Document.new(:slug => params[:slug], :layout => params[:layout], :locale => locale)
     @document.parent = @parent_document unless @parent_document.nil?
     @document.user = current_user
     respond_to do |format|
       format.js do
-        render :partial => 'edit', :locals => {:document => @document}
+        render :json => {:state => 'win', :view => render_to_string(:partial => 'edit', :locals => {:document => @document})}
       end
     end
   end
@@ -45,7 +46,7 @@ class DocumentsController < ApplicationController
     @document = Document.find_by_slug(params[:id])
     respond_to do |format|
       format.js do
-        render :partial => 'edit', :locals => {:document => @document}
+        render :json => {:state => 'win', :view => render_to_string(:partial => 'edit', :locals => {:document => @document})}
       end
     end
   end
@@ -67,7 +68,7 @@ class DocumentsController < ApplicationController
       if result
         format.js do
           result = {
-            :status => 'WIN', :url => document_url(@document), 
+            :state => 'win', :url => document_url(@document), 
             :redirect => params[:parent_id].blank?, # Redirect if no parent id, to cope with slug changes.
             :id => "document_#{@document.id}"
           }
@@ -79,7 +80,7 @@ class DocumentsController < ApplicationController
         end
       else
         format.js do
-          result = { :status => 'FAIL', :msg => "Error: "+@document.errors.map{|a,msg| msg}.first, :id => "document_#{@document.id}" }
+          result = { :state => 'fail', :msg => "Error: "+@document.errors.map{|a,msg| msg}.first, :id => "document_#{@document.id}" }
           if params[:event] != 'action'
             result[:view] = render_to_string(:partial => 'edit', :locals => {:document => @document})
           end
@@ -94,9 +95,9 @@ class DocumentsController < ApplicationController
     @document = Document.find_by_slug(params[:id])
     respond_to do |format|
       if @document.destroy
-        format.js { render :json => {:status => 'WIN'} }
+        format.js { render :json => {:state => 'win'} }
       else
-        format.js { render :json => {:status => 'FAIL', :msg => "Unable to delete the document"} }
+        format.js { render :json => {:state => 'fail', :msg => "Unable to delete the document"} }
       end
     end
   end
@@ -108,7 +109,7 @@ class DocumentsController < ApplicationController
       document.update_attribute(:position, i + 1)
     end
     respond_to do |format|
-      format.js { render :json => {:status => 'WIN'} }
+      format.js { render :json => {:state => 'win'} }
     end
   end
 
