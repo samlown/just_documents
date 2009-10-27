@@ -1,7 +1,6 @@
-.collectionItem.draggableItem.span-14{:class => document.published? ? 'published' : 'notPublished', :id => "document_#{document.id}"}
-  .documentBody
-    .content
-      :textile
-        #{document.content}
+%article.collectionItem.draggableItem.span-14{:class => document.published? ? 'published' : 'notPublished', :id => "document_#{document.id}"}
+  .content
+    :textile
+      #{document.content}
 
-    = render :partial => 'actions', :locals => {:document => document, :draggable => document.published?}
+  = render :partial => 'actions', :locals => {:document => document, :draggable => document.published?}

@@ -2,41 +2,41 @@
 - if @document == document
   .leftSpace.span-2 &nbsp;
 
-.blogEntry.span-14{:class => document.published? ? 'published' : 'notPublished', :id => "document_#{document.id}"}
-  .documentBody
+%article.blogEntry.span-14{:class => document.published? ? 'published' : 'notPublished', :id => "document_#{document.id}"}
+  %header
     %h3
       = link_to_if @document != document, document.title, document_url(document)
 
-    -# unless document.summary.blank?
-      .summary
-        :textile
-          #{document.summary}
+    = render :partial => 'actions', :locals => {:document => document}
+    
+  -# unless document.summary.blank?
+    .summary
+      :textile
+        #{document.summary}
 
-    - unless document.content.blank?
-      .content
-        :textile
-          #{document.content}
+  - unless document.content.blank?
+    .content
+      :textile
+        #{document.content}
 
-
+  %footer
     %p.published
       - if document.published?
-        = "written by #{document.user.name}, #{document.published_at.to_date}."
+        = "written by #{document.user.name},"
+        %time{:pubdate => true, :datetime => document.published_at}= document.published_at.to_date
       - else
         Not Published!
       - if document.allow_comments or document.allow_pingbacks
         = link_to "#{document.comments.published.count} comments", document_url(document)+'#comments'
         
-    = render :partial => 'actions', :locals => {:document => document}
 
 
   - if @document == document && document.allow_any_comments 
     = render :partial => '/comments/comments'
     = render :partial => '/comments/form'
 
-
-
 - if @document == document # Viewing a single blog entry!
-  .sideBar.span-6.last
+  %aside.sideBar.span-6.last
     .items
       - paginate_documents(@document.parent.children.published.not_hidden.layout_is('side_bar_entry')).each do |entry|
         = render :partial => 'show', :locals => {:document => entry}

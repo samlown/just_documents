@@ -1,16 +1,15 @@
 
-.page.span-24{:id => "document_#{document.id}"}
-
+%article.page.span-24{:id => "document_#{document.id}"}
   .content.span-14.prepend-1
-    .documentBody
-      :textile
-        #{@document.content}
-
+    %header
       = render :partial => 'actions', :locals => {:document => @document}
 
-  .sideMenu.span-7.prepend-1
+    :textile
+      #{@document.content}
+
+  %aside.sideMenu.span-7.prepend-1
     - parent_doc = @document.parent || @document
-    .documentBody
+    %section
       - if current_user_is_editor? && parent_doc == @document
         %ul.sideActions.forNewItems
           %li

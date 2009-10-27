@@ -1,9 +1,13 @@
-#header {
-  position: relative; }
-  #header .adminToggle {
-    position: absolute;
-    top: 0px;
-    left: 0px; }
+header .adminToggle {
+  position: absolute;
+  top: 0px;
+  left: 0px; }
+
+article .dragHandle {
+  padding: 0px 8px;
+  background: url('/images/icons/arrow-move.png') 2px 0px no-repeat; }
+article .dragHandle:hover {
+  cursor: move; }
 
 .form {
   padding-bottom: 20px; }
@@ -34,6 +38,7 @@ ul.sideActions {
   top: 0px;
   left: -115px;
   width: 115px;
+  padding: 0px;
   padding-bottom: 10px;
   list-style: none;
   margin: 0px;
@@ -68,12 +73,6 @@ ul.sideActions.forNewItems {
   margin: 0px; }
   .documents.notFound ul li {
     float: left; }
-
-.documentBody .dragHandle {
-  padding: 0px 8px;
-  background: url('/images/icons/arrow-move.png') 2px 0px no-repeat; }
-.documentBody .dragHandle:hover {
-  cursor: move; }
 
 .documentRevisions table {
   font-size: 10px; }

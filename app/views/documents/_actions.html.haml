@@ -1,7 +1,7 @@
 -# Only show actions if admin and document is or belongs to the master document on the page
 - draggable = false unless defined?(draggable)
 - if current_user_is_editor? && (@document == document || document.parent_id == @document.id)
-  %ul.sideActions
+  %ul.documents.sideActions
     - if draggable
       %li
         %span.dragHandle &nbsp;

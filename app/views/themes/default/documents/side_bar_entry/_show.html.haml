@@ -1,8 +1,7 @@
-.sideBarEntry.draggableItem.span-6{:id => "document_#{document.id}"}
+%article.sideBarEntry.draggableItem.span-6{:id => "document_#{document.id}"}
+  %p.content
+    :textile
+      #{document.content}
 
-  .documentBody
-    %p.content
-      :textile
-        #{document.content}
+  = render :partial => 'actions', :locals => {:document => document, :draggable => true}
 
-    = render :partial => 'actions', :locals => {:document => document, :draggable => true}

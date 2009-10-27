@@ -1,3 +1,9 @@
+header, footer, section, article, aside, nav {
+  position: relative;
+  display: block; }
+
+footer {
+  clear: both; }
 
 .ui-dialog {
   font-size: 10px; }

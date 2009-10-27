@@ -1,11 +1,9 @@
 
-.blog.span-24{:id => "document_#{document.id}"}
+%section.blog.span-24{:id => "document_#{document.id}"}
 
-  .leftSpace.span-2 &nbsp;
-
-  .main.span-14
+  .span-14.prepend-2
     - if current_user_is_editor?
-      .documentBody.adminArea.span-14
+      %header.adminArea.span-14
         %h2= document.title
 
         - unless document.summary.blank?
@@ -16,7 +14,7 @@
         = render :partial => 'actions', :locals => {:document => @document}
 
     - @entries = paginate_documents(@document.children.published.not_hidden.layout_is('blog_entry'), :order => 'published_at DESC')
-    .documentBody.entries.span-14
+    %section.entries.span-14
       - if current_user_is_editor?
         %ul.sideActions.forNewItems
           %li
@@ -30,20 +28,18 @@
 
       = will_paginate @entries
 
-  .sideBar.span-6.last
-    .documentBody
-      - if current_user_is_editor?
-        %ul.sideActions.forNewItems
-          %li
-            = link_to image_tag('icons/plus.png'), new_document_url(:layout => 'side_bar_entry', :parent_id => @document.id), :class => 'button documentFormAction', :title => "Create a new side bar entry"
-  
-      - form_tag sort_documents_url() do
-        = hidden_field_tag 'event', 'sort'
-      .items.sortable
-        - if current_user_is_editor?
-          - paginate_documents(@document.children.not_published.layout_is('side_bar_entry')).each do |entry|
-            = render :partial => 'show', :locals => {:document => entry}
-        - paginate_documents(@document.children.published.not_hidden.layout_is('side_bar_entry')).each do |entry|
-          = render :partial => 'show', :locals => {:document => entry}
+  %aside.sideBar.span-6.last
+    - if current_user_is_editor?
+      %ul.sideActions.forNewItems
+        %li
+          = link_to image_tag('icons/plus.png'), new_document_url(:layout => 'side_bar_entry', :parent_id => @document.id), :class => 'button documentFormAction', :title => "Create a new side bar entry"
 
-  .rightSpace.span-2 &nbsp;
+    - form_tag sort_documents_url() do
+      = hidden_field_tag 'event', 'sort'
+    .items.sortable
+      - if current_user_is_editor?
+        - paginate_documents(@document.children.not_published.layout_is('side_bar_entry')).each do |entry|
+          = render :partial => 'show', :locals => {:document => entry}
+      - paginate_documents(@document.children.published.not_hidden.layout_is('side_bar_entry')).each do |entry|
+        = render :partial => 'show', :locals => {:document => entry}
+

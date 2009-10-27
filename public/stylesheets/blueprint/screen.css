@@ -1,7 +1,7 @@
 /* -----------------------------------------------------------------------
 
 
- Blueprint CSS Framework 0.8
+ Blueprint CSS Framework 0.9
  http://blueprintcss.org
 
    * Copyright (c) 2007-Present. See LICENSE for more info.
@@ -12,7 +12,7 @@
 ----------------------------------------------------------------------- */
 
 /* reset.css */
-html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin:0;padding:0;border:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;}
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, dialog, figure, footer, header, hgroup, menu, nav, section, time, mark, audio, video {margin:0;padding:0;border:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;}
 body {line-height:1.5;}
 table {border-collapse:separate;border-spacing:0;}
 caption, th, td {text-align:left;font-weight:normal;}
@@ -22,7 +22,8 @@ blockquote, q {quotes:"" "";}
 a img {border:none;}
 
 /* typography.css */
-body {font-size:75%;color:#222;background:#fff;font-family:Arial, Helvetica, sans-serif;} /* Helvetica Neue */
+html {font-size:100.01%;}
+body {font-size:75%;color:#222;background:#fff;font-family:"Helvetica Neue", Arial, Helvetica, sans-serif;}
 h1, h2, h3, h4, h5, h6 {font-weight:normal;color:#111;}
 h1 {font-size:3em;line-height:1;margin-bottom:0.5em;}
 h2 {font-size:2em;margin-bottom:0.75em;}
@@ -46,8 +47,8 @@ address {margin:0 0 1.5em;font-style:italic;}
 del {color:#666;}
 pre {margin:1.5em 0;white-space:pre;}
 pre, code, tt {font:1em 'andale mono', 'lucida console', monospace;line-height:1.5;}
-li ul, li ol {margin:0 1.5em;}
-ul, ol {margin:0 1.5em 1.5em 1.5em;}
+li ul, li ol {margin:0;}
+ul, ol {margin:0 1.5em 1.5em 0;padding-left:3.333em;}
 ul {list-style-type:disc;}
 ol {list-style-type:decimal;}
 dl {margin:0 0 1.5em 0;}
@@ -73,11 +74,32 @@ caption {background:#eee;}
 .top {margin-top:0;padding-top:0;}
 .bottom {margin-bottom:0;padding-bottom:0;}
 
+/* forms.css */
+label {font-weight:bold;}
+fieldset {padding:1.4em;margin:0 0 1.5em 0;border:1px solid #ccc;}
+legend {font-weight:bold;font-size:1.2em;}
+input[type=text], input[type=password], input.text, input.title, textarea, select {background-color:#fff;border:1px solid #bbb;}
+input[type=text]:focus, input[type=password]:focus, input.text:focus, input.title:focus, textarea:focus, select:focus {border-color:#666;}
+input[type=text], input[type=password], input.text, input.title, textarea, select {margin:0.5em 0;}
+input.text, input.title {width:300px;padding:5px;}
+input.title {font-size:1.5em;}
+textarea {width:390px;height:250px;padding:5px;}
+input[type=checkbox], input[type=radio], input.checkbox, input.radio {position:relative;top:.25em;}
+form.inline {line-height:3;}
+form.inline p {margin-bottom:0;}
+.error, .notice, .success {padding:.8em;margin-bottom:1em;border:2px solid #ddd;}
+.error {background:#FBE3E4;color:#8a1f11;border-color:#FBC2C4;}
+.notice {background:#FFF6BF;color:#514721;border-color:#FFD324;}
+.success {background:#E6EFC2;color:#264409;border-color:#C6D880;}
+.error a {color:#8a1f11;}
+.notice a {color:#514721;}
+.success a {color:#264409;}
+
 /* grid.css */
 .container {width:940px;margin:0 auto;}
-.showgrid {background:url(/stylesheets/blueprint/src/grid.png);}
-.column, div.span-1, div.span-2, div.span-3, div.span-4, div.span-5, div.span-6, div.span-7, div.span-8, div.span-9, div.span-10, div.span-11, div.span-12, div.span-13, div.span-14, div.span-15, div.span-16, div.span-17, div.span-18, div.span-19, div.span-20, div.span-21, div.span-22, div.span-23, div.span-24 {float:left;margin-right:20px;}
-.last, div.last {margin-right:0;}
+.showgrid {background:url(src/grid.png);}
+.column, div.span-1, div.span-2, div.span-3, div.span-4, div.span-5, div.span-6, div.span-7, div.span-8, div.span-9, div.span-10, div.span-11, div.span-12, div.span-13, div.span-14, div.span-15, div.span-16, div.span-17, div.span-18, div.span-19, div.span-20, div.span-21, div.span-22, div.span-23, div.span-24, section.span-1, section.span-2, section.span-3, section.span-4, section.span-5, section.span-6, section.span-7, section.span-8, section.span-9, section.span-10, section.span-11, section.span-12, section.span-13, section.span-14, section.span-15, section.span-16, section.span-17, section.span-18, section.span-19, section.span-20, section.span-21, section.span-22, section.span-23, section.span-24, nav.span-1, nav.span-2, nav.span-3, nav.span-4, nav.span-5, nav.span-6, nav.span-7, nav.span-8, nav.span-9, nav.span-10, nav.span-11, nav.span-12, nav.span-13, nav.span-14, nav.span-15, nav.span-16, nav.span-17, nav.span-18, nav.span-19, nav.span-20, nav.span-21, nav.span-22, nav.span-23, nav.span-24, article.span-1, article.span-2, article.span-3, article.span-4, article.span-5, article.span-6, article.span-7, article.span-8, article.span-9, article.span-10, article.span-11, article.span-12, article.span-13, article.span-14, article.span-15, article.span-16, article.span-17, article.span-18, article.span-19, article.span-20, article.span-21, article.span-22, article.span-23, article.span-24, aside.span-1, aside.span-2, aside.span-3, aside.span-4, aside.span-5, aside.span-6, aside.span-7, aside.span-8, aside.span-9, aside.span-10, aside.span-11, aside.span-12, aside.span-13, aside.span-14, aside.span-15, aside.span-16, aside.span-17, aside.span-18, aside.span-19, aside.span-20, aside.span-21, aside.span-22, aside.span-23, aside.span-24, header.span-1, header.span-2, header.span-3, header.span-4, header.span-5, header.span-6, header.span-7, header.span-8, header.span-9, header.span-10, header.span-11, header.span-12, header.span-13, header.span-14, header.span-15, header.span-16, header.span-17, header.span-18, header.span-19, header.span-20, header.span-21, header.span-22, header.span-23, header.span-24, footer.span-1, footer.span-2, footer.span-3, footer.span-4, footer.span-5, footer.span-6, footer.span-7, footer.span-8, footer.span-9, footer.span-10, footer.span-11, footer.span-12, footer.span-13, footer.span-14, footer.span-15, footer.span-16, footer.span-17, footer.span-18, footer.span-19, footer.span-20, footer.span-21, footer.span-22, footer.span-23, footer.span-24 {float:left;margin-right:20px;}
+.last, div.last, section.last, nav.last, article.last, aside.last, header.last, footer.last {margin-right:0;}
 .span-1 {width:20px;}
 .span-2 {width:60px;}
 .span-3 {width:100px;}
@@ -101,31 +123,32 @@ caption {background:#eee;}
 .span-21 {width:820px;}
 .span-22 {width:860px;}
 .span-23 {width:900px;}
-.span-24, div.span-24 {width:940px;margin:0;}
-input.span-1, textarea.span-1, select.span-1 {width:20px!important;}
-input.span-2, textarea.span-2, select.span-2 {width:30px!important;}
-input.span-3, textarea.span-3, select.span-3 {width:70px!important;}
-input.span-4, textarea.span-4, select.span-4 {width:110px!important;}
-input.span-5, textarea.span-5, select.span-5 {width:150px!important;}
-input.span-6, textarea.span-6, select.span-6 {width:190px!important;}
-input.span-7, textarea.span-7, select.span-7 {width:230px!important;}
-input.span-8, textarea.span-8, select.span-8 {width:270px!important;}
-input.span-9, textarea.span-9, select.span-9 {width:310px!important;}
-input.span-10, textarea.span-10, select.span-10 {width:350px!important;}
-input.span-11, textarea.span-11, select.span-11 {width:390px!important;}
-input.span-12, textarea.span-12, select.span-12 {width:430px!important;}
-input.span-13, textarea.span-13, select.span-13 {width:470px!important;}
-input.span-14, textarea.span-14, select.span-14 {width:510px!important;}
-input.span-15, textarea.span-15, select.span-15 {width:550px!important;}
-input.span-16, textarea.span-16, select.span-16 {width:590px!important;}
-input.span-17, textarea.span-17, select.span-17 {width:630px!important;}
-input.span-18, textarea.span-18, select.span-18 {width:670px!important;}
-input.span-19, textarea.span-19, select.span-19 {width:710px!important;}
-input.span-20, textarea.span-20, select.span-20 {width:750px!important;}
-input.span-21, textarea.span-21, select.span-21 {width:790px!important;}
-input.span-22, textarea.span-22, select.span-22 {width:830px!important;}
-input.span-23, textarea.span-23, select.span-23 {width:870px!important;}
-input.span-24, textarea.span-24, select.span-24 {width:930px!important;}
+.span-24, div.span-24, section.span-24, nav.span-24, article.span-24, aside.span-24, header.span-24, footer.span-24 {width:940px;margin-right:0;}
+input.span-1, textarea.span-1, input.span-2, textarea.span-2, input.span-3, textarea.span-3, input.span-4, textarea.span-4, input.span-5, textarea.span-5, input.span-6, textarea.span-6, input.span-7, textarea.span-7, input.span-8, textarea.span-8, input.span-9, textarea.span-9, input.span-10, textarea.span-10, input.span-11, textarea.span-11, input.span-12, textarea.span-12, input.span-13, textarea.span-13, input.span-14, textarea.span-14, input.span-15, textarea.span-15, input.span-16, textarea.span-16, input.span-17, textarea.span-17, input.span-18, textarea.span-18, input.span-19, textarea.span-19, input.span-20, textarea.span-20, input.span-21, textarea.span-21, input.span-22, textarea.span-22, input.span-23, textarea.span-23, input.span-24, textarea.span-24 {border-left-width:1px!important;border-right-width:1px!important;padding-left:5px!important;padding-right:5px!important;}
+input.span-1, textarea.span-1 {width:8px!important;}
+input.span-2, textarea.span-2 {width:48px!important;}
+input.span-3, textarea.span-3 {width:88px!important;}
+input.span-4, textarea.span-4 {width:128px!important;}
+input.span-5, textarea.span-5 {width:168px!important;}
+input.span-6, textarea.span-6 {width:208px!important;}
+input.span-7, textarea.span-7 {width:248px!important;}
+input.span-8, textarea.span-8 {width:288px!important;}
+input.span-9, textarea.span-9 {width:328px!important;}
+input.span-10, textarea.span-10 {width:368px!important;}
+input.span-11, textarea.span-11 {width:408px!important;}
+input.span-12, textarea.span-12 {width:448px!important;}
+input.span-13, textarea.span-13 {width:488px!important;}
+input.span-14, textarea.span-14 {width:528px!important;}
+input.span-15, textarea.span-15 {width:568px!important;}
+input.span-16, textarea.span-16 {width:608px!important;}
+input.span-17, textarea.span-17 {width:648px!important;}
+input.span-18, textarea.span-18 {width:688px!important;}
+input.span-19, textarea.span-19 {width:728px!important;}
+input.span-20, textarea.span-20 {width:768px!important;}
+input.span-21, textarea.span-21 {width:808px!important;}
+input.span-22, textarea.span-22 {width:848px!important;}
+input.span-23, textarea.span-23 {width:888px!important;}
+input.span-24, textarea.span-24 {width:928px!important;}
 .append-1 {padding-right:40px;}
 .append-2 {padding-right:80px;}
 .append-3 {padding-right:120px;}
@@ -172,8 +195,8 @@ input.span-24, textarea.span-24, select.span-24 {width:930px!important;}
 .prepend-21 {padding-left:840px;}
 .prepend-22 {padding-left:880px;}
 .prepend-23 {padding-left:920px;}
-div.border {padding-right:9px;margin-right:10px;border-right:1px solid #eee;}
-div.colborder {padding-right:9px;margin-right:10px;border-right:1px solid #eee;}
+div.border, section.border, nav.border, article.border, aside.border, header.border, footer.border {padding-right:9px;margin-right:10px;border-right:1px solid #eee;}
+div.colborder, section.colborder, nav.colborder, article.colborder, aside.colborder, header.colborder, footer.colborder {padding-right:29px;margin-right:30px;border-right:1px solid #eee;}
 .pull-1 {margin-left:-40px;}
 .pull-2 {margin-left:-80px;}
 .pull-3 {margin-left:-120px;}
@@ -228,27 +251,10 @@ div.colborder {padding-right:9px;margin-right:10px;border-right:1px solid #eee;}
 .append-bottom {margin-bottom:1.5em;}
 .box {padding:1.5em;margin-bottom:1.5em;background:#E5ECF9;}
 hr {background:#ddd;color:#ddd;clear:both;float:none;width:100%;height:.1em;margin:0 0 1.45em;border:none;}
-hr.space {background:#fff;color:#fff;}
+hr.space {background:#fff;color:#fff;visibility:hidden;}
 .clearfix:after, .container:after {content:"\0020";display:block;height:0;clear:both;visibility:hidden;overflow:hidden;}
 .clearfix, .container {display:block;}
 .clear {clear:both;}
-
-/* forms.css */
-label {font-weight:bold;}
-fieldset {padding:1.4em;margin:0 0 1.5em 0;border:1px solid #ccc;}
-legend {font-weight:bold;font-size:1.2em;}
-input.text, input.title, textarea, select {margin:0.5em 0;border:1px solid #bbb;}
-input.text:focus, input.title:focus, textarea:focus, select:focus {border:1px solid #666;}
-input.text, input.title {width:300px;padding:5px;}
-input.title {font-size:1.5em;}
-textarea {width:390px;height:250px;padding:5px;}
-.error, .notice, .success {padding:.8em;margin-bottom:1em;border:2px solid #ddd;}
-.error {background:#FBE3E4;color:#8a1f11;border-color:#FBC2C4;}
-.notice {background:#FFF6BF;color:#514721;border-color:#FFD324;}
-.success {background:#E6EFC2;color:#264409;border-color:#C6D880;}
-.error a {color:#8a1f11;}
-.notice a {color:#514721;}
-.success a {color:#264409;}
 
 /* buttons */
 a.button, button {display:block;float:left;margin:0.7em 0.5em 0.7em 0;padding:5px 10px 5px 7px;border:1px solid #dedede;border-top:1px solid #eee;border-left:1px solid #eee;background-color:#f5f5f5;font-family:"Lucida Grande", Tahoma, Arial, Verdana, sans-serif;font-size:100%;line-height:130%;text-decoration:none;font-weight:bold;color:#565656;cursor:pointer;}

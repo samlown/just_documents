@@ -1,4 +1,4 @@
-#header.span-24
+%header.layout.span-24
   - if current_user_is_admin?
     .adminToggle
       %a{:href => '#'} toggle preview 
@@ -21,3 +21,6 @@
 
   %h1
     = link_to 'Just Documents', documents_url
+
+  %nav
+    &nbsp;
