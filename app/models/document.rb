@@ -28,7 +28,7 @@ class Document < ActiveRecord::Base
 
   validates_presence_of :slug, :message => "Missing the slug"
   validates_uniqueness_of :slug, :message => "Document title is not unique"
-  validates_format_of :slug, :with => /^[\w\d_]+$/, :message => "Document slug appears to contain invalid characters"
+  validates_format_of :slug, :with => /^[a-zA-Z0-9\_\-]+$/, :message => "Document slug appears to contain invalid characters"
 
   before_validation :prepare_slug
 
@@ -87,8 +87,7 @@ class Document < ActiveRecord::Base
 
     def prepare_slug
       if slug.blank?
-        # Ensure this matches the version in JS!!
-        self.slug = title.to_s.strip.gsub(/\s+/, '_').gsub(/[^\w\d_]/, '').downcase
+        self.slug = title.urlize
       end
     end
 

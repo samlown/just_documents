@@ -8,6 +8,7 @@ class UsersController < ApplicationController
     logout_keeping_session!
     @user = User.new(params[:user])
     @user.identity_url = session[:identity_url]
+    @user.role = "admin" if User.count == 0
     success = @user && @user.save
     if success && @user.errors.empty?
       # Protects against session fixation attacks, causes request forgery
