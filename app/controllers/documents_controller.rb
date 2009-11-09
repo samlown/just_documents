@@ -92,7 +92,7 @@ class DocumentsController < ApplicationController
   end
 
   def destroy
-    @document = Document.find_by_slug(params[:id])
+    @document = Document.find(params[:id])
     respond_to do |format|
       if @document.destroy
         format.js { render :json => {:state => 'win'} }

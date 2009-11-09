@@ -20,13 +20,13 @@
       .items.sortable
         - if current_user_is_editor? && parent_doc == @document
           - paginate_documents(@document.children.not_published.layout_is('page')).each do |entry|
-            .pageLink.documentBody
+            %article.pageLink
               = link_to entry.title, document_url(entry)
               %hr
               = render :partial => 'actions', :locals => {:document => entry}
 
         - paginate_documents(parent_doc.children.published.not_hidden.layout_is('page')).each do |entry|
-          .pageLink.documentBody
+          %article.pageLink
             = link_to entry.title, document_url(entry), :class => (entry == @document ? 'selected' : '')
             %hr
             = render :partial => 'actions', :locals => {:document => entry} if entry != @document
