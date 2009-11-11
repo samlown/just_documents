@@ -16,6 +16,14 @@ class User < ActiveRecord::Base
   
   attr_accessible :email, :name, :password, :password_confirmation
 
+  def self.roles
+    [
+      ['visitor', ''],
+      ['editor', 'editor'],
+      ['admin', 'admin']
+    ]
+  end
+
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   #
   # uff.  this is really an authorization, not authentication routine.  
@@ -37,6 +45,10 @@ class User < ActiveRecord::Base
   end
   def is_editor?
     ['admin', 'editor'].include?(role)
+  end
+
+  def role_name
+    self.class.roles.rassoc(role)[0]
   end
 
   def password_required?

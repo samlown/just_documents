@@ -31,6 +31,14 @@ class ApplicationController < ActionController::Base
     cookies['locale'] = I18n.locale.to_s
   end
 
+  def admin_required
+    current_user_is_admin? or redirect_to(root_url)
+  end
+
+  def editor_required
+    current_user_id_editor? or redirect_to(root_url)
+  end
+
   private
 
   def extract_locale_from_accept_language_header

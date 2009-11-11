@@ -1,0 +1,27 @@
+.users.index
+
+  %table
+    %tr
+      %th= "Name"
+      %th= "Email"
+      %th= "Identity"
+      %th.role= "Role"
+
+    - @users.each do |user|
+      %tr
+        %td= user.name
+        %td= user.email
+        %td= user.identity_url
+        %td
+          - if user == current_user
+            %strong= "YOU"
+            = "(#{user.role_name})"
+          - else
+            .form
+              - form_for user do |f|
+                %span= f.select(:role, User.roles)
+                %button.small{:type => 'submit'}= 'save'
+
+
+
+

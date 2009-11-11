@@ -1,4 +1,34 @@
 class UsersController < ApplicationController
+
+  before_filter :login_required, :except => [:create, :new]
+  before_filter :admin_required, :only => [:index]
+
+  def index(json = { })
+    @users = User.paginate :per_page => 50, :page => params[:page]
+    respond_to do |format|
+      format.js do
+        render :json => json.update(:view => render_to_string(:partial => 'index'))
+      end
+    end
+  end
+
+  def update
+    @user = User.find(params[:id])
+    @user.attributes = params[:user]
+    @user.role = params[:user][:role]
+    respond_to do |format|
+      format.js do
+        if @user.save
+          flash.now[:notice] = "User updated!"
+          index(:state => 'win')
+        else
+          flash.now[:warning] = "Unable to update user!"
+          index(:state => 'fail')
+        end
+      end
+    end
+  end
+
   # render new.rhtml
   def new
     @user = User.new

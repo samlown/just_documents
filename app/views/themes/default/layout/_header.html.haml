@@ -2,6 +2,7 @@
   - if current_user_is_admin?
     .adminToggle
       %a{:href => '#'} toggle preview 
+      = link_to "users", users_url, :class => 'dialogLink', 'data-title' => "User accounts"
   .userBar.span-24
     - if I18n.available_locales.length > 1
       %span.locales

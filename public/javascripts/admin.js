@@ -7,6 +7,7 @@ $(document).ready( function(){
   $.documentForm.bindings();
   $.documentActions.bindings();
   $.commentActions.bindings();
+  $.stdDialog.bindings();
 
   $('.items.sortable').sortable({
     handle: '.dragHandle', items: '.draggableItem',
@@ -255,6 +256,36 @@ $.smoothScrollBack = {
 
 $.stdDialog = {
 
+  bindings: function() {
+    // Bind to generic dialog link (not live!)
+    $('a.dialogLink').click(function() {
+      $.stdDialog.show($(this).attr('data-title'));
+      $.get($(this).attr('href'), '', function(data) {
+        var result = parseJSON(data);
+        $.stdDialog.html(result.view);
+      });
+      return false;
+    });
+
+    $('#dialog form button[type=submit]').live('click', function() {
+      var form = $(this).parents('form');
+      $.stdDialog.loading();
+      $.post(form.attr('action'), form.serializeArray(), function(data) {
+        var result = parseJSON(data);
+        if (result.state == 'win') {
+          if (result.view) {
+            $.stdDialog.html(result.view);
+          } else {
+            window.location.reload();
+          }
+        } else {
+          $.stdDialog.html(result.view);
+        }
+      });
+      return false;
+    });
+  },
+
   show: function(title, contents, options) {
     options = $.extend({
       closeOnEscape: false,
@@ -277,7 +308,7 @@ $.stdDialog = {
       }
     }, options);
     $('html,body').smoothScrollBack();
-    if (!content || contents == '')
+    if (!contents || contents == '')
       this.loading();
     else
       $('#dialog').html(contents);

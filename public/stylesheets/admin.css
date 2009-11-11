@@ -27,6 +27,10 @@ article .dragHandle:hover {
   .form h3, .form h4 {
     margin-bottom: 0px;
     margin-top: 0.5em; }
+  .form button.small {
+    float: none;
+    font-size: 10px;
+    font-weight: none; }
 
 li.comment {
   clear: left; }
@@ -58,7 +62,7 @@ ul.sideActions {
     font-size: 10px;
     padding: 0px 1px;
     height: 20px; }
-    ul.sideActions button img,     ul.sideActions a.button img {
+    ul.sideActions button img, ul.sideActions a.button img {
       margin: 0px !important;
       line-height: 16px; }
   ul.sideActions a.button {
@@ -76,3 +80,14 @@ ul.sideActions.forNewItems {
 
 .documentRevisions table {
   font-size: 10px; }
+
+.users.index th.role {
+  width: 130px; }
+.users.index table .form {
+  padding: 0px; }
+  .users.index table .form select {
+    margin: 0px; }
+  .users.index table .form button {
+    display: inline;
+    margin: 0px;
+    padding: 2px 6px 2px 4px; }
