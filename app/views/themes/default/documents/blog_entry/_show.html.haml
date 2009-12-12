@@ -17,7 +17,7 @@
   - unless document.content.blank?
     .content
       :textile
-        #{document.content}
+        #{textile_wiki_filter(document.content)}
 
   %footer
     %p.published

@@ -5,7 +5,7 @@
       = render :partial => 'actions', :locals => {:document => @document}
 
     :textile
-      #{@document.content}
+      #{textile_wiki_filter(@document.content)}
 
   %aside.sideMenu.span-7.prepend-1
     - parent_doc = @document.parent || @document

@@ -1,7 +1,7 @@
 %article.sideBarEntry.draggableItem.span-6{:id => "document_#{document.id}"}
   %p.content
     :textile
-      #{document.content}
+      #{textile_wiki_filter(document.content)}
 
   = render :partial => 'actions', :locals => {:document => document, :draggable => true}
 

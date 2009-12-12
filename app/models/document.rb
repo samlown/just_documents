@@ -30,6 +30,8 @@ class Document < ActiveRecord::Base
   validates_uniqueness_of :slug, :message => "Document title is not unique"
   validates_format_of :slug, :with => /^[a-zA-Z0-9\_\-]+$/, :message => "Document slug appears to contain invalid characters"
 
+  validates_presence_of :layout, :message => "Cannot create a document without a layout"
+
   before_validation :prepare_slug
 
   before_save :prepare_revision

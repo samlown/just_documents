@@ -9,7 +9,7 @@
         - unless document.summary.blank?
           %p.summary
             :textile
-              #{document.summary}
+              #{textile_wiki_filter(document.summary)}
             
         = render :partial => 'actions', :locals => {:document => @document}
 

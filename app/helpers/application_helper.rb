@@ -23,4 +23,16 @@ module ApplicationHelper
     end
     raise "Unable to find view in themes: #{theme_view}"
   end
+
+  #
+  # Pre-filter Textile documents for wiki-like links and contents
+  #
+  def textile_wiki_filter(text)
+    # Replace wiki links with URLs
+    text.gsub /(".+"):(\S+\w)/ do |s|
+      title = $1; link = $2
+      title + ':' + (link =~ /^\/|([a-z0-9]{2,}:\/\/)/i ? link : document_url(link))
+    end
+  end
+
 end
