@@ -10,11 +10,11 @@ $(document).ready( function(){
   $.stdDialog.bindings();
 
   $('.items.sortable').sortable({
-    handle: '.dragHandle', items: '.draggableItem',
+    handle: '.dragHandle', items: 'article, .draggableItem',
     cursor: 'move',
     update: function(event, ui) {
       var list = $(this);
-      var form = list.prev();
+      var form = $('#sortDocumentsForm');
       $.post(form.attr('action'), form.serialize() + '&' + list.sortable('serialize'), function(data) {
         var result = parseJSON(data);
         if (result.state != 'win') {
@@ -26,8 +26,8 @@ $(document).ready( function(){
 
   $('.adminToggle').click(function() {
     $('.sideActions').toggle();
-    $('.dragHandle').toggle();
     $('.adminArea').toggle();
+    $('.notPublished').toggle();
     return false;
   });
   /* Not convinced, I think its easier to show them all the time

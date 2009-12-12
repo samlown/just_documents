@@ -13,6 +13,7 @@ class DocumentsController < ApplicationController
     else
       @document = Document.published.not_hidden.find_by_slug(params[:id]) 
     end
+    prepare_document unless @document.nil?
     respond_to do |format|
       if @document.nil?
         format.html { render :action => 'not_found', :status => 404 }
@@ -117,6 +118,14 @@ class DocumentsController < ApplicationController
 
     def load_parent_document
       @parent_document = Document.find(params[:parent_id]) unless params[:parent_id].blank?
+    end
+
+    # Prepare any additional details the document requires to be shown on the page.
+    # Operations should be performed according to the documents layout.
+    def prepare_document
+      case @document.layout
+      when '' 
+      end
     end
 
 end

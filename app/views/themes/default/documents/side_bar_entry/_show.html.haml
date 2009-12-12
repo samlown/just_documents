@@ -1,7 +1,7 @@
-%article.sideBarEntry.draggableItem.span-6{:id => "document_#{document.id}"}
+%article.sideBarEntry.span-6{:id => "document_#{document.id}", :class => document.published? ? '' : 'notPublished'}
   %p.content
     :textile
       #{textile_wiki_filter(document.content)}
 
-  = render :partial => 'actions', :locals => {:document => document, :draggable => true}
+  = document_actions document, :draggable => true
 

@@ -7,7 +7,7 @@
     %h3
       = link_to_if @document != document, document.title, document_url(document)
 
-    = render :partial => 'actions', :locals => {:document => document}
+    = document_actions document
     
   -# unless document.summary.blank?
     .summary
@@ -39,7 +39,7 @@
   %aside.sideBar.span-6.last
     .items
       - paginate_documents(@document.parent.children.published.not_hidden.layout_is('side_bar_entry')).each do |entry|
-        = render :partial => 'show', :locals => {:document => entry}
+        = render_document(entry)
 
 
 
