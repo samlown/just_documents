@@ -13,8 +13,8 @@ class DocumentsController < ApplicationController
     else
       @document = Document.published.not_hidden.find_by_slug(params[:id]) 
     end
-    prepare_document unless @document.nil?
     respond_to do |format|
+      prepare_document unless @document.nil?
       if @document.nil?
         format.html { render :action => 'not_found', :status => 404 }
       else
