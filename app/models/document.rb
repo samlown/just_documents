@@ -24,11 +24,15 @@ class Document < ActiveRecord::Base
 
   named_scope :for_current_locale, :conditions => ['documents.locale IS NULL OR documents.locale = ? OR documents.locale = ?', '', I18n.locale.to_s]
 
+  named_scope :ordered, :order => 'position ASC'
+
   validates_uniqueness_of :title, :message => "A document with this title already exists"
 
   validates_presence_of :slug, :message => "Missing the slug"
   validates_uniqueness_of :slug, :message => "Document title is not unique"
   validates_format_of :slug, :with => /^[a-zA-Z0-9\_\-]+$/, :message => "Document slug appears to contain invalid characters"
+
+  validates_presence_of :layout, :message => "Cannot create a document without a layout"
 
   before_validation :prepare_slug
 

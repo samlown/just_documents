@@ -9,37 +9,29 @@
         - unless document.summary.blank?
           %p.summary
             :textile
-              #{document.summary}
+              #{textile_wiki_filter(document.summary)}
             
-        = render :partial => 'actions', :locals => {:document => @document}
+        = document_actions
 
-    - @entries = paginate_documents(@document.children.published.not_hidden.layout_is('blog_entry'), :order => 'published_at DESC')
+    - entries = paginate_documents(@document.children.published.not_hidden.for_current_locale.layout_is('blog_entry'), :order => 'published_at DESC')
     %section.entries.span-14
       - if current_user_is_editor?
-        %ul.sideActions.forNewItems
-          %li
-            = link_to image_tag('icons/plus.png'), new_document_url(:layout => 'blog_entry', :parent_id => @document.id), :class => 'button documentFormAction', :title => "Create a new blog post"
+        = document_add_child(@document, :layout => 'blog_entry', :title => "Create a new blog post")
+        -# Show pending blog posts at the top and above any pagination so that they never get lost
+        - @document.children.not_published.for_current_locale.layout_is('blog_entry').each do |entry|
+          = render_document(entry)
 
-        - paginate_documents(@document.children.not_published.layout_is('blog_entry'), :limit => 100).each do |entry|
-          = render :partial => 'show', :locals => {:document => entry}
+      - entries.each do |entry|
+        = render_document(entry)
 
-      - @entries.each do |entry|
-        = render :partial => 'show', :locals => {:document => entry}
-
-      = will_paginate @entries
+      = will_paginate entries
 
   %aside.sideBar.span-6.last
-    - if current_user_is_editor?
-      %ul.sideActions.forNewItems
-        %li
-          = link_to image_tag('icons/plus.png'), new_document_url(:layout => 'side_bar_entry', :parent_id => @document.id), :class => 'button documentFormAction', :title => "Create a new side bar entry"
+    = document_add_child(@document, :layout => 'side_bar_entry', :title => "Add a new side bar entry")
 
-    - form_tag sort_documents_url() do
-      = hidden_field_tag 'event', 'sort'
     .items.sortable
-      - if current_user_is_editor?
-        - paginate_documents(@document.children.not_published.layout_is('side_bar_entry')).each do |entry|
-          = render :partial => 'show', :locals => {:document => entry}
-      - paginate_documents(@document.children.published.not_hidden.layout_is('side_bar_entry')).each do |entry|
-        = render :partial => 'show', :locals => {:document => entry}
+      - base = @document.children.layout_is('side_bar_entry').for_current_locale.ordered
+      - base = base.published unless current_user_is_editor?
+      - base.each do |entry|
+        = render_document(entry)
 

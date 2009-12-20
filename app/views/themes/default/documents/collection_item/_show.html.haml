@@ -1,6 +1,6 @@
-%article.collectionItem.draggableItem.span-14{:class => document.published? ? 'published' : 'notPublished', :id => "document_#{document.id}"}
+%article.collectionItem.span-14{:class => document.published? ? 'published' : 'notPublished', :id => "document_#{document.id}"}
   .content
     :textile
-      #{document.content}
+      #{textile_wiki_filter(document.content)}
 
-  = render :partial => 'actions', :locals => {:document => document, :draggable => document.published?}
+  = document_actions document, :draggable => true 

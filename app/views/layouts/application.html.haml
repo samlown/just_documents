@@ -33,3 +33,9 @@
     #dialogSpinner{:style => 'display: none;'}
       .spinner
         = image_tag 'spinner-large.gif'
+
+    - if logged_in?
+      -# Special form for sorting documents
+      - form_tag sort_documents_url, :id => 'sortDocumentsForm' do
+        = hidden_field_tag 'event', 'sort'
+

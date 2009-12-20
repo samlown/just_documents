@@ -2,31 +2,33 @@
 
   .main.span-14.prepend-1
     %header.span-14
+      = document_actions
       %h2= document.title
 
       - unless document.summary.blank?
         %p.summary
           :textile
-            #{document.summary}
+            #{textile_wiki_filter(document.summary)}
             
-      = render :partial => 'actions', :locals => {:document => @document}
 
-      %section.span-14
-        - if current_user_is_editor?
-          %ul.sideActions.forNewItems
-            %li
-              = link_to image_tag('icons/plus.png'), new_document_url(:layout => 'collection_item', :parent_id => @document.id), :class => 'button documentFormAction', :title => "Create a new item"
+    %section.span-14
+      = document_add_child(@document, :layout => 'collection_item', :title => "Create a new item")
 
-          - paginate_documents(@document.children.not_published.layout_is('collection_item'), :order => 'position ASC', :limit => 100).each do |entry|
-            = render :partial => 'show', :locals => {:document => entry}
+      .items.sortable
+        - base = @document.children.layout_is('collection_item').for_current_locale.ordered
+        - base = base.published.not_hidden unless current_user_is_editor?
+        - @entries = paginate_documents(base)
+        - @entries.each do |entry|
+          = render_document(entry)
 
-        - form_tag sort_documents_url() do
-          = hidden_field_tag 'event', 'sort'
-        .items.sortable
-          - @entries = paginate_documents(@document.children.published.not_hidden.layout_is('collection_item'), :order => 'position ASC')
-          - @entries.each do |entry|
-            = render :partial => 'show', :locals => {:document => entry}
-
-        = will_paginate @entries
+      = will_paginate @entries
 
   %aside.sideBar.span-6.last
+    = document_add_child(@document, :layout => 'side_bar_entry', :title => "Add a new side bar entry")
+
+    .items.sortable
+      - base = @document.children.layout_is('side_bar_entry').for_current_locale.ordered
+      - base = base.published unless current_user_is_editor?
+      - base.each do |entry|
+        = render_document(entry)
+
