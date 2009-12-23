@@ -19,7 +19,8 @@
     %meta{"http-equiv" => "Content-Language", :content => I18n.locale.to_s}
 
     = render :partial => "themes/#{@current_theme}/layout/head"
-  %body
+
+  %body{:class => @document.nil? ? '' : "page-#{@document.slug}"}
     .topBackground
     .container
       = render :partial => "themes/#{@current_theme}/layout/header"
