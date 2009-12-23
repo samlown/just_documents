@@ -1,29 +1,68 @@
 h1. Just Documents
 
+h2. Introduction
+
 Web site creation done just with documents (except for the users and comments...).
 
-Just Documents provides an empty Ruby on Rails document orientated project designed to be a base for your own project.
+Just Documents provides an empty Ruby on Rails document orientated application designed to be a base for your own project.
 
 
-h2. Usage
+h2. Instalation
 
-When you launch Just Documents after a fresh install, you'll notice that when you enter the website there are no pages. You'll need to create yourself a new account in the signup (/signup) and enable admin access for the user on the Rails console to be able to create one:
+Instalation assumes basic knowledge of Rails project development, although the process is pretty straight forward, there is no fancy Admin instalation interface.
+
+Grab yourself a copy of JustDocuments using git:
+
+    git clone git://github.com/samlown/just_documents.git your_project
+
+You can then prepare the database:
+
+    cd your_project
+    rake db:migrate
+
+The default settings will create an sqlite database file in the usual Rails location. After creating the tables the empty project is ready, just start the server using:
+
+    ./scripts/server
+
+You should be able to access the server on:
+
+    http://localhost:3000
+
+The site will clearly be empty, so the first step is to create a new admin account to start adding pages and developing your own theme. Start by accessing the login screen:
+
+    http://localhost:3000/login
+
+Just Documents uses OpenID for authorizing users, enter your OpenID url in the login page and you provided a new screen to enter your user details. A notice should appear letting you know that the first user you create will be an admin user.
+
+Once logged in, go back to the site and you should be able to see a set of buttons to create a new Document. Documents are created in a similar fashion to a Wiki, just provide the URL and you'll be given the option to create the document. The themes section provides more details about how this works.
+
+h2. Themes
+
+Themes are a key part of Just Documents, they allow a great amount of flexibility when creating your project and help make the "everythings a document" paradigm work.
+
+Just Documents provides a default theme found in the @/app/views/themes/default@ directory. To create your own theme, just create a new directory alongside the default theme and activate it by setting the new name in the prepare theme method in the application controller:
 
 <pre>
-User.first.update_attribute(:role, 'admin')
+  def prepare_theme
+    @current_theme = "new_theme"
+  end
 </pre>
 
-When logged in, go back to the site and you should be able to see a set of buttons to create a new Document. Documents are created in a similar fashion to a Wiki, just provide the URL and you'll be given the option to create the document.
+Themes are clever, if your new theme does not contain the view requested, Just Documents will resort to the default theme. This allows you to replace parts of the default theme one peice at a time. Its not recommended that you make changes to the default theme, future updates or changes to Just Documents could cause conflicts and break an otherwise smooth update process.
 
-Just Documents provides a set of pre-defined "layouts" for creating your site, at the moment the root-layouts are:
+The directories contained in the theme relate to the applications controllers. The @documents@ directory is split into sub-directories which coincide with the names of document layouts.
 
-* @page@ - a really simple page
-* @blog@ - a blog with posts in the middle and a side bar at the right
+Document layouts are another key part of Just Documents, they define how a document should be presented and edited. The default layouts are:
 
-Root-layouts are used with documents that have no parents, and usually have a set of children. The following is a list of the main children:
-
+* @page@ - a simple page with support for child documents in a side bar.
+* @blog@ - a blog with posts in the middle and a side bar at the right.
 * @blog_entry@ - entries in a blog page.
 * @side_bar_entry@ - small boxes usually show at the side of the site.
+* @collection@ - similar to a blog, but for ordered information.
+* @collection_entry@ - an item contained in a collection.
+
+New layouts can be added by creating a new directory inside your new theme's @documents@ directory. To be able to create a new document using a new layout, the easiest way is to add a new button to the special @_not_found.html.haml@ view. If a document is not found, the website shows the contents of this view and allows an editor to create a new document by clicking the button that matches their requirements.
+
 
 h2. Roles
 
