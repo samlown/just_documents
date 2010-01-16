@@ -10,7 +10,7 @@
     = javascript_include_tag ['jquery', 'jquery-ui', 'jrails', 'application'], :cache => true
     - if logged_in?
       = stylesheet_link_tag ['layout', 'admin']
-      = javascript_include_tag 'admin'
+      = javascript_include_tag ['jquery.form', 'admin']
       = javascript_include_tag '/markitup/jquery.markitup.pack.js'
       = javascript_include_tag '/markitup/sets/textile/set'
       = stylesheet_link_tag '/markitup/skins/simple/style.css'

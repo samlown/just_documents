@@ -270,19 +270,22 @@ $.stdDialog = {
     $('#dialog form button[type=submit]').live('click', function() {
       var form = $(this).parents('form');
       $.stdDialog.loading();
-      $.post(form.attr('action'), form.serializeArray(), function(data) {
-        var result = parseJSON(data);
-        if (result.state == 'win') {
-          if (result.view) {
-            $.stdDialog.html(result.view);
+      form.ajaxSubmit({
+        iframe: (form.find('input[type=file]').length > 0),
+        dataType: 'json',
+        success: function(result) {
+          if (result.state == 'win') {
+            if (result.view) {
+              $.stdDialog.html(result.view);
+            } else {
+              window.location.reload();
+            }
           } else {
-            window.location.reload();
+            $.stdDialog.html(result.view);
           }
-        } else {
-          $.stdDialog.html(result.view);
         }
       });
-      return false;
+      return false; // ignore the button press
     });
   },
 
