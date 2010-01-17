@@ -256,6 +256,8 @@ $.smoothScrollBack = {
 
 $.stdDialog = {
 
+  redirectToUrl: null,
+
   bindings: function() {
     // Bind to generic dialog link (not live!)
     $('a.dialogLink').click(function() {
@@ -269,9 +271,10 @@ $.stdDialog = {
 
     $('#dialog form button[type=submit]').live('click', function() {
       var form = $(this).parents('form');
+      var hasFiles = form.find('input[type=file]').length > 0;
       $.stdDialog.loading();
       form.ajaxSubmit({
-        iframe: (form.find('input[type=file]').length > 0),
+        iframe: hasFiles,
         dataType: 'json',
         success: function(result) {
           if (result.state == 'win') {
@@ -281,12 +284,14 @@ $.stdDialog = {
               window.location.reload();
             }
           } else {
+            alert('FAIL');
             $.stdDialog.html(result.view);
           }
         }
       });
       return false; // ignore the button press
     });
+
   },
 
   show: function(title, contents, options) {
@@ -300,10 +305,10 @@ $.stdDialog = {
       dialogClass: 'simple',
       close: function() {
         if ($('#dialog form').hasClass('dirty')) {
-          if ($.documentForm.redirectToUrl == '')
+          if ($.stdDialog.redirectToUrl == '')
             window.location.reload();
           else
-            window.location = $.documentForm.redirectToUrl;
+            window.location = $.stdDialog.redirectToUrl;
         } else {
           $('html,body').smoothScrollBack('stop');
           $('#dialog').dialog('destroy');
@@ -319,7 +324,7 @@ $.stdDialog = {
   },
 
   loading: function() {
-    $('#dialog').html($('#dialogSpinner').html());
+    $('#dialog').children().hide().after($('#dialogSpinner').html());
   },
 
   html: function(contents) {

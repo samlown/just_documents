@@ -39,6 +39,13 @@ class ApplicationController < ActionController::Base
     current_user_id_editor? or redirect_to(root_url)
   end
 
+  # This is a hack to allow json reponses to be sent through an iframe!
+  # Meant to be used in conjunction with jquery.form plugin.
+  def render_textarea_json(data)
+    headers["Content-Type"] = "text/html; charset=utf-8"
+    render :text => "<textarea>#{data.to_json}</textarea>" 
+  end
+
   private
 
   def extract_locale_from_accept_language_header
