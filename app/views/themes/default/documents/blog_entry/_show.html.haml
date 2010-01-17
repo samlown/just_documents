@@ -26,13 +26,13 @@
         %time{:pubdate => true, :datetime => document.published_at}= document.published_at.to_date
       - else
         Not Published!
-      - if document.allow_comments or document.allow_pingbacks
+      - if document.allow_any_comments && (@document != document)
         = link_to "#{document.comments.published.count} comments", document_url(document)+'#comments'
-        
-
 
   - if @document == document && document.allow_any_comments 
+    %hr
     = render :partial => '/comments/comments'
+    %hr
     = render :partial => '/comments/form'
 
 - if @document == document # Viewing a single blog entry!

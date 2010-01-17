@@ -1,42 +1,58 @@
 class CommentsController < ApplicationController
 
   before_filter :load_document
-  before_filter :login_required, :only => [:update] 
+  before_filter :editor_required, :only => [:update, :destroy] 
 
   def create
-    @comment = @document.comments.build(params[:comment])
-    @comment.ip_address = request.remote_ip
-    if logged_in?
-      @comment.user = current_user
-      @comment.published_at = Time.now
-    end
-
     respond_to do |format|
-      if @comment.save
-        flash[:notice] = "Thank you for your comment, it will be published as soon as we've checked its okay"
-        format.html { redirect_to document_url(@document)+'#comments' }
-      else
-        format.html { render :action => 'fail' }
+      format.js do
+        @comment = @document.comments.build(params[:comment])
+        @comment.ip_address = request.remote_ip
+        msg = nil 
+        if logged_in?
+          @comment.user = current_user
+          @comment.published_at = Time.now
+        else
+          msg = "Thank you, you're comment has been received but will not be published until we've had chance to check it."
+        end
+
+        if @comment.save
+          render :json => {:state => 'win', :id => "comment_#{@comment.id}", :view => (logged_in? ? render_to_string(:partial => 'show') : nil), :msg => msg}
+        else
+          msg = "There was a problem saving your comment, please check you've entered everything correctly."
+          render :json => {:state => 'fail', :msg => msg}
+        end
       end
+      format.html { render :action => 'denied' }
     end
   end
 
   def update
-    @comment = @document.comments.find(params[:id])
-    if logged_in?
-      @comment.published_at = params[:comment][:published_at] 
-    end
-
     respond_to do |format|
-      if @comment.update_attributes(params[:comment])
-        format.html { redirect_to document_url(@document)+'#comments' }
-        format.js do 
-          render :json => {:status => 'WIN', :id => "comment_#{@comment.id}"}
+      format.js do
+        @comment = @document.comments.find(params[:id])
+        @comment.published_at = params[:comment][:published_at] 
+
+        if @comment.update_attributes(params[:comment])
+          render :json => {:state => 'win', :id => "comment_#{@comment.id}", :view => render_to_string(:partial => 'show')}
+        else
+          render :json => {:state => 'fail', :id => "comment_#{@comment.id}", :msg => "Unable to save comment"}
+        end
+      end
+      format.html { render :action => 'denied' }
+    end
+  end
+
+  def destroy
+    @comment = @document.comments.find(params[:id])
+    respond_to do |format|
+      if (@comment.destroy)
+        format.js do
+          render :json => {:state => 'win'}
         end
       else
-        format.html { render :action => 'fail' }
         format.js do
-          render :json => {:status => 'FAIL', :id => "comment_#{@comment.id}", :msg => "Unable to save comment"}
+          render :json => {:state => 'fail', :msg => "Unable to delete the comment"}
         end
       end
     end

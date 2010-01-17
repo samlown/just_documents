@@ -1,9 +1,9 @@
 
 .comments.form.span-14
 
-  %h4 Write your comment
+  %h4= "Write your comment"
 
-  - @comment ||= Comment.new
+  - @comment ||= (logged_in? ? Comment.new_for_user(current_user) : Comment.new)
   - form_for [@document, @comment] do |f|
     %p.author
       = f.text_field :author, :class => 'text span-7'
@@ -21,10 +21,11 @@
       %small
         HTML will be removed, but 
         %a{:href => "http://redcloth.org/hobix.com/textile/", :target => '_blank'} Textile formating
-        is permitted.
+        is permitted. If you are not logged in, your comment will be reviewed before posting.
 
     %p.actions
       %button{:type => "submit"}= "Post Comment"
+      %span.spinner{:style => 'display: none;'} &nbsp; 
 
   
 

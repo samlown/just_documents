@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   validates_length_of       :name,     :maximum => 100
   validates_presence_of     :name
   
-  attr_accessible :email, :name, :password, :password_confirmation
+  attr_accessible :email, :name, :web, :password, :password_confirmation
 
   def self.roles
     [

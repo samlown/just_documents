@@ -1,0 +1,46 @@
+.span-16.users.edit
+
+  = error_messages_for :user
+
+  .span-12
+    %p
+      = f.label :identity_url, "OpenID URL"
+      %br
+      = f.text_field :identity_url, :class => "span-12 title"
+
+  .span-12
+    %p
+      = f.label :name, 'Your name'
+      %br
+      = f.text_field :name, :class => 'span-12 title'
+
+  .span-12
+    %p
+      = f.label :email, 'Email Address'
+      %br
+      = f.text_field :email, :class => 'span-12 title'
+
+  .span-12
+    %p
+      = f.label :web, 'Your Web Site'
+      %br
+      = f.text_field :web, :class => 'span-12 title'
+
+  .span-12
+    .span-6
+      %p
+        = label_tag 'password', "Password"
+        %br
+        = f.password_field :password, :class => 'span-6 title'
+
+    .span-6.last
+      %p
+        = label_tag 'password_confirmation', 'Confirm Password'
+        %br
+        = f.password_field :password_confirmation, :class => 'span-6 title'
+
+  .span-8
+    %p
+      %button{:type => 'submit'}= 'Save'
+
+

@@ -20,6 +20,5 @@
       %li
         - form_for document, :url => document_url(:id => document.id), :html => {:class => "documentActionsConfirm"} do |f|
           = hidden_field_tag '_method', 'delete'
-          %button.negative{:type => 'submit', :title => 'Destroy'}= image_tag('icons/cross-circle.png')
-          %span.confirm{:style => "display: none;"}= "Are you sure you want to send this document to the depths of nothingness, never to be seen again?"
+          %button.negative{:type => 'submit', :title => 'Destroy', 'data-confirm' => "Are you sure you want to send this document to the depths of nothingness, never to be seen again?"}= image_tag('icons/cross-circle.png')
 

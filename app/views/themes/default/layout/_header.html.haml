@@ -2,7 +2,7 @@
   - if current_user_is_admin?
     .adminToggle
       %a{:href => '#'} toggle preview 
-      = link_to "users", users_url, :class => 'dialogLink', 'data-title' => "User accounts"
+      = link_to "users", users_url, 'data-dialog' => true, 'data-title' => "User accounts"
   .userBar.span-24
     - if I18n.available_locales.length > 1
       %span.locales
@@ -11,14 +11,12 @@
     - if logged_in?
       %span.greeting
         Logged in as 
-        = link_to current_user.email, user_url(current_user)
+        = link_to current_user.email, edit_user_url(current_user), 'data-dialog' => true, 'data-title' => "Edit your user details"
       %span.action
         = '(' + link_to("Log out", logout_path, { :title => "Log out" }) + ')' 
     - else
       %span.action
         = link_to "Log in",  login_path,  { :title => "Log in" }
-        -# 
-          = link_to "Sign up", signup_path, { :title => "Create an account" }
 
   %h1
     = link_to 'Just Documents', documents_url

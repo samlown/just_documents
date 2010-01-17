@@ -1,1 +1,1 @@
-= render_partial_from_theme "comments/show", :locals => {:comment => comment}
+= render_partial_from_theme "comments/show", :locals => {:comment => (defined?(comment) ? comment : @comment)}

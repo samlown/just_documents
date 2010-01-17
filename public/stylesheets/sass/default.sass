@@ -19,10 +19,12 @@ header.layout
 // For content
 #content
   .comments
-    ul
-      list-style: none
-      margin: 0px
-      li.comment
+    .highlighted
+      background: #eee
+    .notPublished
+      border: 1px dashed red
+    article
+      margin-bottom: 10px
   .comments.form
     form
       p
@@ -32,6 +34,7 @@ header.layout
         font-size: 13px
       textarea
         height: 150px
+
   
   article.collectionItem
     h3

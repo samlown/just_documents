@@ -25,6 +25,13 @@
       %br
       = f.text_field :email, :class => 'span-12 title'
 
+  .span-16
+    %p
+      = f.label :web, 'Your Web Site'
+      %br
+      = f.text_field :web, :class => 'span-12 title'
+
+
   - if !session[:identity_url]
     .span-16
       %p
@@ -44,5 +51,5 @@
 
   .span-8
     %p
-      %button{:type => 'submit'}= 'Sign up'
+      %button{:type => 'submit'}= 'Save'
 

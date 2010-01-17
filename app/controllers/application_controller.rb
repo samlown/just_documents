@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
   end
 
   def editor_required
-    current_user_id_editor? or redirect_to(root_url)
+    current_user_is_editor? or redirect_to(root_url)
   end
 
   # This is a hack to allow json reponses to be sent through an iframe!

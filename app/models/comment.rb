@@ -25,6 +25,13 @@ class Comment < ActiveRecord::Base
   def unpublish!
     update_attribute(:published_at, nil)
   end
- 
+
+  def self.new_for_user(user)
+    self.new(
+      :email => user.email,
+      :author => user.name,
+      :web => user.web
+    )
+  end
 
 end

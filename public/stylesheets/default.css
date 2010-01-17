@@ -14,9 +14,12 @@ header.layout {
     header.layout h1 a {
       text-decoration: none; }
 
-#content .comments ul {
-  list-style: none;
-  margin: 0px; }
+#content .comments .highlighted {
+  background: #eee; }
+#content .comments .notPublished {
+  border: 1px dashed red; }
+#content .comments article {
+  margin-bottom: 10px; }
 #content .comments.form form p {
   margin: 0px; }
 #content .comments.form form label {

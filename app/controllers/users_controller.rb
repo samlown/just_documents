@@ -12,18 +12,35 @@ class UsersController < ApplicationController
     end
   end
 
+  def edit
+    @user = User.find(params[:id])
+    if @user.id == current_user.id || current_user_is_admin?
+      respond_to do |format|
+        format.js do
+          render :json => {:state => 'win', :view => render_to_string(:partial => 'edit')}
+        end
+      end
+    end
+  end
+
   def update
     @user = User.find(params[:id])
     @user.attributes = params[:user]
-    @user.role = params[:user][:role]
+    @user.role = params[:user][:role] unless params[:user][:role].blank?
     respond_to do |format|
       format.js do
         if @user.save
-          flash.now[:notice] = "User updated!"
-          index(:state => 'win')
+          if current_user_is_admin?
+            index(:state => 'win')
+          else
+            render :json => {:state => 'win'}
+          end
         else
-          flash.now[:warning] = "Unable to update user!"
-          index(:state => 'fail')
+          if current_user_is_admin?
+            index(:state => 'fail')
+          else
+            render :json => {:state => 'fail', :view => render_to_string(:partial => 'edit'), :msg => 'Check your details!'}
+          end
         end
       end
     end

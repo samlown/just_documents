@@ -1,0 +1,16 @@
+- if current_user_is_editor?
+  %ul.sideActions
+    %li
+      - form_for [@document, comment], :html => {:class => "commentActions"} do |f|
+        - if comment.published?
+          = f.hidden_field :published_at, :value => ''
+          %button.negative{:type => 'submit', :title => 'Un-Publish'}= image_tag('icons/eye-slash.png')
+        - else
+          = f.hidden_field :published_at, :value => Time.now.iso8601
+          %button.positive{:type => 'submit', :title => 'Publish'}= image_tag('icons/eye.png')
+
+    %li
+      - form_for [@document, comment], :html => {:class => "commentDestroy"} do |f|
+        = hidden_field_tag '_method', 'delete'
+        %button.negative{:type => 'submit', :title => 'Destroy', 'data-msg' => "Are you sure you want to delete this comment?"}= image_tag('icons/cross-circle.png')
+

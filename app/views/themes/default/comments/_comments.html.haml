@@ -1,18 +1,13 @@
 
-.comments.span-18
-  - if @document.comments.published.count == 0
-    %h4 No comments yet
-  - else
-    %h4
-      There are
-      = @document.comments.published.count
-      comments for this article
+%section.comments.span-14
+  %header
+    - if @document.comments.published.count == 0
+      %h4 No comments yet
+    - else
+      %h4
+        Comments
 
-  %ul
-    - @document.comments.published.each do |comment|
-      = render :partial => '/comments/show', :locals => {:comment => comment}
-
-    - if current_user_is_admin?
-      - @document.comments.not_published.each do |comment|
-        = render :partial => '/comments/show', :locals => {:comment => comment}
+  - base = current_user_is_editor? ? @document.comments : @document.comments.published
+  - base.each do |comment|
+    = render :partial => '/comments/show', :locals => {:comment => comment}
 
