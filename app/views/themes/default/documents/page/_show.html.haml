@@ -1,13 +1,13 @@
 
-%article.page.span-24{:id => "document_#{document.id}"}
-  .content.span-14.prepend-1
+%article.page.span-22{:id => "document_#{document.id}"}
+  .content.span-14
     %header
       = document_actions
 
     :textile
       #{textile_wiki_filter(@document.content)}
 
-  %aside.sideMenu.span-7.prepend-1
+  %aside.sideMenu.span-6.prepend-1
     - parent_doc = @document.parent || @document
     %section
       = document_add_child(@document, :layout => 'page', :title => "Create a new sub page") if @document == parent_doc

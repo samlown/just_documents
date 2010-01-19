@@ -1,7 +1,4 @@
 
-- if @document == document
-  .leftSpace.span-2 &nbsp;
-
 %article.blogEntry.span-14{:class => document.published? ? 'published' : 'notPublished', :id => "document_#{document.id}"}
   %header
     %h3
@@ -36,7 +33,7 @@
     = render :partial => '/comments/form'
 
 - if @document == document # Viewing a single blog entry!
-  %aside.sideBar.span-6.last
+  %aside.sideBar.span-8.last
     .items
       - paginate_documents(@document.parent.children.published.not_hidden.layout_is('side_bar_entry')).each do |entry|
         = render_document(entry)

@@ -1,6 +1,6 @@
-%section.collection.span-24{:id => "document_#{document.id}"}
+%section.collection.span-22{:id => "document_#{document.id}"}
 
-  .main.span-14.prepend-1
+  .main.span-14
     %header.span-14
       = document_actions
       %h2= document.title
@@ -23,7 +23,7 @@
 
       = will_paginate @entries
 
-  %aside.sideBar.span-6.last
+  %aside.sideBar.span-8.last
     = document_add_child(@document, :layout => 'side_bar_entry', :title => "Add a new side bar entry")
 
     .items.sortable
