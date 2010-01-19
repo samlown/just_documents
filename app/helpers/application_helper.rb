@@ -36,7 +36,7 @@ module ApplicationHelper
     # Replace wiki links with URLs
     text.gsub /(".+"):(\S+\w)/ do |s|
       title = $1; link = $2
-      title + ':' + (link =~ /^\/|([a-z0-9]{2,}:\/\/)/i ? link : document_url(link))
+      title + ':' + (link =~ /^\/|([a-z0-9]{2,}:(\/\/)?)/i ? link : document_url(link))
     end
   end
 

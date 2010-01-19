@@ -1,6 +1,6 @@
 class DocumentsController < ApplicationController
   
-  before_filter :login_required, :except => [:show, :index]
+  before_filter :editor_required, :except => [:show, :index]
   before_filter :load_parent_document
 
   def index

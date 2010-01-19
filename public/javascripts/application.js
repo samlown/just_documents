@@ -1,10 +1,6 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
-function parseJSON(data) {
-  return JSON.parse(data);
-}
-
 $.commentActions = {
 
   bindings: function() {
@@ -82,10 +78,9 @@ $.stdDialog = {
     // Bind to generic dialog link (not live!)
     $('a.dialogLink, a[data-dialog]').live('click', function() {
       $.stdDialog.show($(this).attr('data-title'));
-      $.get($(this).attr('href'), '', function(data) {
-        var result = parseJSON(data);
+      $.get($(this).attr('href'), '', function(result) {
         $.stdDialog.html(result.view);
-      });
+      }, 'json');
       return false;
     });
 
@@ -121,7 +116,7 @@ $.stdDialog = {
       modal: true, draggable: true,
       resizable: false,
       position: ['center', 20],
-      width: 750, height: (window.innerHeight - 50),
+      width: 750, height: ($(window).height() - 50),
       dialogClass: 'simple',
       close: function() {
         if ($('#dialog form').hasClass('dirty')) {
@@ -140,7 +135,7 @@ $.stdDialog = {
       this.loading();
     else
       $('#dialog').html(contents);
-    return $('#dialog').dialog(options).dialog('open');
+    $('#dialog').dialog(options).dialog('open');
   },
 
   loading: function() {

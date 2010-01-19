@@ -13,12 +13,11 @@ $(document).ready( function(){
     update: function(event, ui) {
       var list = $(this);
       var form = $('#sortDocumentsForm');
-      $.post(form.attr('action'), form.serialize() + '&' + list.sortable('serialize'), function(data) {
-        var result = parseJSON(data);
+      $.post(form.attr('action'), form.serialize() + '&' + list.sortable('serialize'), function(result) {
         if (result.state != 'win') {
           alert(result.msg);
         }
-      });
+      }, 'json');
     }
   });
 
@@ -52,14 +51,10 @@ $(document).ready( function(){
 function ajaxAndParse(form, options, callback) {
   options = $.extend({params: [], method: 'get'}, options);
   options.params = options.params.concat($(form).serializeArray());
-  action = function(data) {
-    var result = parseJSON(data);
-    callback(result);
-  }
   if (options.method == 'get') {
-    $.get($(form).attr('action'), options.params, action); 
+    $.get($(form).attr('action'), options.params, callback, 'json'); 
   } else if (options.method == 'post') {
-    $.post($(form).attr('action'), options.params, action); 
+    $.post($(form).attr('action'), options.params, callback, 'json'); 
   }
 }
 
@@ -155,11 +150,10 @@ $.documentForm = {
   edit: function(link, options) {
     var title = link.attr('title');
     $.stdDialog.show(title);
-    $.get(link.attr('href'), '', function(data) {
-      var result = parseJSON(data);
+    $.get(link.attr('href'), '', function(result) {
       // Lock the window scrolling
       $.stdDialog.html(result.view);
-    });
+    }, 'json');
   },
 
   /*
