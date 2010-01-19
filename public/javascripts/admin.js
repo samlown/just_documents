@@ -12,7 +12,7 @@ $(document).ready( function(){
     cursor: 'move',
     update: function(event, ui) {
       var list = $(this);
-      var form = $('#sortDocumentsForm');
+      var form = list.find('.sortForm').length > 0 ? list.find('.sortForm') : $('#sortDocumentsForm');
       $.post(form.attr('action'), form.serialize() + '&' + list.sortable('serialize'), function(result) {
         if (result.state != 'win') {
           alert(result.msg);
