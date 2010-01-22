@@ -1,4 +1,4 @@
-children = @document.children.published.not_hidden.layout_is('blog_entry')
+children = @document.children.published.for_current_locale.not_hidden.layout_is('blog_entry')
 xml.feed(:xmlns => "http://www.w3.org/2005/Atom") do |feed|
   xml.title @document.title
   xml.summary RedCloth.new(@document.summary).to_html, :type => 'html'
