@@ -58,6 +58,7 @@ class DocumentsController < ApplicationController
     @document = Document.find(params[:id]) unless @document
     result = nil
     @document.attributes = params[:document]
+    @document.revision_user = current_user
     if params[:event] == 'publish'
       result = @document.publish!
     elsif params[:event] == 'unpublish'

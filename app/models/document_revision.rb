@@ -1,6 +1,7 @@
 class DocumentRevision < ActiveRecord::Base
 
   belongs_to :document
+  belongs_to :user
 
   # Store of the current revision.
   serialize :attribs, Hash
@@ -12,7 +13,7 @@ class DocumentRevision < ActiveRecord::Base
 
   named_scope :newest_first, :order => 'document_revisions.version DESC'
 
-  named_scope :for_current_locale, :conditions => ['document_revisions.locale IS NULL OR document_revisions.locale = ?', I18n.locale.to_s]
+  named_scope :for_current_locale, lambda {{:conditions => ['document_revisions.locale IS NULL OR document_revisions.locale = ?', I18n.locale.to_s]}}
 
   attr_accessor :skip_attribs
 
@@ -23,11 +24,11 @@ class DocumentRevision < ActiveRecord::Base
       if version.nil?
         self.version = self.class.count(:conditions => ['document_id = ?', document_id]) + 1
       end
+      self.locale = I18n.locale.to_s
       unless minor 
         if attribs.nil? or attribs.empty?
           self.attribs = document.attributes.dup.stringify_keys!
         end
-        self.locale = I18n.locale.to_s
       end
     end
 

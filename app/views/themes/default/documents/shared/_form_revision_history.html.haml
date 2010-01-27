@@ -9,15 +9,17 @@
           %thead
             %tr
               %th Date
+              %th User
               %th Lang
               %th Comment
               %th Revision
               %th &nbsp;
 
           %tbody
-            - document.revisions.for_current_locale.newest_first.each do |revision|
+            - document.revisions.newest_first.each do |revision|
               %tr
-                %td.date= I18n.localize revision.created_at
+                %td.date= I18n.localize revision.created_at, :format => '%Y-%m-%d %H:%M'
+                %td.user= revision.user ? revision.user.name : ''
                 %td.locale= revision.locale.to_s
                 %td.comments= revision.comment
                 %td.link

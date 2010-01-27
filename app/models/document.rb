@@ -38,7 +38,7 @@ class Document < ActiveRecord::Base
 
   before_save :prepare_revision
   after_save :save_revision
-  attr_accessor :revision_comment, :minor_revision, :no_revision
+  attr_accessor :revision_comment, :revision_user, :minor_revision, :no_revision
 
   def initialize(attribs = {})
     attribs[:metadata] ||= { }
@@ -96,11 +96,11 @@ class Document < ActiveRecord::Base
     end
 
     def prepare_revision
-      @parent_revision = self.parent.revisions.build(:comment => "Added new child \"#{self.title}\"", :minor => true) unless self.parent.nil?
+      @parent_revision = self.parent.revisions.build(:comment => "Added new child \"#{self.title}\"", :minor => true, :user => (revision_user || user)) unless self.parent.nil?
     end
     def save_revision
-      unless no_revision || !changed?
-        self.revisions.create(:comment => revision_comment, :minor => minor_revision)
+      unless no_revision # || !changed? # Disabled, as causes problem with translated columns
+        self.revisions.create(:comment => revision_comment, :user => (revision_user || user), :minor => minor_revision)
         @parent_revision.save unless @parent_revision.nil? 
       end
     end
