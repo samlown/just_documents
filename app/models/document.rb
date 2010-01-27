@@ -22,7 +22,7 @@ class Document < ActiveRecord::Base
 
   named_scope :layout_is, lambda {|layout| {:conditions => ['documents.layout = ?', layout]}}
 
-  named_scope :for_current_locale, :conditions => ['documents.locale IS NULL OR documents.locale = ? OR documents.locale = ?', '', I18n.locale.to_s]
+  named_scope :for_current_locale, lambda { {:conditions => ['(documents.locale IS NULL OR documents.locale = ?) OR documents.locale = ?', '', I18n.locale.to_s]} }
 
   named_scope :ordered, :order => 'position ASC'
 
