@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   include Authentication
   include Authentication::ByPassword
   include Authentication::ByCookieToken
+  include Authorization::AasmRoles
 
   validates_presence_of     :email
   validates_length_of       :email,    :within => 6..100 #r@a.wk
@@ -15,6 +16,11 @@ class User < ActiveRecord::Base
   validates_presence_of     :name
   
   attr_accessible :email, :name, :web, :password, :password_confirmation
+
+  named_scope :admins, :conditions => ['role IN (?)', 'admin']
+  named_scope :editors, :conditions => ['role IN (?)', 'editor']
+
+  serialize :preferences, Hash
 
   def self.roles
     [
@@ -54,5 +60,12 @@ class User < ActiveRecord::Base
   def password_required?
     identity_url.blank? && (crypted_password.blank? || !password.blank?)
   end
+
+  protected
+
+    def make_activation_code
+        self.deleted_at = nil
+        self.activation_code = self.class.make_token
+    end
 
 end

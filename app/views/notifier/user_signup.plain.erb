@@ -1,0 +1,16 @@
+
+Thanks for registering, your account has been created:
+
+      Name: <%=h @user.name %>
+<% if @user.identity_url.blank? -%>
+  Username: <%=h @user.email %>
+  Password: <%=h @user.password %>
+<% else -%>
+    OpenID: <%=h @user.identity_url %>
+<% end %>
+
+Visit this url to activate your account:
+
+  <%=h @url %>
+
+

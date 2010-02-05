@@ -8,48 +8,41 @@
 
   - if session[:identity_url]
     .span-16
+      = f.label :identity_url, "Using OpenID Identity"
+      %br
+      = text_field_tag 'identity_url', session[:identity_url], :disabled => true, :class => "span-12 title"
+  - else
+    .span-16
       %p
-        = f.label :identity_url, "Using OpenID Identity"
-        %br
-        = text_field_tag 'identity_url', session[:identity_url], :disabled => true, :class => "span-12 title"
+        = link_to "Are you sure you don't want do this using OpenID?", new_session_url(:openid => true)
 
   .span-16
-    %p
-      = f.label :name, 'Your name'
-      %br
-      = f.text_field :name, :class => 'span-12 title'
+    = f.label :name, 'Your name'
+    %br
+    = f.text_field :name, :class => 'span-12 title'
 
   .span-16
-    %p
-      = f.label :email, 'Email Address'
-      %br
-      = f.text_field :email, :class => 'span-12 title'
+    = f.label :email, 'Email Address'
+    %br
+    = f.text_field :email, :class => 'span-12 title'
 
   .span-16
-    %p
-      = f.label :web, 'Your Web Site'
-      %br
-      = f.text_field :web, :class => 'span-12 title'
+    = f.label :web, 'Your Web Site'
+    %br
+    = f.text_field :web, :class => 'span-12 title'
 
 
   - if !session[:identity_url]
-    .span-16
-      %p
-        = link_to "Log in using OpenID first", new_session_url(:openid => true)
+    .span-6
+      = label_tag 'password', "Password"
+      %br
+      = f.password_field :password, :class => 'span-6 title'
 
-    .span-8
-      %p
-        = label_tag 'password', "Password"
-        %br
-        = f.password_field :password, :class => 'span-8 title'
-
-    .span-8.last
-      %p
-        = label_tag 'password_confirmation', 'Confirm Password'
-        %br
-        = f.password_field :password_confirmation, :class => 'span-8 title'
+    .span-6.last
+      = label_tag 'password_confirmation', 'Confirm Password'
+      %br
+      = f.password_field :password_confirmation, :class => 'span-6 title'
 
   .span-8
-    %p
-      %button{:type => 'submit'}= 'Save'
+    %button{:type => 'submit'}= 'Save'
 

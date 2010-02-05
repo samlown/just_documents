@@ -5,6 +5,9 @@ class SessionsController < ApplicationController
 
   # render new.rhtml
   def new
+    if logged_in?
+      redirect_back_or_default('/')
+    end
   end
 
   def create

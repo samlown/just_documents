@@ -1,21 +1,18 @@
 
-.openIdAuthentication.span-16.prepend-4
+.openIdAuthentication.span-10.prepend-4
 
   - if flash[:warning]
-    .span-16.error
+    .span-10.error
       = flash[:warning]
 
-  .span-16
-    %p
-      = label_tag 'openid_identifier', "Open ID:"
-      %br
-      = text_field_tag 'openid_identifier', @identity_url, :class => 'span-10 title'
+  .span-10
+    = label_tag 'openid_identifier', "Login or create an account using OpenID:"
+    %br
+    = text_field_tag 'openid_identifier', @identity_url, :class => 'span-10 title'
 
-  .span-16
-    %p
-      %button{:type => "submit"}= "Log in"
+  .span-10
+    %button{:type => "submit"}= "Log in"
 
-  .span-16.alternateLink
-    %p
-      = link_to "Login using email and password", new_session_url(:regular => 1)
+  .span-10.alternateLink
+    = link_to "Login using traditional email and password", new_session_url(:regular => 1)
       

@@ -1,6 +1,7 @@
 class Document < ActiveRecord::Base
 
   has_many :comments, :dependent => :delete_all
+  has_many :comment_users, :through => :comments, :source => :user
   has_many :revisions, :class_name => 'DocumentRevision', :dependent => :delete_all
 
   has_many :translations, :class_name => 'DocumentTranslation'

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  before_filter :login_required, :except => [:create, :new]
+  before_filter :login_required, :except => [:create, :new, :activate]
   before_filter :admin_required, :only => [:index]
 
   def index(json = { })
@@ -26,17 +26,20 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     @user.attributes = params[:user]
-    @user.role = params[:user][:role] unless params[:user][:role].blank?
+    if current_user_is_admin?
+      @user.role = params[:user][:role] unless params[:user][:role].blank?
+      @user.identity_url = params[:user][:identity_url]
+    end
     respond_to do |format|
       format.js do
         if @user.save
-          if current_user_is_admin?
+          if current_user_is_admin? && @user.id != current_user.id
             index(:state => 'win')
           else
             render :json => {:state => 'win'}
           end
         else
-          if current_user_is_admin?
+          if current_user_is_admin? && @user.id != current_user.id
             index(:state => 'fail')
           else
             render :json => {:state => 'fail', :view => render_to_string(:partial => 'edit'), :msg => 'Check your details!'}
@@ -58,6 +61,7 @@ class UsersController < ApplicationController
     @user.role = "admin" if User.count == 0
     success = @user && @user.save
     if success && @user.errors.empty?
+      @user.register!
       # Protects against session fixation attacks, causes request forgery
       # protection if visitor resubmits an earlier form using back
       # button. Uncomment if you understand the tradeoffs.
@@ -67,8 +71,26 @@ class UsersController < ApplicationController
       redirect_back_or_default('/')
       flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."
     else
-      flash[:error]  = "We couldn't set up that account, sorry.  Please try again, or contact an admin (link is above)."
+      flash[:error]  = "We couldn't set up that account, sorry. Please try again, or contact us."
       render :action => 'new'
     end
   end
+
+  def activate
+    user = User.find_by_activation_code(params[:activation_code]) unless params[:activation_code].blank?
+    if logged_in? && user.id != current_user.id
+      logout_keeping_session!
+    end
+    case
+    when (!params[:activation_code].blank?) && user && !user.active?
+      user.activate!
+      flash[:notice] = "Your account has been activated!"
+      redirect_to new_session_url
+    when params[:activation_code].blank?
+      flash.now[:error] = "The activation code was missing. Please follow the URL from your email."
+    else 
+      flash.now[:error]  = "We couldn't find a user with that activation code -- check your email? Or maybe you've already activated -- try signing in."
+    end
+  end
+
 end
