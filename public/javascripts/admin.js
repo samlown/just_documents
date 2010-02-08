@@ -21,12 +21,18 @@ $(document).ready( function(){
     }
   });
 
-  $('.adminToggle a:first').click(function() {
+  var toggleAdmin = function() {
     $('.sideActions').toggle();
     $('.adminArea').toggle();
     $('.notPublished').toggle();
-    return false;
+  };
+  if ($.cookie('adminToggle') == 'true') toggleAdmin();
+  $('.adminToggle a:first').click(function() {
+    toggleAdmin()
+    $.cookie('adminToggle', ($.cookie('adminToggle') == 'true' ? 'false' : 'true')); 
+    return false; 
   });
+
   /* Not convinced, I think its easier to show them all the time
   $('.documentBody, .commentBody').hover(
     function() {

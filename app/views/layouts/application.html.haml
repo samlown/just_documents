@@ -7,7 +7,7 @@
       = stylesheet_link_tag 'blueprint/ie'
       = javascript_include_tag "http://html5shiv.googlecode.com/svn/trunk/html5.js"
     = stylesheet_link_tag ['jquery/smoothness/jquery-ui']
-    = javascript_include_tag ['jquery', 'jquery-ui', 'jrails', 'jquery.form', 'application'], :cache => 'all' 
+    = javascript_include_tag ['jquery', 'jquery-ui', 'jrails', 'jquery.form', 'jquery.cookie', 'application'], :cache => 'all'
     - if logged_in?
       = stylesheet_link_tag ['layout', 'admin']
       = javascript_include_tag 'admin'
