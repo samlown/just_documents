@@ -1,11 +1,5 @@
-
-.sessions.new
-
-  - form_tag session_url do
-
-    - if params[:regular].blank?
-      = render_partial_from_theme 'sessions/open_id_auth'
-    - else
-      = render_partial_from_theme 'sessions/password_auth'
-
-
+- form_tag session_url do
+  - if params[:regular].blank?
+    = render_partial_from_theme 'sessions/open_id_auth'
+  - else
+    = render_partial_from_theme 'sessions/password_auth'

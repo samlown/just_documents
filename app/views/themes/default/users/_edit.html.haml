@@ -1,49 +1,49 @@
-.span-12.users.edit
+.span-12
+  .users.edit
+    - unless @user.errors.empty?
+      .errors.span-10
+        %p= t('views.user.problems')
+        %ul
+          - @user.errors.each do |attr, msg|
+            %li= t(msg)
 
-  - unless @user.errors.empty?
-    .errors.span-10
-      %p= t('views.user.problems')
-      %ul
-        - @user.errors.each do |attr, msg|
-          %li= t(msg)
 
-
-  .span-12
-    = f.label :identity_url, t("views.user.identity_url")
-    %br
-    = f.text_field :identity_url, :class => "span-12 title"
-
-  .span-12
-    = f.label :name, t('views.user.name')
-    %br
-    = f.text_field :name, :class => 'span-12 title'
-
-  .span-12
-    = f.label :email, t('views.user.email')
-    %br
-    = f.text_field :email, :class => 'span-12 title'
-
-  .span-12
-    = f.label :web, t('views.user.web')
-    %br
-    = f.text_field :web, :class => 'span-12 title'
-
-  .span-12
-    .span-6
-      = label_tag 'password', t("views.user.password")
+    .span-12
+      = f.label :identity_url, t("views.user.identity_url")
       %br
-      = f.password_field :password, :class => 'span-6 title'
+      = f.text_field :identity_url, :class => "span-12 title"
 
-    .span-6.last
-      = label_tag 'password_confirmation', t('views.user.password_confirmation')
+    .span-12
+      = f.label :name, t('views.user.name')
       %br
-      = f.password_field :password_confirmation, :class => 'span-6 title'
+      = f.text_field :name, :class => 'span-12 title'
 
-  .span-12
-    = f.check_box :comment_notify
-    = f.label :comment_notify, t("views.user.comment_notify")
+    .span-12
+      = f.label :email, t('views.user.email')
+      %br
+      = f.text_field :email, :class => 'span-12 title'
 
-  .span-8
-    %button{:type => 'submit'}= t('views.user.save')
+    .span-12
+      = f.label :web, t('views.user.web')
+      %br
+      = f.text_field :web, :class => 'span-12 title'
+
+    .span-12
+      .span-6
+        = label_tag 'password', t("views.user.password")
+        %br
+        = f.password_field :password, :class => 'span-6 title'
+
+      .span-6.last
+        = label_tag 'password_confirmation', t('views.user.password_confirmation')
+        %br
+        = f.password_field :password_confirmation, :class => 'span-6 title'
+
+    .span-12
+      = f.check_box :comment_notify
+      = f.label :comment_notify, t("views.user.comment_notify")
+
+    .span-8
+      %button{:type => 'submit'}= t('views.user.save')
 
 

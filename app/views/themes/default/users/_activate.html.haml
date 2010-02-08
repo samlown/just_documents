@@ -1,19 +1,19 @@
 .span-10.prepend-3
+  .users
+    - if @user and @user.active? # all good
+      .notice
+        %p= t('views.user.account_activated')
+        %p
+          - if logged_in?
+            %a{:href => stored_or_default_location(root_url)}= t('views.user.go_back_previous') 
+          - else
+            %a{:href => new_session_url(:email => @user.email)}= t('views.user.login')
 
-  - if @user and @user.active? # all good
-    .notice
-      %p= t('views.user.account_activated')
-      %p
-        - if logged_in?
-          %a{:href => stored_or_default_location(root_url)}= t('views.user.go_back_previous') 
+    - else # all bad
+      .error
+        - if params[:activation_code].blank?
+          %p= t('views.user.invalid_request')
+          
         - else
-          %a{:href => new_session_url(:email => @user.email)}= t('views.user.login')
-
-  - else # all bad
-    .error
-      - if params[:activation_code].blank?
-        %p= t('views.user.invalid_request')
-        
-      - else
-        %p= t('views.user.activation_no_match', :url => new_session_url)
+          %p= t('views.user.activation_no_match', :url => new_session_url)
 

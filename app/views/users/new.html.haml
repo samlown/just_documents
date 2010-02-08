@@ -1,8 +1,2 @@
-.users.new
-  - form_for @user do |f|
-    - if User.count == 0
-      .span-10.prepend-3
-        %h2.adminNote
-          Important: You are the first user, and will be an admin!
-
-    = render_partial_from_theme 'users/new', :locals => {:f => f}
+- form_for @user do |f|
+  = render_partial_from_theme 'users/new', :locals => {:f => f}

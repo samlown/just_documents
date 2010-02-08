@@ -1,57 +1,57 @@
 .span-12.prepend-4
+  .users.new
+    %h1= t('views.user.signup')
 
-  %h1= t('views.user.signup')
+    - if User.count == 0
+      %h2.adminNote
+        =t 'views.user.admin_note'
+  
+    - @user.password = @user.password_confirmation = nil
 
-  - if User.count == 0
-    %h2.adminNote
-      =t 'views.user.admin_note'
- 
-  - @user.password = @user.password_confirmation = nil
+    - unless @user.errors.empty?
+      .errors.span-10
+        %p=t 'views.user.problems'
+        %ul
+          - @user.errors.each do |attr, msg|
+            %li=t msg
 
-  - unless @user.errors.empty?
-    .errors.span-10
-      %p=t 'views.user.problems'
-      %ul
-        - @user.errors.each do |attr, msg|
-          %li=t msg
+    - if session[:identity_url]
+      .span-12
+        = f.label :identity_url, t('views.user.use_openid')
+        %br
+        = text_field_tag 'identity_url', session[:identity_url], :disabled => true, :class => "span-12 title"
+    - else
+      .span-12
+        %p
+          = link_to t("views.user.sure_not_openid"), new_session_url(:openid => true)
 
-  - if session[:identity_url]
     .span-12
-      = f.label :identity_url, t('views.user.use_openid')
+      = f.label :name, t('views.user.name') 
       %br
-      = text_field_tag 'identity_url', session[:identity_url], :disabled => true, :class => "span-12 title"
-  - else
+      = f.text_field :name, :class => 'span-12 title'
+
     .span-12
-      %p
-        = link_to t("views.user.sure_not_openid"), new_session_url(:openid => true)
-
-  .span-12
-    = f.label :name, t('views.user.name') 
-    %br
-    = f.text_field :name, :class => 'span-12 title'
-
-  .span-12
-    = f.label :email, t('views.user.email')
-    %br
-    = f.text_field :email, :class => 'span-12 title'
-
-  .span-12
-    = f.label :web, t('views.user.web')
-    %br
-    = f.text_field :web, :class => 'span-12 title'
-
-
-  - if !session[:identity_url]
-    .span-6
-      = label_tag 'password', t('views.user.password') 
+      = f.label :email, t('views.user.email')
       %br
-      = f.password_field :password, :class => 'span-6 title'
+      = f.text_field :email, :class => 'span-12 title'
 
-    .span-6.last
-      = label_tag 'password_confirmation', t('views.user.password_confirmation')
+    .span-12
+      = f.label :web, t('views.user.web')
       %br
-      = f.password_field :password_confirmation, :class => 'span-6 title'
+      = f.text_field :web, :class => 'span-12 title'
 
-  .span-12
-    %button{:type => 'submit'}= t('views.user.save')
+
+    - if !session[:identity_url]
+      .span-6
+        = label_tag 'password', t('views.user.password') 
+        %br
+        = f.password_field :password, :class => 'span-6 title'
+
+      .span-6.last
+        = label_tag 'password_confirmation', t('views.user.password_confirmation')
+        %br
+        = f.password_field :password_confirmation, :class => 'span-6 title'
+
+    .span-12
+      %button{:type => 'submit'}= t('views.user.save')
 

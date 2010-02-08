@@ -1,18 +1,19 @@
 
-.openIdAuthentication.span-10.prepend-4
+.span-10.prepend-4
+  .sessions.openIdAuthentication
 
-  - if flash[:warning]
-    .span-10.error
-      = flash[:warning]
+    - if flash[:warning]
+      .span-10.error
+        = flash[:warning]
 
-  .span-10
-    = label_tag 'openid_identifier', t('views.session.openid_login')
-    %br
-    = text_field_tag 'openid_identifier', @identity_url, :class => 'span-10 title'
+    .span-10
+      = label_tag 'openid_identifier', t('views.session.openid_login')
+      %br
+      = text_field_tag 'openid_identifier', @identity_url, :class => 'span-10 title'
 
-  .span-10
-    %button{:type => "submit"}= t('views.session.login')
+    .span-10
+      %button{:type => "submit"}= t('views.session.login')
 
-  .span-10.alternateLink
-    = link_to t('views.session.login_using_email'), new_session_url(:regular => 1)
-      
+    .span-10.alternateLink
+      = link_to t('views.session.login_using_email'), new_session_url(:regular => 1)
+        
