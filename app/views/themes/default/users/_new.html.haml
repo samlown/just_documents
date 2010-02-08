@@ -1,4 +1,4 @@
-.span-16.prepend-4
+.span-12.prepend-4
 
   %h1= t('views.user.signup')
 
@@ -16,26 +16,26 @@
           %li=t msg
 
   - if session[:identity_url]
-    .span-16
+    .span-12
       = f.label :identity_url, t('views.user.use_openid')
       %br
       = text_field_tag 'identity_url', session[:identity_url], :disabled => true, :class => "span-12 title"
   - else
-    .span-16
+    .span-12
       %p
         = link_to t("views.user.sure_not_openid"), new_session_url(:openid => true)
 
-  .span-16
+  .span-12
     = f.label :name, t('views.user.name') 
     %br
     = f.text_field :name, :class => 'span-12 title'
 
-  .span-16
+  .span-12
     = f.label :email, t('views.user.email')
     %br
     = f.text_field :email, :class => 'span-12 title'
 
-  .span-16
+  .span-12
     = f.label :web, t('views.user.web')
     %br
     = f.text_field :web, :class => 'span-12 title'
@@ -52,6 +52,6 @@
       %br
       = f.password_field :password_confirmation, :class => 'span-6 title'
 
-  .span-8
+  .span-12
     %button{:type => 'submit'}= t('views.user.save')
 

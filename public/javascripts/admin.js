@@ -29,7 +29,7 @@ $(document).ready( function(){
   if ($.cookie('adminToggle') == 'true') toggleAdmin();
   $('.adminToggle a:first').click(function() {
     toggleAdmin()
-    $.cookie('adminToggle', ($.cookie('adminToggle') == 'true' ? 'false' : 'true')); 
+    $.cookie('adminToggle', ($.cookie('adminToggle') == 'true' ? 'false' : 'true'), {path: '/'}); 
     return false; 
   });
 
