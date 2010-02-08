@@ -1,38 +1,39 @@
 class Notifier < ActionMailer::Base
 
-  # let the admins know there is a new comment that needs validating
-  def validate_comment(user, comment, url)
-    setup_email(user, url)
+  # Let an admin know there is a new comment that needs validating
+  def validate_comment(admin, comment, url)
+    setup_email(admin, url)
     @subject += "Comment waiting validation"
     @body[:comment] = comment
   end
   
-  # Deliver a message to users in the thread and admin that a new
-  # message has been posted.
-  # Should include the admin user validating the request so that they
-  # don't receive the same email twice.
-  def comment_posted(user, comment, url)
-    setup_email(user, url)
+  # Deliver notification that a new comment has been posted.
+  # Requires email as comments don't require users.
+  def comment_posted(email, comment, url)
+    setup_email
+    @recipients = email
     @subject += "New comment"
     @body[:comment] = comment
+    @body[:url] = url
   end
 
   def user_signup(user, url)
     setup_email(user, url)
-    @subject .= "Confirm Signup" 
+    @subject += "Confirm Signup" 
   end
 
   # Let the admin user's know that a new user has been created
-  def admin_user_signup(user)
+  def admin_user_signup(admin, user)
     setup_email(user)
-    @subject += "New user added"
+    @recipients = "#{admin.name} <#{admin.email}>"
+    @subject += "New user signup"
   end
 
   protected
 
   def setup_email(user = nil, url = nil)
     @from = "admin@localhost"
-    @recipients = "#{user.name} <#{user.email}>" if user
+    @recipients = user.full_email if user
     @subject = "JustDocuments: "
     @sent_on = Time.now
     @body[:user] = user if user

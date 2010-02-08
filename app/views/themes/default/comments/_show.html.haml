@@ -6,6 +6,8 @@
         - if current_user_is_admin?
           with IP:
           = comment.ip_address
+          email:
+          = comment.email
       = link_to_if !comment.web.blank?, h(comment.author), h(comment.web), :rel => 'external nofollow'
       says:
     %blockquote

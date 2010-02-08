@@ -7,13 +7,16 @@
   - form_for [@document, @comment] do |f|
     %p.author
       = f.text_field :author, :class => 'text span-7'
-      = f.label :author, "Name (needed)"
+      = f.label :author, "Name <small>(required)</small>"
     %p.email
       = f.text_field :email, :class => 'text span-7'
-      = f.label :email, "Email (needed but not published)"
+      = f.label :email, "Email <small>(required but not published)</small>"
     %p.website
       = f.text_field :web, :class => 'text span-7'
-      = f.label :web, "Website (if you have one)"
+      = f.label :web, "Website <small>(if you have one)</small>"
+      %br
+      = f.check_box :notify_by_email
+      = f.label :notify_by_email, "Receive notifications by email of future comments.", :value => (logged_in? ? current_user.comment_notify : true)
 
     %p.content
       = f.text_area :content, :class => 'span-14'
@@ -21,7 +24,14 @@
       %small
         HTML will be removed, but 
         %a{:href => "http://redcloth.org/hobix.com/textile/", :target => '_blank'} Textile formating
-        is permitted. If you are not logged in, your comment will be reviewed before posting.
+        is permitted. 
+        - if logged_in? && current_user.active?
+          Your comment will be posted inmediatly.
+        - elsif logged_in?
+          You are logged in but have not activated your account, your comment will be reviewed before posting.
+        - else
+          = link_to "Log in", new_session_url
+          for your comment to be posted without review.
 
     %p.actions
       %button{:type => "submit"}= "Post Comment"

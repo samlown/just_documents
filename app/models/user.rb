@@ -6,19 +6,22 @@ class User < ActiveRecord::Base
   include Authentication::ByCookieToken
   include Authorization::AasmRoles
 
-  validates_presence_of     :email
-  validates_length_of       :email,    :within => 6..100 #r@a.wk
-  validates_uniqueness_of   :email
-  validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message
+  validates_presence_of     :email, :message => 'models.user.email.required'
+  validates_length_of       :email, :within => 6..100, :too_short => 'models.user.email.too_short', :too_long => 'models.user.email.too_long'
+  validates_uniqueness_of   :email, :message => 'models.user.email.taken'
+  validates_format_of       :email, :with => Authentication.email_regex, :message => 'models.user.email.format' 
 
-  validates_format_of       :name,     :with => Authentication.name_regex,  :message => Authentication.bad_name_message, :allow_nil => true
-  validates_length_of       :name,     :maximum => 100
-  validates_presence_of     :name
+  validates_format_of       :name, :with => Authentication.name_regex, :allow_nil => true, :message => 'models.user.name.format'
+  validates_length_of       :name, :maximum => 100, :too_long => "models.user.name.too_long"
+  validates_presence_of     :name, :message => "models.user.name.required"
   
   attr_accessible :email, :name, :web, :password, :password_confirmation
 
   named_scope :admins, :conditions => ['role IN (?)', 'admin']
   named_scope :editors, :conditions => ['role IN (?)', 'editor']
+
+  named_scope :active, :conditions => ['state IN (?)', 'active']
+  named_scope :receive_comment_notifications, :conditions => ['comment_notify = ?', true]
 
   serialize :preferences, Hash
 
@@ -46,6 +49,10 @@ class User < ActiveRecord::Base
     write_attribute :email, (value ? value.downcase : nil)
   end
 
+  def full_email
+    "#{self.name} <#{self.email}>"
+  end
+
   def is_admin?
     role == 'admin'
   end
@@ -64,8 +71,8 @@ class User < ActiveRecord::Base
   protected
 
     def make_activation_code
-        self.deleted_at = nil
-        self.activation_code = self.class.make_token
+      self.deleted_at = nil
+      self.activation_code = self.class.make_token
     end
 
 end

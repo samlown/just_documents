@@ -10,10 +10,9 @@
           = link_to_if I18n.locale.to_s != locale.to_s, locale.to_s, :locale => locale.to_s
     - if logged_in?
       %span.greeting
-        Logged in as 
-        = link_to current_user.email, edit_user_url(current_user), 'data-dialog' => true, 'data-title' => "Edit your user details"
+        = t('views.layout.logged_in_as', :link => link_to(current_user.email, edit_user_url(current_user), 'data-dialog' => true, 'data-title' => "Edit your user details"))
       %span.action
-        = '(' + link_to("Log out", logout_path, { :title => "Log out" }) + ')' 
+        = '(' + link_to(t("views.layout.logout"), logout_path, { :title => t("views.layout.logout") }) + ')' 
     - else
       %span.action
         = link_to "Log in",  login_path,  { :title => "Log in" }

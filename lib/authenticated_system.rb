@@ -84,13 +84,22 @@ module AuthenticatedSystem
       session[:return_to] = request.request_uri
     end
 
+    def stored_location
+      session[:return_to]
+    end
+
     # Redirect to the URI stored by the most recent store_location call or
     # to the passed default.  Set an appropriately modified
     #   after_filter :store_location, :only => [:index, :new, :show, :edit]
     # for any controller you want to be bounce-backable.
     def redirect_back_or_default(default)
-      redirect_to(session[:return_to] || default)
+      redirect_to(stored_or_default_location(default))
+    end
+
+    def stored_or_default_location(default)
+      url = session[:return_to] || default
       session[:return_to] = nil
+      url
     end
 
     # Inclusion hook to make #current_user and #logged_in?

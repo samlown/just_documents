@@ -1,0 +1,10 @@
+.users.create
+  .span-10.prepend-3
+    .notice
+      %p= t('views.user.signup_thanks')
+
+      %p
+        - if @stored_location.nil?
+          %a{:href => root_url}= t('views.user.go_back_home')
+        - else
+          %a{:href => @stored_location}= t('views.user.go_back_previous')

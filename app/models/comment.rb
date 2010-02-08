@@ -14,7 +14,9 @@ class Comment < ActiveRecord::Base
   named_scope :published, :conditions => ['comments.published_at IS NOT NULL AND comments.published_at <= ?', Time.now]
   named_scope :not_published, :conditions => ['comments.published_at IS NULL OR comments.published_at > ?', Time.now]
 
-  attr_accessible :title, :email, :author, :web, :content
+  named_scope :notifyable, :conditions => ['comments.notify_by_email = ?', true]
+
+  attr_accessible :title, :email, :author, :web, :content, :notify_by_email
 
   def published?
     !published_at.nil? && published_at <= Time.now 
@@ -24,6 +26,11 @@ class Comment < ActiveRecord::Base
   end
   def unpublish!
     update_attribute(:published_at, nil)
+  end
+
+  # include the name in the email
+  def full_email
+    "#{self.author} <#{self.email}>"
   end
 
   def self.new_for_user(user)

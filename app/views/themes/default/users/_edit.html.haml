@@ -1,39 +1,45 @@
 .span-16.users.edit
 
-  = error_messages_for :user
+  - unless @user.errors.empty?
+    .errors.span-10
+      %p= t('views.user.problems')
+      %ul
+        - @user.errors.each do |attr, msg|
+          %li= t(msg)
+
 
   .span-12
-    = f.label :identity_url, "OpenID URL"
+    = f.label :identity_url, t("views.user.identity_url")
     %br
     = f.text_field :identity_url, :class => "span-12 title"
 
   .span-12
-    = f.label :name, 'Your name'
+    = f.label :name, t('views.user.name')
     %br
     = f.text_field :name, :class => 'span-12 title'
 
   .span-12
-    = f.label :email, 'Email Address'
+    = f.label :email, t('views.user.email')
     %br
     = f.text_field :email, :class => 'span-12 title'
 
   .span-12
-    = f.label :web, 'Your Web Site'
+    = f.label :web, t('views.user.web')
     %br
     = f.text_field :web, :class => 'span-12 title'
 
   .span-12
     .span-6
-      = label_tag 'password', "Password"
+      = label_tag 'password', t("views.user.password")
       %br
       = f.password_field :password, :class => 'span-6 title'
 
     .span-6.last
-      = label_tag 'password_confirmation', 'Confirm Password'
+      = label_tag 'password_confirmation', t('views.user.password_confirmation')
       %br
       = f.password_field :password_confirmation, :class => 'span-6 title'
 
   .span-8
-    %button{:type => 'submit'}= 'Save'
+    %button{:type => 'submit'}= t('views.user.save')
 
 
