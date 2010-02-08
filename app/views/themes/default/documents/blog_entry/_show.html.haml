@@ -1,42 +1,44 @@
 
-%article.blogEntry.span-14{:class => document.published? ? 'published' : 'notPublished', :id => "document_#{document.id}"}
-  %header
-    %h3
-      = link_to_if @document != document, document.title, document_url(document)
+.span-14
+  %article.documents.blogEntry{:class => document.published? ? 'published' : 'notPublished', :id => "document_#{document.id}"}
+    %header
+      %h3
+        = link_to_if @document != document, document.title, document_url(document)
 
-    = document_actions document
-    
-  -# unless document.summary.blank?
-    .summary
-      :textile
-        #{document.summary}
+      = document_actions document
+      
+    -# unless document.summary.blank?
+      .summary
+        :textile
+          #{document.summary}
 
-  - unless document.content.blank?
-    .content
-      :textile
-        #{textile_wiki_filter(document.content)}
+    - unless document.content.blank?
+      .content
+        :textile
+          #{textile_wiki_filter(document.content)}
 
-  %footer
-    %p.published
-      - if document.published?
-        = "written by #{document.user.name},"
-        %time{:pubdate => true, :datetime => document.published_at}= document.published_at.to_date
-      - else
-        Not Published!
-      - if document.allow_any_comments && (@document != document)
-        = link_to "#{document.comments.published.count} comments", document_url(document)+'#comments'
+    %footer
+      %p.published
+        - if document.published?
+          = "written by #{document.user.name},"
+          %time{:pubdate => true, :datetime => document.published_at}= document.published_at.to_date
+        - else
+          Not Published!
+        - if document.allow_any_comments && (@document != document)
+          = link_to "#{document.comments.published.count} comments", document_url(document)+'#comments'
 
-  - if @document == document && document.allow_any_comments 
-    %hr
-    = render :partial => '/comments/comments'
-    %hr
-    = render :partial => '/comments/form'
+    - if @document == document && document.allow_any_comments 
+      %hr
+      = render :partial => '/comments/comments'
+      %hr
+      = render :partial => '/comments/form'
 
 - if @document == document # Viewing a single blog entry!
-  %aside.sideBar.span-8.last
-    .items
-      - paginate_documents(@document.parent.children.published.not_hidden.layout_is('side_bar_entry')).each do |entry|
-        = render_document(entry)
+  .span-8.last
+    %aside.sideBar
+      .items
+        - paginate_documents(@document.parent.children.published.not_hidden.layout_is('side_bar_entry')).each do |entry|
+          = render_document(entry)
 
 
 

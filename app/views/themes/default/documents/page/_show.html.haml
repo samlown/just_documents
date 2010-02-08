@@ -1,25 +1,25 @@
+.span-22
+  %article.documents.page{:id => "document_#{document.id}"}
+    .content.span-14
+      %header
+        = document_actions
 
-%article.page.span-22{:id => "document_#{document.id}"}
-  .content.span-14
-    %header
-      = document_actions
+      :textile
+        #{textile_wiki_filter(@document.content)}
 
-    :textile
-      #{textile_wiki_filter(@document.content)}
+    %aside.sideMenu.span-6.prepend-1
+      - parent_doc = @document.parent || @document
+      %section
+        = document_add_child(@document, :layout => 'page', :title => "Create a new sub page") if @document == parent_doc
+    
+        .items.sortable
+          - base = parent_doc.children.layout_is('page').for_current_locale.ordered
+          - base = base.published.not_hidden unless current_user_is_editor? && parent_doc == @document
+          - base.each do |entry|
+            %article.pageLink{:id => "document_#{entry.id}", :class => [(entry == @document ? 'selected' : nil), (entry.published? ? nil : 'notPublished')].compact.join(' ')}
+              = link_to entry.title, document_url(entry)
+              %hr
+              = document_actions(entry, :draggable => true) unless entry == @document
 
-  %aside.sideMenu.span-6.prepend-1
-    - parent_doc = @document.parent || @document
-    %section
-      = document_add_child(@document, :layout => 'page', :title => "Create a new sub page") if @document == parent_doc
+
   
-      .items.sortable
-        - base = parent_doc.children.layout_is('page').for_current_locale.ordered
-        - base = base.published.not_hidden unless current_user_is_editor? && parent_doc == @document
-        - base.each do |entry|
-          %article.pageLink{:id => "document_#{entry.id}", :class => [(entry == @document ? 'selected' : nil), (entry.published? ? nil : 'notPublished')].compact.join(' ')}
-            = link_to entry.title, document_url(entry)
-            %hr
-            = document_actions(entry, :draggable => true) unless entry == @document
-
-
- 

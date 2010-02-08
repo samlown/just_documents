@@ -1,37 +1,36 @@
-
-%section.blog.span-22{:id => "document_#{document.id}"}
-
-  .span-14
-    - if current_user_is_editor?
-      %header.adminArea.span-14
-        %h2= document.title
-
-        - unless document.summary.blank?
-          %p.summary
-            :textile
-              #{textile_wiki_filter(document.summary)}
-            
-        = document_actions
-
-    - entries = paginate_documents(@document.children.published.not_hidden.for_current_locale.layout_is('blog_entry'), :order => 'published_at DESC')
-    %section.entries.span-14
+.span-22
+  %section.documents.blog{:id => "document_#{document.id}"}
+    .span-14
       - if current_user_is_editor?
-        = document_add_child(@document, :layout => 'blog_entry', :title => "Create a new blog post")
-        -# Show pending blog posts at the top and above any pagination so that they never get lost
-        - @document.children.not_published.for_current_locale.layout_is('blog_entry').each do |entry|
+        %header.adminArea.span-14
+          %h2= document.title
+
+          - unless document.summary.blank?
+            %p.summary
+              :textile
+                #{textile_wiki_filter(document.summary)}
+              
+          = document_actions
+
+      - entries = paginate_documents(@document.children.published.not_hidden.for_current_locale.layout_is('blog_entry'), :order => 'published_at DESC')
+      %section.entries.span-14
+        - if current_user_is_editor?
+          = document_add_child(@document, :layout => 'blog_entry', :title => "Create a new blog post")
+          -# Show pending blog posts at the top and above any pagination so that they never get lost
+          - @document.children.not_published.for_current_locale.layout_is('blog_entry').each do |entry|
+            = render_document(entry)
+
+        - entries.each do |entry|
           = render_document(entry)
 
-      - entries.each do |entry|
-        = render_document(entry)
+        = will_paginate entries
 
-      = will_paginate entries
+    %aside.sideBar.span-8.last
+      = document_add_child(@document, :layout => 'side_bar_entry', :title => "Add a new side bar entry")
 
-  %aside.sideBar.span-8.last
-    = document_add_child(@document, :layout => 'side_bar_entry', :title => "Add a new side bar entry")
-
-    .items.sortable
-      - base = @document.children.layout_is('side_bar_entry').for_current_locale.ordered
-      - base = base.published unless current_user_is_editor?
-      - base.each do |entry|
-        = render_document(entry)
+      .items.sortable
+        - base = @document.children.layout_is('side_bar_entry').for_current_locale.ordered
+        - base = base.published unless current_user_is_editor?
+        - base.each do |entry|
+          = render_document(entry)
 
