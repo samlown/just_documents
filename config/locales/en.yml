@@ -42,6 +42,7 @@ en:
       web: "Website"
       password: "Password"
       password_confirmation: "Confirm password"
+      comment_notify: "Receive new comment notifcations by default"
       save: "Save"
       signup_thanks: |
         Thanks for signing up! We've sent you an email with your activation code. You need to activate you account

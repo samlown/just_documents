@@ -39,6 +39,10 @@
       %br
       = f.password_field :password_confirmation, :class => 'span-6 title'
 
+  .span-12
+    = f.check_box :comment_notify
+    = f.label :comment_notify, t("views.user.comment_notify")
+
   .span-8
     %button{:type => 'submit'}= t('views.user.save')
 

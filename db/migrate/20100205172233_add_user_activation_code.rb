@@ -5,7 +5,7 @@ class AddUserActivationCode < ActiveRecord::Migration
     add_column :users, :state, :string, :null => :no, :default => 'passive'
     add_column :users, :deleted_at, :datetime
     # Ensure all current users are active!
-    User.connection.execute("UPDATE users SET state = 'active' WHERE state = 'passive'")
+    User.connection.execute("UPDATE users SET state = 'active'")
   end
 
   def self.down

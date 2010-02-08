@@ -1,4 +1,6 @@
-New comment waiting validation on "<%= @comment.document.title %>".
+Posted on "<%= @comment.document.title %>".
+
+Posted by: "<%=h @comment.full_email %>" at <%= @comment.created_at.to_s %>.
 
 Message Body:
 
