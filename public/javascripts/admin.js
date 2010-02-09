@@ -25,6 +25,7 @@ $(document).ready( function(){
     $('.sideActions').toggle();
     $('.adminArea').toggle();
     $('.notPublished').toggle();
+    $('.adminToggle a:first').toggleClass('strike');
   };
   if ($.cookie('adminToggle') == 'true') toggleAdmin();
   $('.adminToggle a:first').click(function() {

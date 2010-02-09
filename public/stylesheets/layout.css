@@ -1,6 +1,8 @@
 header, footer, section, article, aside, nav {
   position: relative;
   display: block; }
+  header a.strike, footer a.strike, section a.strike, article a.strike, aside a.strike, nav a.strike {
+    text-decoration: line-through; }
 
 footer {
   clear: both; }
