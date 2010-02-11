@@ -1,0 +1,59 @@
+es:
+  ########################################
+  # Just Documents Specific Translations #
+  ########################################
+  models:
+    user:
+      email:
+        required: "Email address is required"
+        too_short: "Email address is too short"
+        too_long: "Email address is too long"
+        taken: "Email address has already been taken"
+        format: "Email address appears to be invalid"
+      name:
+        required: "Name is required"
+        too_long: "Name is too long"
+        format: "Name contains invalid characters"
+
+  views:
+    layout:
+      logged_in_as: "logged in as {{link}}"
+      logout: "logout"
+      
+    user:
+      signup: "Signup as a new user"
+      admin_note: "Important: You are the first user, and will be an admin!"
+      problems: "There were problems creating your account:"
+      use_openid: "Using OpenID Identity"
+      sure_not_openid: "Are you sure you don't want do this using OpenID?"
+      identity_url: "OpenID URL"
+      name: "Name"
+      email: "Email address"
+      web: "Website"
+      password: "Password"
+      password_confirmation: "Confirm password"
+      comment_notify: "Receive new comment notifcations by default"
+      save: "Save"
+      signup_thanks: |
+        Thanks for signing up! We've sent you an email with your activation code. You need to activate you account
+        before you can make comments that don't require validation.
+      go_back_home: "Go back to home page"
+      go_back_previous: "Go back to previous page"
+      account_activated: "Your account has been activated!"
+      login: "Login"
+      invalid_request: "Invalid request. Please follow the link provided in the email you received to activate your account."
+      activation_no_match: |
+        The activation code does not match any user! Perhaps you've activated your account already? 
+        Try <a href="{{url}}">logging in</a> or check the link provided in the email you received.
+
+    session:
+      openid_login: "Login or create an account using OpenID:"
+      login: "Log in"
+      login_using_email: "Login using traditional email and password"
+      email: "Email:"
+      password: "Password:"
+      remember_me: "Remember me"
+      login_using_openid: "Login using OpenID"
+      create_new_account: "Create a new account"
+
+  
