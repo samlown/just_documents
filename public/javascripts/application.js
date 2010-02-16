@@ -72,9 +72,6 @@ $.commentActions = {
 
 $.stdDialog = {
 
-  redirectToUrl: null,
-  formPostCallback: null,
-
   bindings: function() {
     // Bind to generic dialog link (not live!)
     $('a.dialogLink, a[data-dialog]').live('click', function() {
@@ -85,34 +82,9 @@ $.stdDialog = {
       return false;
     });
 
-    $('#dialog form button[type=submit]').live('click', function() {
-      var form = $(this).parents('form');
-      var hasFiles = form.find('input[type=file]').length > 0;
-      $.stdDialog.loading();
-      form.ajaxSubmit({
-        iframe: hasFiles,
-        dataType: 'json',
-        success: function(result) {
-          if ($.stdDialog.formPostCallback) {
-            $.stdDialog.formPostCallback(result);
-            $.stdDialog.formPostCallback = null;
-          } else {
-            if (result.state == 'win') {
-              if (result.view) {
-                $.stdDialog.html(result.view);
-              } else {
-                window.location.reload();
-              }
-            } else {
-              if (result.msg) alert(result.msg);
-              $.stdDialog.html(result.view);
-            }
-          }
-        }
-      });
-      return false; // ignore the button press
+    $('#dialog form').live('submit', function() {
+      $.stdDialog.submit($(this)); return false;
     });
-
   },
 
   show: function(title, contents, options) {
@@ -125,11 +97,12 @@ $.stdDialog = {
       width: 750, height: ($(window).height() - 50),
       dialogClass: 'simple',
       close: function() {
-        if ($('#dialog form').hasClass('dirty')) {
-          if ($.stdDialog.redirectToUrl == '')
-            window.location.reload();
+        var form = $('#dialog form');
+        if (form.hasClass('dirty')) {
+          if (form.data('redirectOnClose'))
+            window.location = form.data('redirectOnClose');
           else
-            window.location = $.stdDialog.redirectToUrl;
+            window.location.reload();
         } else {
           $('html,body').smoothScrollBack('stop');
           $('#dialog').dialog('destroy');
@@ -145,7 +118,12 @@ $.stdDialog = {
   },
 
   loading: function() {
-    $('#dialog').children().hide().after($('#dialogSpinner').html());
+    $('#dialog').children().hide().after($('#dialogSpinner').clone().show());
+  },
+  // If there was an error loading, return the dialog back to how it was.
+  loadingFailed: function() {
+    $('#dialog').find('#dialogSpinner').remove();
+    $('#dialog').children().show();
   },
 
   html: function(contents) {
@@ -160,8 +138,56 @@ $.stdDialog = {
   hide: function() {
     $('html,body').smoothScrollBack('stop');
     $('#dialog').dialog('close');
-  }
+  },
 
+  submit: function(form, options) {
+    options = $.extend({
+      success: function(result) {
+        if (result.view) {
+          $.stdDialog.html(result.view);
+        } else {
+          window.location.reload();
+        }
+      },
+      failure: function(result) {
+        if (result.msg) alert(result.msg);
+          $.stdDialog.html(result.view);
+      },
+      error: function() {
+        // Setup ajax error handling
+        $.stdDialog.loadingFailed();
+         alert('Unable to load page, check connection and try again!');
+      },
+      extraParams: null  // in format: [ name: "foo", value: "bar" ]
+    }, options);
+
+    // Do we need to include extra parameters? (button press details perhaps?)
+    var beforeSubmit = null;
+    if (options.extraParams) {
+      beforeSubmit = function(a) {
+        $.each(options.extraParams, function(i, item) {
+          a.push(item);
+        });
+        return true;
+      }
+    }
+
+    var hasFiles = form.find('input[type=file]').length > 0;
+    $.stdDialog.loading();
+    form.ajaxSubmit({
+      iframe: hasFiles,
+      dataType: 'json',
+      beforeSubmit: beforeSubmit, 
+      error: options.error,
+      success: function(result) {
+        if (result.state == 'win') {
+          options.success(result);
+        } else {
+          options.failure(result);
+        }
+      }
+    });
+  }
 }
 
 $.fn.smoothScrollBack = function(command) {
@@ -206,8 +232,8 @@ $.smoothScrollBack = {
 
 $(document).ready(function() {
 
+  $.stdDialog.bindings(); // This should always be first!
   $.commentActions.bindings();
-  $.stdDialog.bindings();
 
   $('a[data-confirm]').live('click', function() {
     if (confirm($(this).attr('data-confirm'))) {

@@ -34,41 +34,7 @@ $(document).ready( function(){
     return false; 
   });
 
-  /* Not convinced, I think its easier to show them all the time
-  $('.documentBody, .commentBody').hover(
-    function() {
-      $(this).find('.sideActions').show();
-    },
-    function() {
-      var doc = $(this);
-      setTimeout(function(){ doc.find('.sideActions').hide(250); }, 200);
-    }
-  );
-  */
-
 });
-
-/*
- * Send the provided form object using AJAX and parse the results provided as JSON.
- *
- * The following options are supported:
- *   params: Array of aditional name, value objects to append to serializeArray.
- *   
- */
-function ajaxAndParse(form, options, callback) {
-  options = $.extend({params: [], method: 'get'}, options);
-  options.params = options.params.concat($(form).serializeArray());
-  if (options.method == 'get') {
-    $.get($(form).attr('action'), options.params, callback, 'json'); 
-  } else if (options.method == 'post') {
-    $.post($(form).attr('action'), options.params, callback, 'json'); 
-  }
-}
-
-function postAndParse(form, options, callback) {
-  options = $.extend({method: 'post'}, options);
-  ajaxAndParse(form, options, callback);
-}
 
 /*
  * Methods related to handling actions performed on documents while being viewed (not edited).
@@ -89,24 +55,23 @@ $.documentActions = {
     });
   },
 
-  save: function(form, options) {
-    postAndParse(form, options, function(result) {
+  save: function(form) {
+    $.post(form.attr('action'), form.serializeArray(), function(result) {
       if (result.state == 'win') {
         window.location.reload();
       } else {
         alert(result.msg);
       }
-    });
+    }, 'json');
   }
 };
+
+
 
 /*
  * Methods for handling the document form, including loading the form itself.
  */
 $.documentForm = {
-
-  // URL to redirect to, mainly when the slug has changed.
-  redirectToUrl: '',
 
   bindings: function() {
     $('.documentFormAction').live('click', function() { $.documentForm.edit($(this)); return false; });
@@ -115,7 +80,7 @@ $.documentForm = {
       // save with the buttons name and value
       var options = {
         // provide button specific details
-        params: [ {name: $(this).attr('name'), value: $(this).attr('value')} ],
+        extraParams: [ {name: $(this).attr('name'), value: $(this).attr('value')} ],
         // Delay refresh for when form closed for drafts
         noRefresh: $(this).attr('value') == 'draft'
       };
@@ -128,7 +93,9 @@ $.documentForm = {
       return false;
     });
 
-    // Handle auto generating the slug
+    /*
+     * Handle auto generating the slug
+     */
     $('form .slugOrigin input').live('keyup', function() {
       if ($('form input.originalSlug').val() == '') {
         // DRY alert! See also models/document.rb
@@ -138,8 +105,6 @@ $.documentForm = {
           $(this).parents('form').find('.slugUrlField input').val(slug);
       }
     });
-
-
     $('form .slug .slugUrl a').live('click', function() {
       var slug = $(this).siblings('.slug').html();
       $(this).parent().addClass('hidden').siblings('.slugUrlField').removeClass('hidden').find('input').val(slug);
@@ -158,7 +123,6 @@ $.documentForm = {
     var title = link.attr('title');
     $.stdDialog.show(title);
     $.get(link.attr('href'), '', function(result) {
-      // Lock the window scrolling
       $.stdDialog.html(result.view);
     }, 'json');
   },
@@ -167,46 +131,28 @@ $.documentForm = {
    * Save the document, parse the result and either redraw dialog or refresh page.
    */
   save: function(form, options) {
-    // Disable all the buttons first
-    form.find('button').attr('disabled', 'disabled');
-    // $.stdDialog.loading();
-    postAndParse(form, options, function(result) {
-      if (result.state == 'win') {
-        if (! options.noRefresh) {
+    $.stdDialog.submit(form, {
+      extraParams: options.extraParams,
+      success: function(result) {
+        if (!options.noRefresh) {
           if (result.redirect)
             window.location = result.url;
           else
             window.location.reload();
         } else {
           if (result.redirect) {
-            $.documentForm.redirectToUrl = result.url;
-          } else {
-            $.stdDialog.html(result.view);
-            $('#dialog form').addClass('dirty');
-          }
+            $('#dialog form').data('redirectOnClose', result.url); // When slug changes
+          } 
+          $.stdDialog.html(result.view);
+          $('#dialog form').addClass('dirty');
         }
-      } else {
+      },
+      failure: function(result) {
         $.stdDialog.html(result.view);
         $('#dialog form').addClass('dirty');
-        // alert(result.msg);
       }
     });
-  },
-
-  /*
-   * Alias for save
-   */
-  update: function(form, options) {
-    return $.documentForm(form, options);
-  },
-
-  /*
-   * Alias for save
-   */
-  create: function(form, options) {
-    return $.documentForm(form, options);
   }
-
 };
 
 
