@@ -73,6 +73,7 @@ $.commentActions = {
 $.stdDialog = {
 
   redirectToUrl: null,
+  formPostCallback: null,
 
   bindings: function() {
     // Bind to generic dialog link (not live!)
@@ -92,15 +93,20 @@ $.stdDialog = {
         iframe: hasFiles,
         dataType: 'json',
         success: function(result) {
-          if (result.state == 'win') {
-            if (result.view) {
-              $.stdDialog.html(result.view);
-            } else {
-              window.location.reload();
-            }
+          if ($.stdDialog.formPostCallback) {
+            $.stdDialog.formPostCallback(result);
+            $.stdDialog.formPostCallback = null;
           } else {
-            if (result.msg) alert(result.msg);
-            $.stdDialog.html(result.view);
+            if (result.state == 'win') {
+              if (result.view) {
+                $.stdDialog.html(result.view);
+              } else {
+                window.location.reload();
+              }
+            } else {
+              if (result.msg) alert(result.msg);
+              $.stdDialog.html(result.view);
+            }
           }
         }
       });
