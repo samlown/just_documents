@@ -26,7 +26,7 @@ class DocumentsController < ApplicationController
 
 
   def new
-    locale = I18n.locale.to_s != I18n.default_locale.to_s ? I18n.locale : nil
+    locale = I18n.locale.to_s != I18n.default_locale.to_s ? I18n.locale.to_s : nil
     @document = Document.new(:slug => params[:slug], :layout => params[:layout], :locale => locale)
     @document.parent = @parent_document unless @parent_document.nil?
     @document.user = current_user

@@ -46,3 +46,6 @@ Rails::Initializer.run do |config|
 end
 
 Haml::Template.options[:format] = :html5
+
+ActiveRecord::Base.include_root_in_json = false
+

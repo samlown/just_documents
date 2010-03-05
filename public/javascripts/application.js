@@ -130,6 +130,7 @@ $.stdDialog = {
     if (contents) {
       $('#dialog').html(contents);
       $('#dialog form .markItUp').markItUp(mySettings);
+      $('#dialog input:visible:first').focus();
    } else {
       return $('#dialog').html();
     }
