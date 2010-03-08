@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
   before_filter :login_required, :except => [:create, :new, :activate]
-  before_filter :admin_required, :only => [:index]
+  before_filter :admin_required, :only => [:index, :destroy]
 
   def index(json = { })
     @users = User.paginate :per_page => 50, :page => params[:page]
@@ -78,12 +78,28 @@ class UsersController < ApplicationController
 
   def activate
     @user = User.find_by_activation_code(params[:activation_code]) unless params[:activation_code].blank?
+    @stored_location = stored_or_default_location(root_url)
     if @user
       if logged_in? && @user.id != current_user.id
         logout_keeping_session!
       end
       if (!params[:activation_code].blank?) && !@user.active?
         @user.activate!
+      end
+    end
+  end
+
+  def destroy
+    @user = User.find(params[:id])
+    respond_to do |format|
+      format.js do
+        if @user != current_user
+          if @user.destroy
+            render :json => {:state => 'win', :redirect_to => users_url}
+          else
+            render :json => {:state => 'fail', :view => render_to_string(:partial => 'edit')}
+          end
+        end
       end
     end
   end

@@ -5,7 +5,7 @@
         %p= t('views.user.account_activated')
         %p
           - if logged_in?
-            %a{:href => stored_or_default_location(root_url)}= t('views.user.go_back_previous') 
+            %a{:href => @stored_location}= t('views.user.go_back_previous') 
           - else
             %a{:href => new_session_url(:email => @user.email)}= t('views.user.login')
 

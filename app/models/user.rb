@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
   end
 
   def role_name
-    self.class.roles.rassoc(role)[0]
+    (self.class.roles.rassoc(role) || [])[0]
   end
 
   def password_required?

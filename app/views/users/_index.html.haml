@@ -13,15 +13,11 @@
         %td= link_to user.email, edit_user_url(user), 'data-dialog' => true, 'data-title' => "Edit user details"
         %td= user.identity_url
         %td
-          - if user == current_user
-            %strong= "YOU"
-            = "(#{user.role_name})"
-          - else
+          = user.role_name
+        %td
+          - if user != current_user
             .form
-              - form_for user do |f|
-                %span= f.select(:role, User.roles)
-                %button.small{:type => 'submit'}= 'save'
-
-
-
+              - form_for user, :html => {:method => :delete} do |f|
+                %button.negative.small{:type => 'submit', 'data-confirm' => "Are you sure you want to destroy this user?"}= "X"
+            
 

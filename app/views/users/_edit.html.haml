@@ -1,7 +1,7 @@
 - form_for @user do |f|
   = render_partial_from_theme 'users/edit', :locals => {:f => f}
 
-  - if @user.is_admin?
+  - if current_user_is_admin?
     .span-12
       = link_to "back to list", users_url, 'data-dialog' => true
 
