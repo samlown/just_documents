@@ -4,7 +4,21 @@ class DocumentsController < ApplicationController
   before_filter :load_parent_document
 
   def index
-    redirect_to document_url(:id => 'home') 
+    respond_to do |format|
+      format.html { redirect_to document_url(:id => 'home') }
+      format.js do
+        base = Document
+        if params[:q]
+          base = base.search(params[:q]) 
+        end
+        @documents = base.paginate(:page => params[:page], :per_page => 20, :order => 'slug')
+        if logged_in?
+          render :json => { :view => render_to_string(:partial => 'index') }
+        else
+          render :text => 'fail'
+        end
+      end
+    end
   end
 
   def show

@@ -74,7 +74,7 @@ $.stdDialog = {
 
   bindings: function() {
     // Bind to generic dialog link (not live!)
-    $('a.dialogLink, a[data-dialog]').live('click', function() {
+    $('a.dialogLink, a[data-dialog], #dialog .pagination a').live('click', function() {
       $.stdDialog.show($(this).attr('data-title'));
       $.get($(this).attr('href'), '', function(result) {
         $.stdDialog.html(result.view);

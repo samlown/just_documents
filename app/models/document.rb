@@ -27,6 +27,8 @@ class Document < ActiveRecord::Base
 
   named_scope :ordered, :order => 'position ASC'
 
+  named_scope :search, lambda {|q| {:conditions => ['documents.title LIKE ? OR documents.slug LIKE ?', "%#{q.to_s}%", "%#{q.to_s}%"]}}
+
   validates_uniqueness_of :title, :message => "A document with this title already exists"
 
   validates_presence_of :slug, :message => "Missing the slug"

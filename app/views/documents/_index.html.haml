@@ -1,0 +1,26 @@
+.span-18
+  .documents.index
+
+    - form_tag documents_url, :method => :get do
+      = label_tag "search: "
+      = text_field_tag :q, params[:q]
+
+    %table
+      %thead
+        %tr
+          %th= "slug"
+          %th= "title"
+          %th= "layout"
+          %th= "updated"
+      %tbody
+        - @documents.each do |doc|
+          %tr
+            %td= link_to doc.slug, document_url(doc.slug)
+            %td= doc.title
+            %td= doc.layout
+            %td= doc.updated_at
+
+    %br
+    = page_entries_info @documents
+    %br
+    = will_paginate @documents 

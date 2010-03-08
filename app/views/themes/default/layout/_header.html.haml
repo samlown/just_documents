@@ -2,7 +2,10 @@
   - if current_user_is_admin?
     .adminToggle
       %a{:href => '#'} toggle preview 
+      &middot;
       = link_to "users", users_url, 'data-dialog' => true, 'data-title' => "User accounts"
+      &middot;
+      = link_to "pages", documents_url, 'data-dialog' => true, 'data-title' => 'Documents'
   .userBar
     - if I18n.available_locales.length > 1
       %span.locales
