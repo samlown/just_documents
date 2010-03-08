@@ -8,9 +8,8 @@ class DocumentsController < ApplicationController
       format.html { redirect_to document_url(:id => 'home') }
       format.js do
         base = Document
-        if params[:q]
-          base = base.search(params[:q]) 
-        end
+        if !params[:q].blank? then base = base.search(params[:q]) end
+        if !params[:layout].blank? then base = base.layout_is(params[:layout]) end
         @documents = base.paginate(:page => params[:page], :per_page => 20, :order => 'slug')
         if logged_in?
           render :json => { :view => render_to_string(:partial => 'index') }
