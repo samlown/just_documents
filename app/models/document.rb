@@ -15,19 +15,19 @@ class Document < ActiveRecord::Base
 
   serialize :metadata, Hash
 
-  named_scope :published, :conditions => ['documents.published_at IS NOT NULL AND documents.published_at <= ?', Time.now]
-  named_scope :not_published, :conditions => ['documents.published_at IS NULL OR documents.published_at > ?', Time.now]
+  named_scope :published, :conditions => ['(documents.published_at IS NOT NULL AND documents.published_at <= ?)', Time.now]
+  named_scope :not_published, :conditions => ['(documents.published_at IS NULL OR documents.published_at > ?)', Time.now]
 
   named_scope :hidden, :conditions => ['documents.hidden_at IS NOT NULL']
   named_scope :not_hidden, :conditions => ['documents.hidden_at IS NULL']
 
   named_scope :layout_is, lambda {|layout| {:conditions => ['documents.layout = ?', layout]}}
 
-  named_scope :for_current_locale, lambda { {:conditions => ['(documents.locale IS NULL OR documents.locale = ?) OR documents.locale = ?', '', I18n.locale.to_s]} }
+  named_scope :for_current_locale, lambda { {:conditions => ['((documents.locale IS NULL OR documents.locale = ?) OR documents.locale = ?)', '', I18n.locale.to_s]} }
 
   named_scope :ordered, :order => 'position ASC'
 
-  named_scope :search, lambda {|q| {:conditions => ['documents.title LIKE ? OR documents.slug LIKE ?', "%#{q.to_s}%", "%#{q.to_s}%"]}}
+  named_scope :search, lambda {|q| {:conditions => ['(documents.title LIKE ? OR documents.slug LIKE ?)', "%#{q.to_s}%", "%#{q.to_s}%"]}}
 
   validates_uniqueness_of :title, :message => "A document with this title already exists"
 
