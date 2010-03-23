@@ -33,8 +33,10 @@ es:
       password: "Password"
       password_confirmation: "Confirm password"
       comment_notify: "Receive email notifcations by default"
-      save: "Save"
-      role: "Role"
+      save: "Guardar"
+      destroy: "Destruir"
+      confirm_destroy: "Are you sure you want to destroy this user?"
+      role: "Papel"
       signup_thanks: |
         Thanks for signing up! We've sent you an email with your activation code. You need to activate you account
         before you can make comments that don't require validation.

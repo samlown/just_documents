@@ -3,11 +3,16 @@ class UsersController < ApplicationController
   before_filter :login_required, :except => [:create, :new, :activate]
   before_filter :admin_required, :only => [:index, :destroy]
 
-  def index(json = { })
-    @users = User.paginate :per_page => 50, :page => params[:page]
+  def index
+    base = User
+    base = base.search(params[:q]) if params[:q]
+    params[:role] = nil if params[:role] == 'all'
+    base = base.by_role(params[:role]) if params[:role]
+
+    @users = base.paginate :per_page => 20, :page => params[:page]
     respond_to do |format|
       format.js do
-        render :json => json.update(:view => render_to_string(:partial => 'index'))
+        render :json => { :state => 'win', :view => render_to_string(:partial => 'index') }
       end
     end
   end
@@ -27,23 +32,16 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @user.attributes = params[:user]
     if current_user_is_admin?
-      @user.role = params[:user][:role] unless params[:user][:role].blank?
+      @user.role = params[:user][:role] unless params[:user][:role].nil?
       @user.identity_url = params[:user][:identity_url]
     end
     respond_to do |format|
       format.js do
+        view = render_to_string(:partial => 'edit')
         if @user.save
-          if current_user_is_admin? && @user.id != current_user.id
-            index(:state => 'win')
-          else
-            render :json => {:state => 'win'}
-          end
+          render :json => {:state => 'win', :view => view}
         else
-          if current_user_is_admin? && @user.id != current_user.id
-            index(:state => 'fail')
-          else
-            render :json => {:state => 'fail', :view => render_to_string(:partial => 'edit'), :msg => 'Check your details!'}
-          end
+          render :json => {:state => 'fail', :view => view, :msg => 'Check your details!'}
         end
       end
     end
@@ -59,10 +57,9 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     @user.identity_url = session[:identity_url]
     @user.role = "admin" if User.count == 0
-    success = @user && @user.save
-    if success && @user.errors.empty?
+    if @user.save
       @user.register!
-      Notifier.deliver_user_signup(@user, url_for(:controller => 'users', :action => 'activate', :activation_code => @user.activation_code))
+      Notifier.deliver_user_signup(@user, activate_users_url(:activation_code => @user.activation_code))
       User.admins.each { |admin| Notifier.deliver_admin_user_signup(admin, @user) }
       # Protects against session fixation attacks, causes request forgery
       # protection if visitor resubmits an earlier form using back

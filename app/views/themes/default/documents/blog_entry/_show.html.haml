@@ -20,7 +20,7 @@
     %footer
       %p.published
         - if document.published?
-          = "written by #{document.user.name},"
+          = "written by #{document.user_name},"
           %time{:pubdate => true, :datetime => document.published_at}= document.published_at.to_date
         - else
           Not Published!

@@ -1,23 +1,30 @@
 .users.index
 
-  %table
-    %tr
-      %th= "Name"
-      %th= "Email"
-      %th= "Identity"
-      %th.role= "Role"
+  - form_tag users_url, :method => :get do
+    = "Search:"
+    = text_field_tag :q, params[:q], :class => 'search span-5'
+    = "Role:"
+    = select_tag :role, options_for_select([['All', 'all']] + User.roles)
+    = submit_tag "GO"
 
-    - @users.each do |user|
+  %table
+    %thead
       %tr
-        %td= user.name
-        %td= link_to user.email, edit_user_url(user), 'data-dialog' => true, 'data-title' => "Edit user details"
-        %td= user.identity_url
-        %td
-          = user.role_name
-        %td
-          - if user != current_user
-            .form
-              - form_for user, :html => {:method => :delete} do |f|
-                %button.negative.small{:type => 'submit', 'data-confirm' => "Are you sure you want to destroy this user?"}= "X"
-            
+        %th= "Name"
+        %th= "Email"
+        %th= "Identity"
+        %th.role= "Role"
+    %tbody
+      - @users.each do |user|
+        %tr
+          %td= link_to user.name, edit_user_url(user), 'data-dialog' => true, 'data-title' => "Edit user details"
+          %td= user.email
+          %td= user.identity_url
+          %td
+            = user.role_name
+
+  %br
+  = page_entries_info @users
+  %br
+  = will_paginate @users 
 

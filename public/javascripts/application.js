@@ -82,6 +82,16 @@ $.stdDialog = {
       return false;
     });
 
+    $('#dialog button.destroy').live('click', function() {
+      if (confirm($(this).attr('data-confirm-text'))) {
+        // convert parent form into a DELETE
+        var form = $(this).parents('form');
+        form.find('input[name=_method]').attr('value', 'delete');
+        $.stdDialog.submit(form);
+      }
+      return false;
+    });
+
     $('#dialog form').live('submit', function() {
       $.stdDialog.submit($(this)); return false;
     });
@@ -249,5 +259,6 @@ $(document).ready(function() {
       return false;
     }
   });
+
 
 });

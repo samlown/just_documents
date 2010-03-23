@@ -85,6 +85,10 @@ class Document < ActiveRecord::Base
     @minor_revision == "1" || @minor_revision == true
   end
 
+  def user_name
+    self.user.name if self.user
+  end
+
   def destroy
     super
     self.parent.revisions.create(:comment => "Destroyed child \"#{self.title}\"", :minor => true) unless self.parent.nil?

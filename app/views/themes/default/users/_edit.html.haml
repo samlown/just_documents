@@ -51,4 +51,8 @@
 
     .span-8
       %button{:type => 'submit'}= t('views.user.save')
+      
+      - if current_user_is_admin?
+        %button.destroy.negative{:type => 'submit', 'data-confirm-text' => t('views.user.confirm_destroy')}
+          = t('views.user.destroy')
 

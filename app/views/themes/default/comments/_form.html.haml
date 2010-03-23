@@ -15,8 +15,8 @@
       = f.text_field :web, :class => 'text span-7'
       = f.label :web, "Website <small>(if you have one)</small>"
       %br
-      = f.check_box :notify_by_email
-      = f.label :notify_by_email, "Receive notifications by email of future comments.", :value => (logged_in? ? current_user.comment_notify : true)
+      = f.check_box :notify_by_email, :checked => (logged_in? ? current_user.comment_notify : true)
+      = f.label :notify_by_email, "Receive notifications by email of future comments."
 
     %p.content
       = f.text_area :content, :class => 'span-14'

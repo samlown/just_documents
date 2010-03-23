@@ -32,6 +32,8 @@ en:
       password_confirmation: "Confirm password"
       comment_notify: "Receive email notifcations by default"
       save: "Save"
+      destroy: "Destroy"
+      confirm_destroy: "Are you sure you want to destroy this user?"
       role: "Role"
       signup_thanks: |
         Thanks for signing up! We've sent you an email with your activation code. You need to activate you account

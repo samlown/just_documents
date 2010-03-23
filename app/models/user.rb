@@ -1,6 +1,10 @@
 require 'digest/sha1'
 
 class User < ActiveRecord::Base
+
+  has_many :documents
+  has_many :comments
+
   include Authentication
   include Authentication::ByPassword
   include Authentication::ByCookieToken
@@ -15,13 +19,17 @@ class User < ActiveRecord::Base
   validates_length_of       :name, :maximum => 100, :too_long => "models.user.name.too_long"
   validates_presence_of     :name, :message => "models.user.name.required"
   
-  attr_accessible :email, :name, :web, :password, :password_confirmation
+  attr_accessible :email, :name, :web, :password, :password_confirmation, :comment_notify
 
   named_scope :admins, :conditions => ['role IN (?)', 'admin']
   named_scope :editors, :conditions => ['role IN (?)', 'editor']
 
   named_scope :active, :conditions => ['state IN (?)', 'active']
   named_scope :receive_comment_notifications, :conditions => ['comment_notify = ?', true]
+
+  named_scope :by_role, lambda {|role| {:conditions => ['role = ?', role]}}
+
+  named_scope :search, lambda {|q| q2 = "%#{q}%".downcase; {:conditions => ['(LOWER(email) LIKE ? OR LOWER(name) LIKE ?)', q2, q2]}}
 
   serialize :preferences, Hash
 
@@ -31,6 +39,10 @@ class User < ActiveRecord::Base
       ['editor', 'editor'],
       ['admin', 'admin']
     ]
+  end
+
+  def after_initialize
+    self.role ||= ''
   end
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
@@ -61,7 +73,7 @@ class User < ActiveRecord::Base
   end
 
   def role_name
-    (self.class.roles.rassoc(role) || [])[0]
+    (self.class.roles.rassoc(role.to_s) || [])[0]
   end
 
   def password_required?
